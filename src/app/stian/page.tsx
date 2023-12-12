@@ -5,8 +5,8 @@ export default function Stian() {
         <div>
         <h1>This is the Stian page</h1>
 
-        <Link href="/stian/lotto">
-            <p>Lotto</p>
+        <Link href="/stian/lotteri">
+            <p>Lotteri</p>
         </Link>
 
         </div>
