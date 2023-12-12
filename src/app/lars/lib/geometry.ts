@@ -6,3 +6,8 @@ export function getRelMPos(e:MouseEvent) {
     const y = (e.clientY - canvas_rect.top) * 100 / canvas_rect.height;
     return {x:x,y:y};
 }
+
+
+export function mod(n:number, m:number):number {
+    return ((n % m) + m) % m;
+}

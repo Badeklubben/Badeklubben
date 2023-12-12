@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState, MouseEvent, WheelEvent } from 'react';
-import { getRelMPos } from '../lib/geometry';
+import { getRelMPos, mod } from '../lib/geometry';
 
 
 export default function Grapher() {
@@ -17,7 +17,7 @@ export default function Grapher() {
     const [zoom, setZoom] = useState(1);
 
     
-
+    //FUNCTIONS TO HANDLE "CAMERA-MOVEMENT":
     const drag = (e:MouseEvent) => {
         if ( !dragging ) return;
         const current_position = getRelMPos(e);
@@ -29,14 +29,12 @@ export default function Grapher() {
             }
         });
     }
-
     const terminateDragging = (e:MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
         setDragging(() => false);
     }
-
     const initiateDragging = (e:MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -46,8 +44,9 @@ export default function Grapher() {
         setPreviousposition(() => position);
         setDragging(() => true);
     }
-
     const doZoom = (e:WheelEvent) => {
+        if (dragging) return;
+
         const delta = e.deltaY / -1000 + zoom;
         if ( delta < 0.1 || delta > 3) return;
 
@@ -59,30 +58,58 @@ export default function Grapher() {
             }
         });
 
-        setZoom(() => delta)
-        
+
+        setZoom(() => delta);
+ 
     }
+
+
+
     return (
         <div>
             <div style={{fontSize:'xx-large', marginBottom:10}}>This is the Grapher project</div>
             <Link href="/lars" style={{color:'orange'}}>
                 <h1>Return</h1>
             </Link>
+            
+            <div style={{display:'flex',width:"50%", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
 
-            <div style={{width:"50%", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%"}}>
-            <svg 
-                onMouseDown={initiateDragging}
-                onMouseUp={terminateDragging}
-                onMouseLeave={terminateDragging}
-                onMouseMove={drag}
-                onWheel={doZoom}
+                
+            
+                <svg 
+                    onMouseDown={initiateDragging}
+                    onMouseUp={terminateDragging}
+                    onMouseLeave={terminateDragging}
+                    onMouseMove={drag}
+                    onWheel={doZoom}
 
-                style={{backgroundColor:"orange"}} 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox={position.x + " " + position.y + " " + 100/zoom + " " + 100/zoom}>
-                <circle cx="50" cy="50" r="40" fill="red" />
-                <circle cx="150" cy="100" r="20" fill="red" />
-            </svg>
+                    style={{backgroundColor:"orange"}} 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox={position.x + " " + position.y + " " + 100/zoom + " " + 100/zoom}>
+                    <circle cx="50" cy="50" r="40" fill="red" />
+                    <circle cx="150" cy="100" r="20" fill="red" />
+                    <line x1={50} y1={50} x2={150} y2={100} stroke="red" />
+
+
+
+                    {/*Coordinates*/}
+                    { Array.from({ length: 10}, (_,i) => 
+                        {
+                            let currDim = 10/zoom    
+                            let val = Math.round((currDim * (i + Math.round(position.y/currDim)))/5) * 5;
+                            return <text opacity={0.5} x={position.x + 1/zoom} y={position.y + currDim * i} fontSize={2/zoom}>{val}</text>
+                        }
+                    )}
+
+                    { Array.from({ length: 10}, (_,i) => 
+                        {
+                            let currDim = 10/zoom    
+                            let val = Math.round((currDim * (i + Math.round(position.x/currDim)))/5)*5;
+                            return <text opacity={0.5} y={position.y + 2/zoom} x={position.x + 1/zoom + currDim * i} fontSize={2/zoom}>{val}</text>
+                        }
+                    )}
+
+                </svg>
             </div>
         </div>
     );
