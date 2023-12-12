@@ -9,6 +9,10 @@ export default function Stian() {
             <p>Lotteri</p>
         </Link>
 
+        <Link href="/stian/brygging">
+            <p>Brygging</p>
+        </Link>
+
         </div>
     );
 }
