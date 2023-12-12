@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react';
+import BackButton from '../ui/back-button';
 
 export default function Lotto() {
 
@@ -33,12 +34,17 @@ export default function Lotto() {
     }
 
     // Sender GET request til norsk tipping api-et og henter ut data om tidligere trekninger mellom datoene brukeren har laget
-    function request() {
-    
+    // Trenger backend for å hondere mengden data som kommer inn gjennom her
+    async function request() {
+        await fetch(url)
+            .then(response => response.text())
+            .then(data => console.log(data));
     }
 
     return (
         <div>
+            <BackButton/>
+            <h1>Backend tengs for å hondere denne mengden med data</h1>
             <h1>Tidligere trekninger</h1>
             <p>Her er en liste over tidligere trekninger:</p>
             <form onSubmit={handleSubmit}>
@@ -56,4 +62,3 @@ export default function Lotto() {
         </div>
     );
 }
-

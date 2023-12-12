@@ -1,6 +1,9 @@
+'use client'
+import BackButton from "./ui/back-button";
 export default function Lotteri() {
     return (
         <div>
+        <BackButton/>
         <h1>Norsk Tipping Lotteridata</h1>
         <div>
             <li>
