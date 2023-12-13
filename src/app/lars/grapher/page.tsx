@@ -1,7 +1,8 @@
 'use client';
 import Link from 'next/link';
-import { useState, MouseEvent, WheelEvent } from 'react';
+import { useState, MouseEvent, WheelEvent, useRef } from 'react';
 import { getRelMPos, mod } from '../lib/geometry';
+import Vertex from './ui/vertex';
 
 
 export default function Grapher() {
@@ -63,6 +64,20 @@ export default function Grapher() {
  
     }
 
+    //FUNCTIONS TO HANDLE "VERTEX-MOVEMENT":
+    const [radius, setRadius] = useState(40);
+    const [center,setCenter] = useState({x:50,y:50});
+
+    const test = (e:WheelEvent) => {
+        e.stopPropagation();
+
+        const delta = e.deltaY / -10 + radius;
+        if ( delta < 5 || delta > 50) return;
+        setRadius(() => delta);
+    }
+
+    const ref = useRef(null);
+
 
 
     return (
@@ -72,11 +87,12 @@ export default function Grapher() {
                 <h1>Return</h1>
             </Link>
             
-            <div style={{display:'flex',width:"25%", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
+            <div style={{display:'flex',width:"50%", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
 
                 
             
                 <svg 
+                    ref={ref}
                     onMouseDown={initiateDragging}
                     onMouseUp={terminateDragging}
                     onMouseLeave={terminateDragging}
@@ -86,11 +102,14 @@ export default function Grapher() {
                     style={{backgroundColor:"orange"}} 
                     xmlns="http://www.w3.org/2000/svg" 
                     viewBox={position.x + " " + position.y + " " + 100/zoom + " " + 100/zoom}>
-                    <circle cx="50" cy="50" r="40" fill="red" />
+
+                    <circle onWheel={test} cx={center.x} cy={center.y} r={radius} fill="red" />
+
+
                     <circle cx="150" cy="100" r="20" fill="red" />
                     <line x1={50} y1={50} x2={150} y2={100} stroke="red" />
 
-
+                    <Vertex SVGElement={ref.current!} s={zoom}></Vertex>
 
                     {/*Coordinates*/}
                     { Array.from({ length: 10}, (_,i) => 
