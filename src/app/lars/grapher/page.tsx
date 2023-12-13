@@ -72,7 +72,7 @@ export default function Grapher() {
                 <h1>Return</h1>
             </Link>
             
-            <div style={{display:'flex',width:"50%", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
+            <div style={{display:'flex',width:"25%", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
 
                 
             
@@ -97,7 +97,7 @@ export default function Grapher() {
                         {
                             let currDim = 10/zoom    
                             let val = Math.round((currDim * (i + Math.round(position.y/currDim)))/5) * 5;
-                            return <text opacity={0.5} x={position.x + 1/zoom} y={position.y + currDim * i} fontSize={2/zoom}>{val}</text>
+                            return <text key={'vert'+i} opacity={0.5} x={position.x + 1/zoom} y={position.y + currDim * i} fontSize={2/zoom}>{val}</text>
                         }
                     )}
 
@@ -105,7 +105,7 @@ export default function Grapher() {
                         {
                             let currDim = 10/zoom    
                             let val = Math.round((currDim * (i + Math.round(position.x/currDim)))/5)*5;
-                            return <text opacity={0.5} y={position.y + 2/zoom} x={position.x + 1/zoom + currDim * i} fontSize={2/zoom}>{val}</text>
+                            return <text key={'hor'+i}  opacity={0.5} y={position.y + 2/zoom} x={position.x + 1/zoom + currDim * i} fontSize={2/zoom}>{val}</text>
                         }
                     )}
 
