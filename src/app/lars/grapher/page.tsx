@@ -1,83 +1,65 @@
 'use client';
 import Link from 'next/link';
-import { useState, MouseEvent, WheelEvent, useRef } from 'react';
-import { getRelMPos, mod } from '../lib/geometry';
-import Vertex from './ui/vertex';
+import { useState, useRef, useEffect } from 'react';
+import {CanvasSVG, Vertex, Grid} from './ui/zoomAndPan';
+import { Movable } from './lib/movement';
+
 
 
 export default function Grapher() {
-    //Stores the viewbox position from before dragging started
-    const [previousposition,setPreviousposition] = useState({x:0,y:0});
-    //Stores the current position of the viewbox
-    const [position,setPosition] = useState({x:0,y:0});
-    //Stores the initial position of the cursor (when dragging started)
-    const [mdownpos, setMdownpos] = useState({x:0,y:0});
-    //A boolean stating if the user is currently dragging the viewbox
-    const [dragging, setDragging] = useState<boolean>(false);
-    //The current zoom of the viewbox
-    const [zoom, setZoom] = useState(1);
-
-    
-    //FUNCTIONS TO HANDLE "CAMERA-MOVEMENT":
-    const drag = (e:MouseEvent) => {
-        if ( !dragging ) return;
-        const current_position = getRelMPos(e);
-
-        setPosition(() => {
-            return {
-                x: previousposition.x + (mdownpos.x - current_position.x) / zoom,
-                y: previousposition.y + (mdownpos.y - current_position.y) / zoom
-            }
-        });
-    }
-    const terminateDragging = (e:MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        setDragging(() => false);
-    }
-    const initiateDragging = (e:MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const cursor_position = getRelMPos(e);
-        setMdownpos(() => cursor_position);
-        setPreviousposition(() => position);
-        setDragging(() => true);
-    }
-    const doZoom = (e:WheelEvent) => {
-        if (dragging) return;
-
-        const delta = e.deltaY / -1000 + zoom;
-        if ( delta < 0.1 || delta > 3) return;
-
-        const current_position = getRelMPos(e);
-        setPosition(prev => {
-            return {
-                x: prev.x + ((delta-zoom) * current_position.x) / (delta*zoom),
-                y: prev.y + ((delta-zoom) * current_position.y) / (delta*zoom)
-            }
-        });
-
-
-        setZoom(() => delta);
- 
-    }
-
-    //FUNCTIONS TO HANDLE "VERTEX-MOVEMENT":
-    const [radius, setRadius] = useState(40);
-    const [center,setCenter] = useState({x:50,y:50});
-
-    const test = (e:WheelEvent) => {
-        e.stopPropagation();
-
-        const delta = e.deltaY / -10 + radius;
-        if ( delta < 5 || delta > 50) return;
-        setRadius(() => delta);
-    }
 
     const ref = useRef(null);
 
+    const [movable,setMovable] = useState<Movable>({
+        refElement: null,
+        previosPosition: {x:0,y:0},
+        position: {x:0,y:0},
+        mousePosOnGrab: {x:0,y:0},
+        dragging: false,
+        scale: 1,
+        zoomBounds: {
+            sensitivity: 1000,
+            max: 3,
+            min: 0.1,
+            direction: 1
+        }
+    })
+
+    const [node,setNode] = useState<Movable>({
+        refElement: null,
+        previosPosition: {x:50,y:50},
+        position: {x:50,y:50},
+        mousePosOnGrab: {x:0,y:0},
+        dragging: false,
+        scale: 40,
+        zoomBounds: {
+            sensitivity: 10,
+            max: 100,
+            min: 4,
+            direction: -1
+        }
+    })
+
+    const [node2,setNode2] = useState<Movable>({
+        refElement: null,
+        previosPosition: {x:150,y:100},
+        position: {x:150,y:100},
+        mousePosOnGrab: {x:0,y:0},
+        dragging: false,
+        scale: 20,
+        zoomBounds: {
+            sensitivity: 10,
+            max: 100,
+            min: 4,
+            direction: -1
+        }
+    })
+
+    useEffect(() => {
+        setMovable((prev) => {return {...prev, refElement : ref.current}})
+        setNode((prev) => {return {...prev, refElement : ref.current}})
+        setNode2((prev) => {return {...prev, refElement : ref.current}})
+    },[])
 
 
     return (
@@ -87,48 +69,18 @@ export default function Grapher() {
                 <h1>Return</h1>
             </Link>
             
-            <div style={{display:'flex',width:"50%", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
+            <div style={{display:'flex',height:"50vh", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
 
-                
-            
-                <svg 
-                    ref={ref}
-                    onMouseDown={initiateDragging}
-                    onMouseUp={terminateDragging}
-                    onMouseLeave={terminateDragging}
-                    onMouseMove={drag}
-                    onWheel={doZoom}
+                <CanvasSVG movable={movable} setMovable={setMovable} ref={ref}>
 
-                    style={{backgroundColor:"orange"}} 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    viewBox={position.x + " " + position.y + " " + 100/zoom + " " + 100/zoom}>
+                    <line x1={node.position.x} y1={node.position.y} x2={node2.position.x} y2={node2.position.y} stroke="red" />
+                    <Vertex movable={node} setMovable={setNode} parent={movable}></Vertex>
+                    <Vertex movable={node2} setMovable={setNode2} parent={movable}></Vertex>
 
-                    <circle onWheel={test} cx={center.x} cy={center.y} r={radius} fill="red" />
+                    { Grid(movable) }
+               
+                </CanvasSVG>
 
-
-                    <circle cx="150" cy="100" r="20" fill="red" />
-                    <line x1={50} y1={50} x2={150} y2={100} stroke="red" />
-
-                    <Vertex SVGElement={ref.current!} s={zoom}></Vertex>
-
-                    {/*Coordinates*/}
-                    { Array.from({ length: 10}, (_,i) => 
-                        {
-                            let currDim = 10/zoom    
-                            let val = Math.round((currDim * (i + Math.round(position.y/currDim)))/5) * 5;
-                            return <text key={'vert'+i} opacity={0.5} x={position.x + 1/zoom} y={position.y + currDim * i} fontSize={2/zoom}>{val}</text>
-                        }
-                    )}
-
-                    { Array.from({ length: 10}, (_,i) => 
-                        {
-                            let currDim = 10/zoom    
-                            let val = Math.round((currDim * (i + Math.round(position.x/currDim)))/5)*5;
-                            return <text key={'hor'+i}  opacity={0.5} y={position.y + 2/zoom} x={position.x + 1/zoom + currDim * i} fontSize={2/zoom}>{val}</text>
-                        }
-                    )}
-
-                </svg>
             </div>
         </div>
     );
