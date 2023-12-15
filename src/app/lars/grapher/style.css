@@ -1,0 +1,19 @@
+/* styles.css (or your preferred CSS file) */
+
+/* Ensure body and html take up 100% of the viewport height */
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Disable scrolling */
+}
+  
+/* Make the page cover the entire screen */
+.page-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #191A19; /* Set your desired background color */
+}

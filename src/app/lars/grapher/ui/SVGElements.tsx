@@ -18,7 +18,7 @@ export function Vertex({
         cx={movable.state.position.x} 
         cy={movable.state.position.y}
         r={movable.state.scale} 
-        fill="green"/>
+        fill="#4E9F3D"/>
     );
 }
 
@@ -125,7 +125,7 @@ export function CanvasSVG({
                 id={instanceID}
 
                 ref={ref}
-                style={{backgroundColor:"orange", userSelect:'none'}} 
+                style={{backgroundColor:"#1E5128", userSelect:'none'}} 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox={movable.state.position.x + " " + movable.state.position.y + " " + 100/movable.state.scale + " " + 100/movable.state.scale}>
                     {children}

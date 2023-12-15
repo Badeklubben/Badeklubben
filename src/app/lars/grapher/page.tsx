@@ -1,9 +1,9 @@
 'use client';
 import Link from 'next/link';
-import { useState, useRef, useEffect, useId } from 'react';
+import { useRef, useId } from 'react';
 import {CanvasSVG, Vertex } from './ui/SVGElements';
-import { Movable, StateType, Position, ZoomBounds, createMovable, newActiveState } from './lib/movement';
-
+import {createMovable } from './lib/movement';
+import './style.css';
 
 export default function Grapher() {
 
@@ -46,22 +46,25 @@ export default function Grapher() {
 
 
     return (
-        <div>
+        <div className="page-container">
             <div style={{fontSize:'xx-large', marginBottom:10}}>This is the Grapher project</div>
             <Link href="/lars" style={{color:'orange'}}>
                 <h1>Return</h1>
             </Link>
             
-            <div style={{display:'flex',height:"50vh", aspectRatio:"1/1", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
+            <div style={{display:'flex',height:"100%", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
 
                 <CanvasSVG movable={mm} instanceID={useId()}>
 
-                    <line x1={n1.state.position.x} y1={n1.state.position.y} x2={n2.state.position.x} y2={n2.state.position.y} stroke='green'></line>
+                    <line x1={n1.state.position.x} y1={n1.state.position.y} x2={n2.state.position.x} y2={n2.state.position.y} stroke='#D8E9A8'></line>
             
                     <Vertex movable={n1} instanceID={useId()}></Vertex>
                     <Vertex movable={n2} instanceID={useId()}></Vertex>
 
                 </CanvasSVG>
+
+            </div>
+            <div style={{height:'10%'}}>
 
             </div>
         </div>
