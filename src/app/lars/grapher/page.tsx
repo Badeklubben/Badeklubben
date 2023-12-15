@@ -11,7 +11,7 @@ export default function Grapher() {
 
     const mm = createMovable(
         {x:0,y:0},
-        1,
+        0.1,
         {
             sensitivity: 1000,
             max: 3,
@@ -21,8 +21,8 @@ export default function Grapher() {
     )
 
     const n1 = createMovable(
-        {x:50,y:50},
-        40,
+        {x:300,y:300},
+        100,
         {
             sensitivity: 10,
             max: 100,
@@ -32,7 +32,7 @@ export default function Grapher() {
     )
 
     const n2 = createMovable(
-        {x:150,y:100},
+        {x:700,y:700},
         20,
         {
             sensitivity: 10,
@@ -52,11 +52,11 @@ export default function Grapher() {
                 <h1>Return</h1>
             </Link>
             
-            <div style={{display:'flex',height:"100%", backgroundColor:"gray", margin:"0 25%", overflow:'hidden'}}>
+            <div style={{display:'flex',height:"100%", backgroundColor:"black", border:"1px solid #16FF00" , margin:"0 25%", overflow:'hidden'}}>
 
                 <CanvasSVG movable={mm} instanceID={useId()}>
 
-                    <line x1={n1.state.position.x} y1={n1.state.position.y} x2={n2.state.position.x} y2={n2.state.position.y} stroke='#D8E9A8'></line>
+                    <line x1={n1.state.position.x} y1={n1.state.position.y} x2={n2.state.position.x} y2={n2.state.position.y} stroke='#16FF00'></line>
             
                     <Vertex movable={n1} instanceID={useId()}></Vertex>
                     <Vertex movable={n2} instanceID={useId()}></Vertex>

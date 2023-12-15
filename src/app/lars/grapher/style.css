@@ -15,5 +15,6 @@ body, html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #191A19; /* Set your desired background color */
+    color: #16FF00;
+    background-color: black; /* Set your desired background color */
 }

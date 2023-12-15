@@ -18,7 +18,9 @@ export function Vertex({
         cx={movable.state.position.x} 
         cy={movable.state.position.y}
         r={movable.state.scale} 
-        fill="#4E9F3D"/>
+        strokeWidth={1}
+        stroke='#16FF00'
+        />
     );
 }
 
@@ -125,7 +127,7 @@ export function CanvasSVG({
                 id={instanceID}
 
                 ref={ref}
-                style={{backgroundColor:"#1E5128", userSelect:'none'}} 
+                style={{backgroundColor:"black", userSelect:'none'}} 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox={movable.state.position.x + " " + movable.state.position.y + " " + 100/movable.state.scale + " " + 100/movable.state.scale}>
                     {children}
@@ -150,7 +152,7 @@ function GridAxis(movable:Movable, xAxis:boolean = true, spacing:number = 10, ro
     return Array.from({ length: spacing}, (_,i) => 
         {
             let val = Math.round((currDim * (i + Math.round(dir/currDim)))/round) * round;
-            return <text key={key+i}  opacity={0.5} x={x + (xAxis ? currDim * i : 0)} y={y + (xAxis ? 0 : currDim * i)} fontSize={2/movable.scale}>{val}</text>
+            return <text style={{pointerEvents:'none'}} key={key+i}  opacity={0.5} x={x + (xAxis ? currDim * i : 0)} y={y + (xAxis ? 0 : currDim * i)} fill='#16FF00' fontSize={2/movable.scale}>{val}</text>
         }
     )
 }
