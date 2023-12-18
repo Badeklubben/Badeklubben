@@ -27,19 +27,19 @@ export default function Brygging() {
             <div>
                 <Backbutton/>
 
-                <Link href="/sig-up">
+                <Link href="brygging/sign-up">
                     Sign up
                 </Link>
 
             </div> 
 
+            <h1>This is the Brygging page</h1>
+
             <div>
-                <input type="text" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <input type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+                <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                 <button onClick={handleLogin}>Log in</button>
             </div>
-
-            <h1>This is the Brygging page</h1>
 
 
         </div>
