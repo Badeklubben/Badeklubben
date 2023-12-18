@@ -7,6 +7,7 @@ import {
     signOut
 } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import { useRouter } from 'next/navigation';
 
 // User data type interface
 interface UserType {
@@ -30,6 +31,8 @@ export const AuthContextProvider = ({
     const [user, setUser] = useState<UserType>({ email: null, uid: null });
     const [loading, setLoading] = useState<Boolean>(true);
 
+    const router = useRouter();
+
     // Update the state depending on auth
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -39,6 +42,7 @@ export const AuthContextProvider = ({
                     uid: user.uid
                 });
             } else {
+                router.push("/stian/brygging")
                 setUser({ email: null, uid: null });
             }
         });
@@ -46,6 +50,8 @@ export const AuthContextProvider = ({
         setLoading(false);
 
         return () => unsubscribe();
+
+        
     }, []);
 
     // Sign up the user
