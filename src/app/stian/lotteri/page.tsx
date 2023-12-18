@@ -1,5 +1,5 @@
 'use client'
-import BackButton from "./ui/back-button";
+import BackButton from "../ui/back-button";
 export default function Lotteri() {
     return (
         <div>
