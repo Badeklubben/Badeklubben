@@ -1,4 +1,6 @@
-import ProtectedRoute from "./protectedRoute"
+import ProtectedRoute from "./lib/protectedRoute"
+import Navbar from "./lib/navbar"
+
 export default function BryggingLayoutinn({
   children,
 }: {
@@ -6,6 +8,7 @@ export default function BryggingLayoutinn({
 }) {
   return (
     <ProtectedRoute>
+        <Navbar />
         {children}
     </ProtectedRoute>
   )
