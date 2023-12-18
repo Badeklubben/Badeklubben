@@ -1,4 +1,5 @@
 import './ui/BeerEmoji.png'
+import { AuthContextProvider } from './lib/authentication';
 
 export const metadata = {
     title: 'Brygging',
@@ -14,6 +15,8 @@ export default function BryggingLayout({
   children: React.ReactNode
 }) {
   return (
-    <div>{children}</div>
+    <AuthContextProvider>
+    	{children}
+    </AuthContextProvider>
   )
 }
