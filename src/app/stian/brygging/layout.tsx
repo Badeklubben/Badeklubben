@@ -1,18 +1,14 @@
-import { AuthContextProvider } from './lib/authentication';
+import { AuthContextProvider } from "./lib/authentication";
 
 export const metadata = {
-    title: 'Brygging',
-    description: 'Brygging',
-}
+    title: "Brygging",
+    description: "Brygging",
+};
 
 export default function BryggingLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode;
 }) {
-  return (
-    <AuthContextProvider>
-    	{children}
-    </AuthContextProvider>
-  )
+    return <AuthContextProvider>{children}</AuthContextProvider>;
 }

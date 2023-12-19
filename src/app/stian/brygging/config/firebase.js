@@ -12,9 +12,8 @@ const firebaseConfig = {
   projectId: "brygging-2249f",
   storageBucket: "brygging-2249f.appspot.com",
   messagingSenderId: "625742231863",
-  appId: "1:625742231863:web:53df871cfd68df3d19c2b2"
+  appId: "1:625742231863:web:53df871cfd68df3d19c2b2",
 };
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

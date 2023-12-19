@@ -1,15 +1,15 @@
-import ProtectedRoute from "./lib/protectedRoute"
-import Navbar from "./lib/navbar"
+import ProtectedRoute from "./lib/protectedRoute";
+import Navbar from "./lib/navbar";
 
 export default function BryggingLayoutinn({
-  children,
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode;
 }) {
-  return (
-    <ProtectedRoute>
-        <Navbar />
-        {children}
-    </ProtectedRoute>
-  )
+    return (
+        <ProtectedRoute>
+            <Navbar />
+            {children}
+        </ProtectedRoute>
+    );
 }
