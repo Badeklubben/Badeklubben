@@ -33,9 +33,9 @@ export default function Profile() {
         <div>
             <h1>Profile</h1>
             {forms.map((form) => (
-                <Link key={form.id} href={`/stian/brygging/home/${form.id}`}>
+                <div>
                     <Form key={form.id} form={form} />
-                </Link>
+                </div>
             ))}
         </div>
     );
