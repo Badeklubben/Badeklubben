@@ -11,3 +11,17 @@ export interface BryggeskjemaDocument {
     "målt-og": number;
     tappedato: { seconds: number; nanoseconds: number };
 }
+
+export const defaultForm: BryggeskjemaDocument = {
+    id: "",
+    abv: 0,
+    "batch-navn": "",
+    "batch-nr": 0,
+    bryggedato: { seconds: 0, nanoseconds: 0 },
+    effektivitet: 0,
+    "forventet-fg": 0,
+    "forventet-og": 0,
+    "målt-fg": 0,
+    "målt-og": 0,
+    tappedato: { seconds: 0, nanoseconds: 0 },
+};

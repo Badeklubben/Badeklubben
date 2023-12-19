@@ -1,29 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getDocs, collection } from "firebase/firestore";
 import { BryggeskjemaDocument } from "./lib/form-interface";
-import { db } from "../config/firebase";
+import { getForms } from "./lib/db-functions";
 import Form from "./lib/form";
 
 export default function Home() {
     const [forms, setForms] = useState<BryggeskjemaDocument[]>([]);
-    const bryggeskjemaCollection = collection(db, "bryggeskjema");
 
-    const getSomething = async () => {
-        try {
-            const data = await getDocs(bryggeskjemaCollection);
-            const filteredData = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            })) as BryggeskjemaDocument[];
-            setForms(filteredData);
-        } catch (err) {
-            console.error(err);
-        }
+    const something = async () => {
+        const fetchData = async () => {
+            const fetchedForms = await getForms();
+            if (fetchedForms) {
+                setForms(fetchedForms);
+            }
+        };
+
+        fetchData();
     };
 
     useEffect(() => {
-        getSomething();
+        something();
     }, []);
 
     return (
