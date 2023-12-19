@@ -1,50 +1,43 @@
 'use client';
 import React, { useRef, useState, MouseEvent, WheelEvent, useId } from 'react';
-import { getRelMPos } from '../lib/geometry';
+import { contain, getRelMPos, genID } from '../lib/tools';
+import  recognizer, { makeEdge, makeVertex }  from '../lib/recognizer';
+import { Bound, Mover, Position } from '../lib/definitions';
 
-//Types
-type Position = {
-    x:number;
-    y:number;
-};
+/*
+Notes:
+Something wrong with zoom. Wrong when adjust bounds.
+Nothing is done to prevent duplicate edges.
+*/
 
-type Mover = {
-    previosPosition: Position;
-    position: Position;
-    mousePosOnGrab: Position;
-    scale: number;
-    zoomBounds: {
-        sensitivity: number,
-        max: number,
-        min: number,
-        direction: 1 | -1;
-    };
-}
 
 //Internal functions
 function Grid(movable:Mover, spacing:number = 10, round:number = 5) {
     return [GridAxis(movable,true,spacing,round),GridAxis(movable,false,spacing,round)]
 }
 function GridAxis(movable:Mover, xAxis:boolean = true, spacing:number = 10, round:number = 5) {
-    let currDim = spacing/movable.scale;
-    let dir = xAxis ? movable.position.x : movable.position.y;
-    let key = xAxis ? 'hor' : 'vert';
-    let x = movable.position.x + 1/movable.scale;
-    let y = xAxis ? movable.position.y + 2/movable.scale : movable.position.y;
+    const currDim = spacing/movable.scale;
+    const dir = xAxis ? movable.position.x : movable.position.y;
+    const key = xAxis ? 'hor' : 'vert';
+    const x = movable.position.x + 1/movable.scale;
+    const y = xAxis ? movable.position.y + 2/movable.scale : movable.position.y;
 
     return Array.from({ length: spacing}, (_,i) => 
         {
-            let val = Math.round((currDim * (i + Math.round(dir/currDim)))/round) * round;
+            const val = Math.round((currDim * (i + Math.round(dir/currDim)))/round) * round;
             return <text style={{pointerEvents:'none'}} key={key+i}  opacity={0.5} x={x + (xAxis ? currDim * i : 0)} y={y + (xAxis ? 0 : currDim * i)} fill='#16FF00' fontSize={2/movable.scale}>{val}</text>
         }
     )
 }
+
 function Vertex({
     movable,
-    instanceID
+    instanceID,
+    scale
   }: {
     movable: Mover;
-    instanceID : string
+    instanceID : string;
+    scale: number
   }) 
   {
     return (
@@ -53,7 +46,7 @@ function Vertex({
         cx={movable.position.x} 
         cy={movable.position.y}
         r={movable.scale} 
-        strokeWidth={1}
+        strokeWidth={0.3/scale}
         stroke='#16FF00'
         />
     );
@@ -61,11 +54,13 @@ function Vertex({
 function Edge({
     from,
     to,
-    instanceID
+    instanceID,
+    scale
   }: {
     from: Mover;
     to : Mover;
-    instanceID : string
+    instanceID : string,
+    scale: number
   }) 
   {
     return (
@@ -76,9 +71,35 @@ function Edge({
             x2={to.position.x} 
             y2={to.position.y} 
             stroke='#16FF00'
+            strokeWidth={0.3/scale}
             />
     );
 }
+
+
+const CANVASBOUNDS : Bound = { 
+                    sensitivity: 1000,
+                    max: 3,
+                    min: 0.1,
+                    direction: 1
+}
+const VERTEXBOUNDS : Bound = { 
+    sensitivity: 10,
+    max: 50,
+    min: 10,
+    direction: -1
+}
+const genVertex = (position: Position, scale: number) : Mover => {
+    return {
+        previosPosition: position,
+        position: position,
+        mousePosOnGrab: position,
+        scale: contain(scale,VERTEXBOUNDS.max,VERTEXBOUNDS.min),
+        zoomBounds: VERTEXBOUNDS
+    }
+}
+
+
 
 //Exported functions
 export function CanvasSVG({ 
@@ -94,56 +115,11 @@ export function CanvasSVG({
                 previosPosition : {x:0,y:0},
                 position : {x:0,y:0},
                 mousePosOnGrab : {x:0,y:0},
-                scale : 1,
-                zoomBounds : {
-                    sensitivity: 1000,
-                    max: 3,
-                    min: 0.1,
-                    direction: 1
-                }
-            },
-            ["useId()"] : {
-                previosPosition : {x:30,y:30},
-                position : {x:30,y:30},
-                mousePosOnGrab : {x:30,y:30},
-                scale : 10,
-                zoomBounds : {
-                    sensitivity: 10,
-                    max: 100,
-                    min: 4,
-                    direction: -1
-                }
-            },
-            ["a"] : { 
-                previosPosition : {x:60,y:80},
-                position : {x:60,y:80},
-                mousePosOnGrab : {x:60,y:80},
-                scale : 5,
-                zoomBounds : {
-                    sensitivity: 10,
-                    max: 100,
-                    min: 4,
-                    direction: -1
-                }
-            },
-            ["b"] : { 
-                previosPosition :  {x:80,y:40},
-                position :  {x:80,y:40},
-                mousePosOnGrab :  {x:80,y:40},
-                scale : 7,
-                zoomBounds : {
-                    sensitivity: 10,
-                    max: 100,
-                    min: 4,
-                    direction: -1
-                }
-            },
-        });
-        const [edges, setEdges] = useState< {[id : string] : {from: string, to: string}} >({
-            ['edge'+useId()]: {from: "a", to: "b"},
-            ['edge'+useId()]: {from: "a", to: "useId()"},
-            ['edge'+useId()]: {from: "useId()", to: "b"},
-        });
+                scale : CANVASBOUNDS.min,
+                zoomBounds : CANVASBOUNDS
+            }
+        });   
+        const [edges, setEdges] = useState< {[id : string] : {from: string, to: string}} >({});
 
 
         const ref = useRef<SVGSVGElement | null>(null);
@@ -158,7 +134,7 @@ export function CanvasSVG({
          * @returns 
          */
         const getElementID = (e:MouseEvent, ignoreWithPrefix: string | null = null) => {
-            let elmID = (e.target as HTMLElement).getAttribute('id')!;
+            const elmID = (e.target as HTMLElement).getAttribute('id')!;
             return ignoreWithPrefix && elmID.startsWith(ignoreWithPrefix) ?  instanceID : elmID;
         }
 
@@ -168,7 +144,7 @@ export function CanvasSVG({
          * @returns 
          */
         const deleteID = (e:MouseEvent) => {
-            let elmID = getElementID(e);
+            const elmID = getElementID(e);
             if ( elmID == instanceID ) return;
 
             if ( elmID.startsWith("edge") ) {
@@ -176,7 +152,7 @@ export function CanvasSVG({
             }
             else {
                 setEdges(prev => {
-                    let a = Object.entries(prev).filter(([id,edge]) => edge.from != elmID && edge.to != elmID)
+                    const a = Object.entries(prev).filter(([id,edge]) => edge.from != elmID && edge.to != elmID)
                     return Object.fromEntries(a);
                 })
 
@@ -190,6 +166,7 @@ export function CanvasSVG({
          * @returns 
          */
         const initiateDragging = (e:MouseEvent) =>  {   
+            if (penDown || active) return
             //right-clicks means drawing or deleting
             if (e.button == 2) {
                 if (deleteMode) deleteID(e);
@@ -198,8 +175,8 @@ export function CanvasSVG({
             }
             
             //set the element clicked as active
-            let current_position = getRelMPos(e,ref.current!);
-            let elmID = getElementID(e,'edge');
+            const current_position = getRelMPos(e,ref.current!);
+            const elmID = getElementID(e,'edge');
             setActive(() => elmID);
             
             //update default values for the element
@@ -241,7 +218,7 @@ export function CanvasSVG({
                 const current_position = getRelMPos(e,ref.current!);
 
                 setNodes((prev) => {
-                    let pA = prev[active];
+                    const pA = prev[active];
                     return {
                         ...prev,
                         [active] : {
@@ -270,6 +247,30 @@ export function CanvasSVG({
          * @returns 
          */
         const endDrawing = () => {
+            if (trace.length) {
+                const drawn = recognizer(trace);
+                if (drawn.id == 'vertex') {
+                    const newVertexInfo = makeVertex(drawn.keyPoints);
+                    setNodes(prev => {
+                        return {
+                            ...prev,
+                            [genID()] : genVertex(newVertexInfo.center,newVertexInfo.radius)
+                        }
+                    })
+                } else {
+                    const newEdge = makeEdge(drawn.keyPoints,nodes);
+                    if (newEdge)
+                    {
+                        setEdges(prev => {
+                            return {
+                                ...prev,
+                                ['edge' + genID()] : newEdge
+                            }
+                        })
+                    }
+                }
+            }
+
             setPenDown(() => false);
             setTrace(() => []);
         }
@@ -282,12 +283,12 @@ export function CanvasSVG({
         const doZoom = (e:WheelEvent) => {
             if (penDown) return;
 
-            let current_position = getRelMPos(e,ref.current!);
-            let elmID = getElementID(e,'edge');
+            const current_position = getRelMPos(e,ref.current!);
+            const elmID = getElementID(e,'edge');
       
             setNodes((prev) => {
-                const delta = e.deltaY / -prev[elmID].zoomBounds.sensitivity + prev[elmID].scale;
-                if ( delta < prev[elmID].zoomBounds.min || delta > prev[elmID].zoomBounds.max) return prev;
+                let  delta = e.deltaY / -prev[elmID].zoomBounds.sensitivity + prev[elmID].scale;
+                delta = contain(delta, prev[elmID].zoomBounds.max, prev[elmID].zoomBounds.min);
 
                 return {
                     ...prev,
@@ -316,20 +317,20 @@ export function CanvasSVG({
                 id={instanceID}
 
                 ref={ref}
-                style={{backgroundColor:"black", userSelect:'none'}} 
+                style={{backgroundColor:"black", userSelect:'none',cursor: active ? 'grabbing': 'default'}} 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox={nodes[instanceID].position.x + " " +nodes[instanceID].position.y + " " + 100/nodes[instanceID].scale + " " + 100/nodes[instanceID].scale}>
                     
                     <g>
-                        {Object.entries(edges).map(([id,edge],idx) => <Edge key={'e'+idx} from={nodes[edge.from]} to={nodes[edge.to]} instanceID={id} ></Edge>)}
-                        {Object.entries(nodes).map(([id,node],idx) => id != instanceID && <Vertex key={'v'+idx} instanceID={id} movable={node}></Vertex>)}
+                        {Object.entries(edges).map(([id,edge],idx) => <Edge key={'e'+idx} from={nodes[edge.from]} to={nodes[edge.to]} instanceID={id} scale={nodes[instanceID].scale}></Edge>)}
+                        {Object.entries(nodes).map(([id,node],idx) => id != instanceID && <Vertex key={'v'+idx} instanceID={id} movable={node} scale={nodes[instanceID].scale}></Vertex>)}
                     </g>
 
                     {Grid(nodes[instanceID])}
 
                     {
                         trace.length &&
-                        <path style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke='#16FF00' fill='none' strokeWidth={0.1/nodes[instanceID].scale}></path>
+                        <path strokeDasharray={0.5/nodes[instanceID].scale} strokeOpacity={0.2} style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke='#16FF00' fill='none' strokeWidth={0.1/nodes[instanceID].scale}></path>
                     }
             </svg>
         );

@@ -21,9 +21,9 @@ export default function Grapher() {
                 </CanvasSVG>
 
             </div>
-            <div style={{display:'flex', flexDirection:'column',height:'10%', width:'100%', justifyContent: 'space-around'}}>
+            <div style={{display:'flex', flexDirection:'column',height:'10%', width:'100%'}}>
                 <button style={{color:'orange'}} onClick={() => setDeleteMode(prev => !prev)}>{deleteMode ? 'You are currently in delete mode' : 'You are currently in draw mode'}</button>
-                <div style={{display:'flex', flexDirection:'row', justifyContent: 'space-around'}}>
+                <div style={{display:'flex', flexDirection:'row', justifyContent:'space-evenly'}}>
                     <div>LMB : drag & pan </div>
                     <div>MMB : scale & zoom</div>
                     <div>RMB : {deleteMode ? 'delete' : 'draw'}</div>
