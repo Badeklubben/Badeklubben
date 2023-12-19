@@ -20,6 +20,9 @@ export default function Navbar() {
         <div>
             <ul>
                 <li>
+                    <button onClick={() => router.back()}></button>
+                </li>
+                <li>
                     <Link href="/stian/brygging/home">Home</Link>
                 </li>
                 <li>About</li>

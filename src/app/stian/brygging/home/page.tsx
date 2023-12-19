@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { BryggeskjemaDocument } from "./lib/form-interface";
 import { getForms } from "./lib/db-functions";
 import Form from "./lib/form";
+import Link from "next/link";
 
 export default function Home() {
     const [forms, setForms] = useState<BryggeskjemaDocument[]>([]);
@@ -27,7 +28,9 @@ export default function Home() {
             <h1>Welcome to the Brygging app!</h1>
             <div>
                 {forms.map((form) => (
-                    <Form key={form.id} form={form} />
+                    <Link href={`/stian/brygging/home/${form.id}`}>
+                        <Form key={form.id} form={form} />
+                    </Link>
                 ))}
             </div>
         </div>
