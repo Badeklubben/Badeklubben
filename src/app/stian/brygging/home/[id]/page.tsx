@@ -1,9 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-import { getForm } from "../lib/db-functions";
-import Form from "../lib/form";
 import { BryggeskjemaDocument, defaultForm } from "../lib/form-interface";
-import { set } from "firebase/database";
+import { getForm } from "../lib/db-functions";
+import { useEffect, useState } from "react";
+import Form from "../lib/form";
 
 export default function Page({ params }: any) {
     const [form, setForm] = useState<BryggeskjemaDocument>(defaultForm);
@@ -29,3 +28,5 @@ export default function Page({ params }: any) {
         </div>
     );
 }
+
+export const runtime = "edge"; // 'nodejs' (default) | 'edge'
