@@ -77,11 +77,17 @@ function Edge({
 }
 
 
-const CANVASBOUNDS : Bound = { 
-                    sensitivity: 1000,
-                    max: 3,
-                    min: 0.1,
-                    direction: 1
+const CANVAS : Mover = { 
+    previosPosition : {x:0,y:0},
+    position : {x:0,y:0},
+    mousePosOnGrab : {x:0,y:0},
+    scale : 0.5,
+    zoomBounds : {
+        sensitivity: 1000,
+        max: 2,
+        min: 0.1,
+        direction: 1        
+    }
 }
 const VERTEXBOUNDS : Bound = { 
     sensitivity: 10,
@@ -110,15 +116,7 @@ export function CanvasSVG({
     instanceID : string;
     }) {
 
-        const [nodes, setNodes] = useState< {[id : string] : Mover} >({
-            [instanceID] : {
-                previosPosition : {x:0,y:0},
-                position : {x:0,y:0},
-                mousePosOnGrab : {x:0,y:0},
-                scale : CANVASBOUNDS.min,
-                zoomBounds : CANVASBOUNDS
-            }
-        });   
+        const [nodes, setNodes] = useState< {[id : string] : Mover} >({[instanceID] : CANVAS});   
         const [edges, setEdges] = useState< {[id : string] : {from: string, to: string}} >({});
 
 
