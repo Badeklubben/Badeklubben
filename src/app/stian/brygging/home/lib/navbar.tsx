@@ -1,6 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../lib/authentication';
+import Link from 'next/link';
 
 export default function Navbar() {
     const { logOut } = useAuth();
@@ -19,7 +20,9 @@ export default function Navbar() {
         <div>
             <ul>
                 <li>
-                    Home
+                    <Link href="/stian/brygging/home">
+                        Home
+                    </Link>
                 </li>
                 <li>
                     About
@@ -29,6 +32,11 @@ export default function Navbar() {
             <ul>
                 <li>
                     <button onClick={handleLogout}>Log out</button>
+                </li>
+                <li>
+                    <Link href="/stian/brygging/home/profile">
+                        Profile
+                    </Link>
                 </li>
             </ul>
         </div>
