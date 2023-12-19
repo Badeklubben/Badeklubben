@@ -21,7 +21,7 @@ export default function Page({ params }: any) {
     return (
         <div>
             {form.id == "" ? (
-                "Loading............................................."
+                "Loading..."
             ) : (
                 <Form key={params.id} form={form} />
             )}

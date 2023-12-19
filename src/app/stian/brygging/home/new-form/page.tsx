@@ -1,3 +1,122 @@
+"use client";
+import { createForm } from "../lib/db-functions";
+import { BryggeskjemaDocument } from "../lib/form-interface";
+import { useState } from "react";
+import { Timestamp } from "firebase/firestore";
+import { auth } from "../../config/firebase";
 export default function NewForm() {
-    return <div>NewForm</div>;
+    const [navn, setNavn] = useState<String>("");
+    const [batchNr, setBatchNr] = useState<Number>(0);
+    const [bryggeDato, setBryggeDato] = useState<{
+        seconds: number;
+        nanoseconds: number;
+    }>({ seconds: 0, nanoseconds: 0 });
+    const [tappeDato, setTappeDato] = useState<{
+        seconds: number;
+        nanoseconds: number;
+    }>({ seconds: 0, nanoseconds: 0 });
+    const [forventetOG, setForventetOG] = useState<Number>(0);
+    const [måltOG, setMåltOG] = useState<Number>(0);
+    const [forventetFG, setForventetFG] = useState<Number>(0);
+    const [måltFG, setMåltFG] = useState<Number>(0);
+    const [effektivitet, setEffektivitet] = useState<Number>(0);
+    const [ABV, setABV] = useState<String>("");
+
+    const convertDateToTimestamp = (dateString: string) => {
+        const date = new Date(dateString);
+        return Timestamp.fromDate(date);
+    };
+
+    const onSubmit = async () => {
+        try {
+            const data = {
+                abv: ABV,
+                "batch-navn": navn,
+                "batch-nr": batchNr,
+                bryggedato: bryggeDato,
+                effektivitet: effektivitet,
+                "forventet-fg": forventetFG,
+                "forventet-og": forventetOG,
+                "målt-fg": måltFG,
+                "målt-og": måltOG,
+                tappedato: tappeDato,
+                uid: auth.currentUser?.uid,
+            } as unknown as BryggeskjemaDocument;
+            await createForm(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    return (
+        <div>
+            <div>
+                <label>Navn</label>
+                <input
+                    type="text"
+                    placeholder="Navn"
+                    onChange={(e) => setNavn(e.target.value)}
+                />
+                <label>Batch-Nr.</label>
+                <input
+                    type="number"
+                    placeholder="Nummer"
+                    onChange={(e) => setBatchNr(Number(e.target.value))}
+                />
+                <label>Brygge Dato</label>
+                <input
+                    type="date"
+                    placeholder="Dato"
+                    onChange={(e) =>
+                        setBryggeDato(convertDateToTimestamp(e.target.value))
+                    }
+                />
+                <label>Tappe Dato</label>
+                <input
+                    type="date"
+                    placeholder="10-10-2021"
+                    onChange={(e) =>
+                        setTappeDato(convertDateToTimestamp(e.target.value))
+                    }
+                />
+                <label>Forventet OG</label>
+                <input
+                    type="number"
+                    placeholder=""
+                    onChange={(e) => setForventetOG(Number(e.target.value))}
+                />
+                <label>Målt OG</label>
+                <input
+                    type="number"
+                    placeholder=""
+                    onChange={(e) => setMåltOG(Number(e.target.value))}
+                />
+                <label>Forventet FG</label>
+                <input
+                    type="number"
+                    placeholder=""
+                    onChange={(e) => setForventetFG(Number(e.target.value))}
+                />
+                <label>Målt FG</label>
+                <input
+                    type="text"
+                    placeholder="Nummer"
+                    onChange={(e) => setMåltFG(Number(e.target.value))}
+                />
+                <label>Effektivitet</label>
+                <input
+                    type="number"
+                    placeholder="Nummer"
+                    onChange={(e) => setEffektivitet(Number(e.target.value))}
+                />
+                <label>ABV</label>
+                <input
+                    type="text"
+                    placeholder="Sett inn prosent f.eks: 5.5%"
+                    onChange={(e) => setABV(e.target.value)}
+                />
+                <button onClick={onSubmit}>Lagre</button>
+            </div>
+        </div>
+    );
 }

@@ -10,6 +10,7 @@ export interface BryggeskjemaDocument {
     "målt-fg": number;
     "målt-og": number;
     tappedato: { seconds: number; nanoseconds: number };
+    uid: string;
 }
 
 export const defaultForm: BryggeskjemaDocument = {
@@ -24,4 +25,5 @@ export const defaultForm: BryggeskjemaDocument = {
     "målt-fg": 0,
     "målt-og": 0,
     tappedato: { seconds: 0, nanoseconds: 0 },
+    uid: "",
 };

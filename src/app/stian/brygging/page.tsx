@@ -13,7 +13,8 @@ export default function Brygging() {
     const router = useRouter();
     const { logIn } = useAuth();
 
-    const handleLogin = async () => {
+    const handleLogin = async (e: any) => {
+        e.preventDefault();
         try {
             await logIn(email, password);
             router.push("/stian/brygging/home");
@@ -32,7 +33,7 @@ export default function Brygging() {
 
             <h1>This is the Brygging page</h1>
 
-            <div>
+            <form onSubmit={handleLogin}>
                 <input
                     type="text"
                     placeholder="Email"
@@ -43,8 +44,8 @@ export default function Brygging() {
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button onClick={handleLogin}>Log in</button>
-            </div>
+                <button type="submit">Log in</button>
+            </form>
         </div>
     );
 }
