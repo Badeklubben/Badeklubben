@@ -28,7 +28,7 @@ export type Movable = {
 };
 
 
-export function createMovable(position: Position, scale: number, bounds : ZoomBounds) : StateType<Movable> {
+export function CreateMovable(position: Position, scale: number, bounds : ZoomBounds) : StateType<Movable> {
     const [movable,setMovable] = useState<Movable>({
         refElement: null,
         previosPosition: position,
@@ -41,7 +41,7 @@ export function createMovable(position: Position, scale: number, bounds : ZoomBo
     return {state:movable,setState:setMovable};
 }
 
-export function newActiveState(active : StateType<Movable> | null = null) : StateType<StateType<Movable> | null> {
+export function NewActiveState(active : StateType<Movable> | null = null) : StateType<StateType<Movable> | null> {
     const [activeM, setActiveM] = useState<StateType<Movable> | null>(active);
     return {state: activeM, setState: setActiveM}
 }

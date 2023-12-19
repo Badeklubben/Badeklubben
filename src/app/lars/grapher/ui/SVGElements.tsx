@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState, MouseEvent, WheelEvent } from 'react';
-import { Movable, StateType, newActiveState } from '../lib/movement';
+import { Movable, StateType, NewActiveState } from '../lib/movement';
 import { getRelMPos } from '../lib/geometry';
 
 
@@ -38,7 +38,7 @@ export function CanvasSVG({
 
         const [nodes, setNodes] = useState< {[id : string] : StateType<Movable>} >({});
         const ref = useRef<SVGSVGElement | null>(null);
-        const active = newActiveState();
+        const active = NewActiveState();
 
         //Map all the movable children on the canvas
         useEffect(() => {
@@ -53,7 +53,7 @@ export function CanvasSVG({
 
             setNodes(() => temp);
         
-        }, [])
+        },[])
 
         //Start dragging the canvas or a node
         const initiateDragging = (e:MouseEvent) =>  {

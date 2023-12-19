@@ -2,14 +2,14 @@
 import Link from 'next/link';
 import { useRef, useId } from 'react';
 import {CanvasSVG, Vertex } from './ui/SVGElements';
-import {createMovable } from './lib/movement';
+import {CreateMovable } from './lib/movement';
 import './style.css';
 
 export default function Grapher() {
 
     const ref = useRef(null);
 
-    const mm = createMovable(
+    const mm = CreateMovable(
         {x:0,y:0},
         0.1,
         {
@@ -20,7 +20,7 @@ export default function Grapher() {
         }
     )
 
-    const n1 = createMovable(
+    const n1 = CreateMovable(
         {x:300,y:300},
         100,
         {
@@ -31,7 +31,7 @@ export default function Grapher() {
         }
     )
 
-    const n2 = createMovable(
+    const n2 = CreateMovable(
         {x:700,y:700},
         20,
         {
