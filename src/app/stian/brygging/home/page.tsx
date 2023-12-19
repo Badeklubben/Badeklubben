@@ -26,9 +26,13 @@ export default function Home() {
     return (
         <div>
             <h1>Welcome to the Brygging app!</h1>
+            <Link href="/stian/brygging/home/new-form">Nytt skjema</Link>
             <div>
                 {forms.map((form) => (
-                    <Link href={`/stian/brygging/home/${form.id}`}>
+                    <Link
+                        key={form.id}
+                        href={`/stian/brygging/home/${form.id}`}
+                    >
                         <Form key={form.id} form={form} />
                     </Link>
                 ))}
