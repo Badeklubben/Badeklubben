@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState, MouseEvent, WheelEvent } from 'react';
-import { Movable, StateType, NewActiveState } from '../lib/movement';
+import { Movable, StateType, NewActiveState, Position } from '../lib/movement';
 import { getRelMPos } from '../lib/geometry';
 
 
@@ -24,6 +24,31 @@ export function Vertex({
     );
 }
 
+export function Edge({
+    from,
+    to,
+    instanceID
+  }: {
+    from: Movable;
+    to : Movable;
+    instanceID : string
+  }) 
+  {
+    return (
+        <line 
+            style={{pointerEvents:'none'}} 
+            id={instanceID}
+            x1={from.position.x} 
+            y1={from.position.y} 
+            x2={to.position.x} 
+            y2={to.position.y} 
+            stroke='#16FF00'
+            />
+    );
+}
+
+        
+
 
 
 export function CanvasSVG({ 
@@ -40,6 +65,9 @@ export function CanvasSVG({
         const ref = useRef<SVGSVGElement | null>(null);
         const active = NewActiveState();
 
+        const [penDown, setPenDown] = useState(false);
+        const [trace, setTrace] = useState<Position[]>([]);
+
         //Map all the movable children on the canvas
         useEffect(() => {
             const temp : {[id : string] : StateType<Movable>} = {}
@@ -53,12 +81,19 @@ export function CanvasSVG({
 
             setNodes(() => temp);
         
-        },[])
+        },[children])
 
         //Start dragging the canvas or a node
-        const initiateDragging = (e:MouseEvent) =>  {
+        const initiateDragging = (e:MouseEvent) =>  {   
+            if (e.button == 2) {
+                setPenDown(() => true);
+                return;
+            }
+
             let current_position = getRelMPos(e,ref.current!);
-            const element = nodes[(e.target as HTMLElement).getAttribute('id')!];
+            let elmID = (e.target as HTMLElement).getAttribute('id')!;
+
+            const element = nodes[elmID];
         
             element.setState((prev) => {
                 return {
@@ -72,8 +107,11 @@ export function CanvasSVG({
 
         //Scale the canvas or a node
         const doZoom = (e:WheelEvent) => {
+            if (penDown) return;
             let current_position = getRelMPos(e,ref.current!);
-            const element = nodes[(e.target as HTMLElement).getAttribute('id')!];
+            let elmID = (e.target as HTMLElement).getAttribute('id')!;
+
+            const element = nodes[elmID];
 
       
             element.setState((prev) => {
@@ -94,28 +132,45 @@ export function CanvasSVG({
 
         //Move a node or the canvas
         const drag = (e:MouseEvent) => {
+
+            //draw
+            if (penDown) {
+                const current_position = getRelMPos(e,ref.current!);
+
+                setTrace(prev => [...prev,{
+                    x: (current_position.x + movable.state.position.x* movable.state.scale) / movable.state.scale, 
+                    y: (current_position.y + movable.state.position.y* movable.state.scale) / movable.state.scale
+                }]);
+                
+                return;
+            }
+
+            //drag
             if ( !active.state ) return;
-        
             const current_position = getRelMPos(e,ref.current!);
-            const scale = movable.state.scale;
-        
+
             active.state.setState(prev => {
                 return {
                     ...prev,
                     position: {
-                        x: prev.previosPosition.x + (prev.mousePosOnGrab.x - current_position.x) / scale * prev.zoomBounds.direction,
-                        y: prev.previosPosition.y + (prev.mousePosOnGrab.y - current_position.y) / scale * prev.zoomBounds.direction
+                        x: prev.previosPosition.x + (prev.mousePosOnGrab.x - current_position.x) / movable.state.scale * prev.zoomBounds.direction,
+                        y: prev.previosPosition.y + (prev.mousePosOnGrab.y - current_position.y) / movable.state.scale * prev.zoomBounds.direction
                     }
                 }
             });
         }
+
+        const endDrawing = () => {
+            setPenDown(() => false);
+            setTrace(() => []);
+        }
         
         //Let go of component
         const terminateDragging = () => {
+            endDrawing();
             if ( !active.state ) return;
             active.setState(() => null);
         }
-        
 
         return (
             <svg 
@@ -123,6 +178,7 @@ export function CanvasSVG({
                 onMouseUp={terminateDragging}
                 onMouseLeave={terminateDragging}
                 onMouseMove={drag}
+                onContextMenu={(e) => e.preventDefault()}
                 onWheel={doZoom}
                 id={instanceID}
 
@@ -130,8 +186,16 @@ export function CanvasSVG({
                 style={{backgroundColor:"black", userSelect:'none'}} 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox={movable.state.position.x + " " + movable.state.position.y + " " + 100/movable.state.scale + " " + 100/movable.state.scale}>
+           
                     {children}
+  
                     { Grid(movable.state) }
+
+                    {
+                        trace.length &&
+                        <path style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke='#16FF00' fill='none' strokeWidth={0.1/movable.state.scale}></path>
+                    }
+                    
             </svg>
         );
 };

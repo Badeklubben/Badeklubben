@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRef, useId } from 'react';
-import {CanvasSVG, Vertex } from './ui/SVGElements';
+import {CanvasSVG, Edge, Vertex } from './ui/SVGElements';
 import {CreateMovable } from './lib/movement';
 import './style.css';
 
@@ -11,7 +11,7 @@ export default function Grapher() {
 
     const mm = CreateMovable(
         {x:0,y:0},
-        0.1,
+        1,
         {
             sensitivity: 1000,
             max: 3,
@@ -21,8 +21,8 @@ export default function Grapher() {
     )
 
     const n1 = CreateMovable(
-        {x:300,y:300},
-        100,
+        {x:30,y:30},
+        10,
         {
             sensitivity: 10,
             max: 100,
@@ -32,8 +32,8 @@ export default function Grapher() {
     )
 
     const n2 = CreateMovable(
-        {x:700,y:700},
-        20,
+        {x:60,y:80},
+        5,
         {
             sensitivity: 10,
             max: 100,
@@ -42,8 +42,23 @@ export default function Grapher() {
         }
     )
     
+    const n3 = CreateMovable(
+        {x:80,y:40},
+        7,
+        {
+            sensitivity: 10,
+            max: 100,
+            min: 4,
+            direction: -1
+        }
+    )
 
-
+    /*
+    if (e.ctrlKey) {
+        setMovableChildren(({[elmID]: toDelete, ...rest}) => rest))
+        return
+    }
+    */
 
     return (
         <div className="page-container">
@@ -55,12 +70,13 @@ export default function Grapher() {
             <div style={{display:'flex',height:"100%", backgroundColor:"black", border:"1px solid #16FF00" , margin:"0 25%", overflow:'hidden'}}>
 
                 <CanvasSVG movable={mm} instanceID={useId()}>
+                        <Edge from={n1.state} to={n2.state} instanceID={useId()}></Edge>
+                        <Edge from={n1.state} to={n3.state} instanceID={useId()}></Edge>
+                        <Edge from={n3.state} to={n2.state} instanceID={useId()}></Edge>
 
-                    <line x1={n1.state.position.x} y1={n1.state.position.y} x2={n2.state.position.x} y2={n2.state.position.y} stroke='#16FF00'></line>
-            
-                    <Vertex movable={n1} instanceID={useId()}></Vertex>
-                    <Vertex movable={n2} instanceID={useId()}></Vertex>
-
+                        <Vertex movable={n1} instanceID={useId()}></Vertex>
+                        <Vertex movable={n2} instanceID={useId()}></Vertex>
+                        <Vertex movable={n3} instanceID={useId()}></Vertex>
                 </CanvasSVG>
 
             </div>
