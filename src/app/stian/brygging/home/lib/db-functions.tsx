@@ -25,9 +25,9 @@ export async function getForms() {
     }
 }
 
-export async function getForm({ params }: any) {
+export async function getForm(id: string) {
     try {
-        const data = await getDoc(doc(db, "bryggeskjema", params.id));
+        const data = await getDoc(doc(db, "bryggeskjema", id));
         return data.data() as BryggeskjemaDocument;
     } catch (err) {
         console.error(err);

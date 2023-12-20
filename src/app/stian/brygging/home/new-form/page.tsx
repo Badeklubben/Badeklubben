@@ -23,7 +23,7 @@ export default function NewForm() {
     const [forventetFG, setForventetFG] = useState<Number>(0);
     const [måltFG, setMåltFG] = useState<Number>(0);
     const [effektivitet, setEffektivitet] = useState<Number>(0);
-    const [ABV, setABV] = useState<String>("");
+    const [ABV, setABV] = useState<Number>(0);
 
     const convertDateToTimestamp = (dateString: string) => {
         const date = new Date(dateString);
@@ -117,7 +117,7 @@ export default function NewForm() {
                 <input
                     type="text"
                     placeholder="4.7"
-                    onChange={(e) => setABV(e.target.value)}
+                    onChange={(e) => setABV(Number(e.target.value))}
                 />
                 <button onClick={onSubmit}>Lagre</button>
             </div>

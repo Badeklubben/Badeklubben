@@ -5,9 +5,12 @@ import { BryggeskjemaDocument } from "../lib/form-interface";
 import { useState, useEffect } from "react";
 import { deleteForm } from "../lib/db-functions";
 import Form from "../lib/form";
-
+import { useRouter } from "next/navigation";
 export default function Profile() {
+    const router = useRouter();
     const [forms, setForms] = useState<BryggeskjemaDocument[]>([]);
+
+    // This should be moved to the db-functions file
     let q = query(
         collection(db, "bryggeskjema"),
         where("uid", "==", auth?.currentUser?.uid)
@@ -26,8 +29,11 @@ export default function Profile() {
         }
     };
 
-    const handleUpdate = () => {};
+    const handleUpdate = (id: String) => {
+        router.push(`/stian/brygging/home/profile/${id}`);
+    };
 
+    // Delte the form (Implemented correctly)
     const handleDelete = async (id: string) => {
         await deleteForm(id);
         querySnapshot();
@@ -45,7 +51,9 @@ export default function Profile() {
                     <div key={form.id} className="form-container">
                         <Form key={form.id} form={form} />
                         <div className="">
-                            <button onClick={handleUpdate}>Update</button>
+                            <button onClick={() => handleUpdate(form.id)}>
+                                Update
+                            </button>
                             <button onClick={() => handleDelete(form.id)}>
                                 Delete
                             </button>
