@@ -28,8 +28,12 @@ export default function Navbar() {
                     </button>
                 </li>
                 <li>
-                    <button onClick={() => router.push("/stian/brygging/home")}>
-                        What
+                    <button
+                        onClick={() =>
+                            router.push("/stian/brygging/home/about")
+                        }
+                    >
+                        About
                     </button>
                 </li>
             </ul>

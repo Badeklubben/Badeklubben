@@ -32,11 +32,17 @@ export default function Profile() {
     return (
         <div>
             <h1>Profile</h1>
-            {forms.map((form) => (
-                <div key={form.id} className="form-container">
-                    <Form key={form.id} form={form} />
-                </div>
-            ))}
+            <div className="grid">
+                {forms.map((form) => (
+                    <div key={form.id} className="form-container">
+                        <Form key={form.id} form={form} />
+                        <div>
+                            <button>Update</button>
+                            <button>Delete</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
