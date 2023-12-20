@@ -6,6 +6,7 @@ import {
     doc,
     addDoc,
     deleteDoc,
+    updateDoc,
 } from "firebase/firestore";
 import { BryggeskjemaDocument } from "./form-interface";
 import { db } from "../../config/firebase";
@@ -42,7 +43,14 @@ export async function createForm(form: BryggeskjemaDocument) {
     }
 }
 
-export async function updateForm(form: BryggeskjemaDocument) {}
+export async function updateForm(form: BryggeskjemaDocument) {
+    try {
+        const bryggDoc = doc(db, "bryggeskjema", form.id);
+        await updateDoc(bryggDoc, { "batch-navn": "What" });
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export async function deleteForm(id: string) {
     try {

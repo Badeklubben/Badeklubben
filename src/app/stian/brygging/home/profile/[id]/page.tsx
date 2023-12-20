@@ -7,8 +7,10 @@ import { Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { getForm } from "../../lib/db-functions";
+import { auth } from "../../../config/firebase";
 
 export default function Form({ params }: any) {
+    const user = auth.currentUser;
     // Router for redirecting
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -46,6 +48,7 @@ export default function Form({ params }: any) {
     // Function for submitting the form
     const onSubmit = async () => {
         try {
+            console.log(navn);
             const data = {
                 abv: ABV,
                 "batch-navn": navn,
@@ -58,6 +61,7 @@ export default function Form({ params }: any) {
                 "målt-og": måltOG,
                 tappedato: tappeDato,
             } as unknown as BryggeskjemaDocument;
+            console.log(data);
             await updateForm(data);
             router.push("/stian/brygging/home/profile");
         } catch (error) {
