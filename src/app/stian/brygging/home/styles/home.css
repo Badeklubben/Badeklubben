@@ -38,7 +38,6 @@
     align-items: flex-start;
     justify-content: flex-start;
     flex-wrap: wrap;
-    max-width: 1000px;
 }
 
 .form-container {
@@ -139,7 +138,7 @@ Code for the navbar
     align-items: center;
     background-color: #f0f0f0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
+    padding: 5px;
 }
 
 .navbar ul {
@@ -150,14 +149,14 @@ Code for the navbar
 }
 
 .navbar li {
-    margin: 0 1rem;
+    margin: 0 10px;
 }
 
 .navbar button {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 7px 10px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;

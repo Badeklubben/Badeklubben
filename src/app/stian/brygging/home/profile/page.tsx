@@ -3,7 +3,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "../../config/firebase";
 import { BryggeskjemaDocument } from "../lib/form-interface";
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { deleteForm } from "../lib/db-functions";
 import Form from "../lib/form";
 
 export default function Profile() {
@@ -25,6 +25,14 @@ export default function Profile() {
             console.error(err);
         }
     };
+
+    const handleUpdate = () => {};
+
+    const handleDelete = async (id: string) => {
+        await deleteForm(id);
+        querySnapshot();
+    };
+
     useEffect(() => {
         querySnapshot();
     }, []);
@@ -36,9 +44,11 @@ export default function Profile() {
                 {forms.map((form) => (
                     <div key={form.id} className="form-container">
                         <Form key={form.id} form={form} />
-                        <div>
-                            <button>Update</button>
-                            <button>Delete</button>
+                        <div className="">
+                            <button onClick={handleUpdate}>Update</button>
+                            <button onClick={() => handleDelete(form.id)}>
+                                Delete
+                            </button>
                         </div>
                     </div>
                 ))}

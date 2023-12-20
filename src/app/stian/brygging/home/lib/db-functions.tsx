@@ -1,5 +1,12 @@
 "use client";
-import { getDocs, getDoc, collection, doc, addDoc } from "firebase/firestore";
+import {
+    getDocs,
+    getDoc,
+    collection,
+    doc,
+    addDoc,
+    deleteDoc,
+} from "firebase/firestore";
 import { BryggeskjemaDocument } from "./form-interface";
 import { db } from "../../config/firebase";
 
@@ -32,5 +39,16 @@ export async function createForm(form: BryggeskjemaDocument) {
         addDoc(bryggeskjemaCollection, form);
     } catch (err) {
         console.error(err);
+    }
+}
+
+export async function updateForm(form: BryggeskjemaDocument) {}
+
+export async function deleteForm(id: string) {
+    try {
+        const data = doc(db, "bryggeskjema", id);
+        await deleteDoc(data);
+    } catch (error) {
+        console.log(error);
     }
 }
