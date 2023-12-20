@@ -9,12 +9,22 @@ export default function Brygging() {
     const [password, setPassword] = useState<string>("");
 
     const router = useRouter();
-    const { logIn } = useAuth();
+    const { logIn, googleLogin } = useAuth();
 
     const handleLogin = async (e: any) => {
         e.preventDefault();
         try {
             await logIn(email, password);
+            router.push("/stian/brygging/home");
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleGoogle = async (e: any) => {
+        e.preventDefault();
+        try {
+            await googleLogin();
             router.push("/stian/brygging/home");
         } catch (error) {
             console.error(error);
@@ -31,7 +41,14 @@ export default function Brygging() {
                 </ul>
                 <ul>
                     <li>
-                        <button className="new-button">Sign up</button>
+                        <button
+                            className="new-button"
+                            onClick={() =>
+                                router.push("/stian/brygging/sign-up")
+                            }
+                        >
+                            Sign up
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -55,6 +72,7 @@ export default function Brygging() {
                     <button type="submit" className="login-btn">
                         Log in
                     </button>
+                    <button onClick={handleGoogle}>Login with Google</button>
                 </div>
             </form>
         </div>

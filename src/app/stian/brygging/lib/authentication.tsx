@@ -5,6 +5,8 @@ import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
     signOut,
+    GoogleAuthProvider,
+    signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useRouter } from "next/navigation";
@@ -62,6 +64,12 @@ export const AuthContextProvider = ({
         return signInWithEmailAndPassword(auth, email, password);
     };
 
+    //Login using google
+    const googleLogin = () => {
+        const provider = new GoogleAuthProvider();
+        return signInWithPopup(auth, provider);
+    };
+
     // Logout the user
     const logOut = async () => {
         setUser({ email: null, uid: null });
@@ -70,7 +78,9 @@ export const AuthContextProvider = ({
 
     // Wrap the children with the context provider
     return (
-        <AuthContext.Provider value={{ user, signUp, logIn, logOut }}>
+        <AuthContext.Provider
+            value={{ user, signUp, logIn, logOut, googleLogin }}
+        >
             {loading ? null : children}
         </AuthContext.Provider>
     );

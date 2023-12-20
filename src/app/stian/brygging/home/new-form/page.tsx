@@ -4,7 +4,10 @@ import { BryggeskjemaDocument } from "../lib/form-interface";
 import { useState } from "react";
 import { Timestamp } from "firebase/firestore";
 import { auth } from "../../config/firebase";
+import { useRouter } from "next/navigation";
 export default function NewForm() {
+    const router = useRouter();
+
     const [navn, setNavn] = useState<String>("");
     const [batchNr, setBatchNr] = useState<Number>(0);
     const [bryggeDato, setBryggeDato] = useState<{
@@ -43,6 +46,7 @@ export default function NewForm() {
                 uid: auth.currentUser?.uid,
             } as unknown as BryggeskjemaDocument;
             await createForm(data);
+            router.push("/stian/brygging/home");
         } catch (error) {
             console.error(error);
         }
@@ -50,17 +54,17 @@ export default function NewForm() {
 
     return (
         <div>
-            <div>
-                <label>Navn</label>
+            <div className="new-form-container">
+                <label>Navn på brygget</label>
                 <input
                     type="text"
-                    placeholder="Navn"
+                    placeholder="Hansa Pilsner"
                     onChange={(e) => setNavn(e.target.value)}
                 />
                 <label>Batch-Nr.</label>
                 <input
                     type="number"
-                    placeholder="Nummer"
+                    placeholder="#123456"
                     onChange={(e) => setBatchNr(Number(e.target.value))}
                 />
                 <label>Brygge Dato</label>
@@ -74,7 +78,7 @@ export default function NewForm() {
                 <label>Tappe Dato</label>
                 <input
                     type="date"
-                    placeholder="10-10-2021"
+                    placeholder="10.10.2021"
                     onChange={(e) =>
                         setTappeDato(convertDateToTimestamp(e.target.value))
                     }
@@ -82,37 +86,37 @@ export default function NewForm() {
                 <label>Forventet OG</label>
                 <input
                     type="number"
-                    placeholder=""
+                    placeholder="1.050"
                     onChange={(e) => setForventetOG(Number(e.target.value))}
                 />
                 <label>Målt OG</label>
                 <input
                     type="number"
-                    placeholder=""
+                    placeholder="1.050"
                     onChange={(e) => setMåltOG(Number(e.target.value))}
                 />
                 <label>Forventet FG</label>
                 <input
                     type="number"
-                    placeholder=""
+                    placeholder="1.050"
                     onChange={(e) => setForventetFG(Number(e.target.value))}
                 />
                 <label>Målt FG</label>
                 <input
                     type="text"
-                    placeholder="Nummer"
+                    placeholder="1.050"
                     onChange={(e) => setMåltFG(Number(e.target.value))}
                 />
                 <label>Effektivitet</label>
                 <input
                     type="number"
-                    placeholder="Nummer"
+                    placeholder="95"
                     onChange={(e) => setEffektivitet(Number(e.target.value))}
                 />
                 <label>ABV</label>
                 <input
                     type="text"
-                    placeholder="Sett inn prosent f.eks: 5.5%"
+                    placeholder="4.7"
                     onChange={(e) => setABV(e.target.value)}
                 />
                 <button onClick={onSubmit}>Lagre</button>
