@@ -1,6 +1,4 @@
 "use client";
-import Link from "next/link";
-import "./ui/main.css";
 import Backbutton from "../ui/back-button";
 import { useState } from "react";
 import { useAuth } from "./lib/authentication";
@@ -24,27 +22,40 @@ export default function Brygging() {
     };
 
     return (
-        <div>
-            <div>
-                <Backbutton />
-
-                <Link href="brygging/sign-up">Sign up</Link>
+        <div className="body">
+            <div className="navbar">
+                <ul>
+                    <li>
+                        <Backbutton />
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <button className="new-button">Sign up</button>
+                    </li>
+                </ul>
             </div>
 
-            <h1>This is the Brygging page</h1>
+            <h1>Bryggeskjema</h1>
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className="login-container">
+                <label>E-mail</label>
                 <input
                     type="text"
                     placeholder="Email"
                     onChange={(e) => setEmail(e.target.value)}
                 />
+                <label>Password</label>
                 <input
                     type="password"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button type="submit">Log in</button>
+                <div>
+                    <button type="submit" className="login-btn">
+                        Log in
+                    </button>
+                </div>
             </form>
         </div>
     );

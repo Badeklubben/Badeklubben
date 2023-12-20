@@ -33,7 +33,7 @@ export default function Profile() {
         <div>
             <h1>Profile</h1>
             {forms.map((form) => (
-                <div key={form.id}>
+                <div key={form.id} className="form-container">
                     <Form key={form.id} form={form} />
                 </div>
             ))}

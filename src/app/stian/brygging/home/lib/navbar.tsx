@@ -17,15 +17,21 @@ export default function Navbar() {
     };
 
     return (
-        <div>
+        <div className="navbar">
             <ul>
                 <li>
                     <button onClick={() => router.back()}>Back</button>
                 </li>
                 <li>
-                    <Link href="/stian/brygging/home">Home</Link>
+                    <button onClick={() => router.push("/stian/brygging/home")}>
+                        Home
+                    </button>
                 </li>
-                <li>About</li>
+                <li>
+                    <button onClick={() => router.push("/stian/brygging/home")}>
+                        What
+                    </button>
+                </li>
             </ul>
 
             <ul>
@@ -33,7 +39,13 @@ export default function Navbar() {
                     <button onClick={handleLogout}>Log out</button>
                 </li>
                 <li>
-                    <Link href="/stian/brygging/home/profile">Profile</Link>
+                    <button
+                        onClick={() =>
+                            router.push("/stian/brygging/home/profile")
+                        }
+                    >
+                        Profile
+                    </button>
                 </li>
             </ul>
         </div>

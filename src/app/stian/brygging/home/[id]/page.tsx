@@ -20,11 +20,13 @@ export default function Page({ params }: any) {
     }, []);
     return (
         <div>
-            {form.id == "" ? (
-                "Loading..."
-            ) : (
-                <Form key={params.id} form={form} />
-            )}
+            <div className="form-container">
+                {form.id == "" ? (
+                    "Loading..."
+                ) : (
+                    <Form key={params.id} form={form} />
+                )}
+            </div>
         </div>
     );
 }

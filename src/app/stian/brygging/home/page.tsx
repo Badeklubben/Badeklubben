@@ -4,9 +4,11 @@ import { BryggeskjemaDocument } from "./lib/form-interface";
 import { getForms } from "./lib/db-functions";
 import Form from "./lib/form";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
     const [forms, setForms] = useState<BryggeskjemaDocument[]>([]);
+    const router = useRouter();
 
     const something = async () => {
         const fetchData = async () => {
@@ -24,13 +26,19 @@ export default function Home() {
     }, []);
 
     return (
-        <div>
+        <div className="body">
             <h1>Welcome to the Brygging app!</h1>
-            <Link href="/stian/brygging/home/new-form">Nytt skjema</Link>
-            <div>
+            <button
+                className="new-button"
+                onClick={() => router.push("/stian/brygging/home/new-form")}
+            >
+                Nytt skjema
+            </button>
+            <div className="grid">
                 {forms.map((form) => (
                     <Link
                         key={form.id}
+                        className="form-container"
                         href={`/stian/brygging/home/${form.id}`}
                     >
                         <Form key={form.id} form={form} />
