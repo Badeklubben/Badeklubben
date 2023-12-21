@@ -14,6 +14,7 @@ import { db } from "../../config/firebase";
 const bryggeskjemaCollection = collection(db, "bryggeskjema");
 
 export async function getForms() {
+
     try {
         const data = await getDocs(bryggeskjemaCollection);
         const filteredData = data.docs.map((doc) => ({
@@ -50,7 +51,7 @@ export async function updateForm(form: BryggeskjemaDocument, id: string) {
         interface BryggeskjemaDocument {
             [key: string]: any;
         }
-        await updateDoc(bryggDoc, { "batch-navn" : "test"});
+        await updateDoc(bryggDoc, { form });
     } catch (error) {
         console.log(error);
     }

@@ -97,11 +97,6 @@ export default function Form({ params }: any) {
         }
     };
 
-    const test = async () => {
-        const movieDoc = doc(db, "bryggeskjema", "6SZtWoYvIltU6tYYPaCT");
-        await updateDoc(movieDoc, { abv: 52 });
-    };
-
     useEffect(() => {
         update();
     }, []);
@@ -191,7 +186,6 @@ export default function Form({ params }: any) {
                         onChange={(e) => setABV(Number(e.target.value))}
                     />
                     <button onClick={onSubmit}>Lagre</button>
-                    <button onClick={test}>Test</button>
                 </div>
             )}
         </div>
