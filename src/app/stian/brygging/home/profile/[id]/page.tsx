@@ -103,6 +103,7 @@ export default function Form({ params }: any) {
 
     useEffect(() => {
         update();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [update]);
 
     return (
