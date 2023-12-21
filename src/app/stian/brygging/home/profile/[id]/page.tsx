@@ -52,6 +52,7 @@ export default function Form({ params }: any) {
     // Function for submitting the form
     const onSubmit = async () => {
         try {
+            console.log(navn);
             const data = {
                 abv: ABV,
                 "batch-navn": navn,
@@ -103,8 +104,7 @@ export default function Form({ params }: any) {
 
     useEffect(() => {
         update();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [update]);
+    }, []);
 
     return (
         <div>

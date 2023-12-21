@@ -50,7 +50,7 @@ export async function updateForm(form: BryggeskjemaDocument, id: string) {
         interface BryggeskjemaDocument {
             [key: string]: any;
         }
-        await updateDoc(bryggDoc, form as BryggeskjemaDocument);
+        await updateDoc(bryggDoc, { "batch-navn" : "test"});
     } catch (error) {
         console.log(error);
     }

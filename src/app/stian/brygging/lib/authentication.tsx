@@ -51,7 +51,7 @@ export const AuthContextProvider = ({
         setLoading(false);
 
         return () => unsubscribe();
-    });
+    }, []);
 
     // Sign up the user
     const signUp = (email: string, password: string) => {
