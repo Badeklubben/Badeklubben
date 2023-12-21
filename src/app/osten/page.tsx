@@ -1,7 +1,10 @@
+import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
+
 export default function Osten() {
     return (
         <div>
-        <h1>This is the Osten page</h1>
+            <DefaultNavbar/>
+            <h1>This is the Osten page</h1>
         </div>
     );
 }
