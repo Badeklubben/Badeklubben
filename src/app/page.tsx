@@ -1,9 +1,10 @@
 import Link from "next/link";
+import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
 
 export default function Home() {
   return (
     <div>
-      <h1>Home Page</h1>
+      <DefaultNavbar/>
       <h2>Click a name to go to their page</h2>
 
       

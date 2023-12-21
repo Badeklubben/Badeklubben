@@ -1,69 +1,50 @@
-'use client'
+"use client";
 import { useEffect, useState } from "react";
-import { db } from "../config/firebase";
-import { getDocs, collection } from "firebase/firestore";
-
-// Define the type for your Firestore document, including all fields
-interface BryggeskjemaDocument {
-  id: string;
-  abv: number;
-  'batch-navn': string;
-  'batch-nr': number;
-  bryggedato: { seconds: number, nanoseconds: number };
-  effektivitet: number;
-  'forventet-fg': number;
-  'forventet-og': number;
-  'målt-fg': number;
-  'målt-og': number;
-  tappedato: { seconds: number, nanoseconds: number };
-}
+import { BryggeskjemaDocument } from "./lib/form-interface";
+import { getForms } from "./lib/db-functions";
+import Form from "./lib/form";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [form, setForm] = useState<BryggeskjemaDocument[]>([]);
-  const bryggeskjema = collection(db, "bryggeskjema");
+    const [forms, setForms] = useState<BryggeskjemaDocument[]>([]);
+    const router = useRouter();
 
-  const getSomething = async () => {
-    try {
-      const data = await getDocs(bryggeskjema);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as BryggeskjemaDocument[];
-      setForm(filteredData);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    const something = async () => {
+        const fetchData = async () => {
+            const fetchedForms = await getForms();
+            if (fetchedForms) {
+                setForms(fetchedForms);
+            }
+        };
 
-  useEffect(() => {
-    getSomething();
-  }, []);
+        fetchData();
+    };
 
-  // Function to convert Firestore timestamp to readable date
-  const formatDate = (timestamp: { seconds: any; nanoseconds?: number; }) => {
-    const date = new Date(timestamp.seconds * 1000);
-    return date.toLocaleDateString("en-US");
-  };
+    useEffect(() => {
+        something();
+    }, []);
 
-  return (
-    <div>
-      <h1>Welcome to the Brygging app!</h1>
-      <div>
-        {form.map((item) => (
-          <div key={item.id}>
-            <h2>{item['batch-navn']}</h2>
-            <p>Batch Number: {item['batch-nr']}</p>
-            <p>Brew Date: {formatDate(item.bryggedato)}</p>
-            <p>Tap Date: {formatDate(item.tappedato)}</p>
-            <p>ABV: {item.abv}%</p>
-            <p>Efficiency: {item.effektivitet}%</p>
-            <p>Expected OG: {item['forventet-og']}</p>
-            <p>Expected FG: {item['forventet-fg']}</p>
-            <p>Measured OG: {item['målt-og']}</p>
-            <p>Measured FG: {item['målt-fg']}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    return (
+        <div className="body">
+            <h1>Welcome to the Brygging app!</h1>
+            <button
+                className="new-button"
+                onClick={() => router.push("/stian/brygging/home/new-form")}
+            >
+                Nytt skjema
+            </button>
+            <div className="grid">
+                {forms.map((form) => (
+                    <Link
+                        key={form.id}
+                        className="form-container"
+                        href={`/stian/brygging/home/${form.id}`}
+                    >
+                        <Form key={form.id} form={form} />
+                    </Link>
+                ))}
+            </div>
+        </div>
+    );
 }
