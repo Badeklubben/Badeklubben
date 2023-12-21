@@ -103,7 +103,7 @@ export default function Form({ params }: any) {
 
     useEffect(() => {
         update();
-    }, []);
+    }, [update]);
 
     return (
         <div>
