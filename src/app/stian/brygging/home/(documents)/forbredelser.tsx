@@ -4,7 +4,7 @@ import { db } from "../../config/firebase";
 import { createNewDocument } from "../lib/db-functions";
 import { useState } from "react";
 
-export default function Forbredelser(id: string) {
+export default function Forbredelser(id: any) {
     const [vann, setVann] = useState<boolean>(false);
 
     //Vannmengde oppmålt
