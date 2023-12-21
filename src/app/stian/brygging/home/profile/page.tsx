@@ -4,7 +4,7 @@ import { db, auth } from "../../config/firebase";
 import { BryggeskjemaDocument } from "../lib/form-interface";
 import { useState, useEffect } from "react";
 import { deleteForm } from "../lib/db-functions";
-import Form from "../lib/form";
+import Form from "../(documents)/form";
 import { useRouter } from "next/navigation";
 export default function Profile() {
     const router = useRouter();

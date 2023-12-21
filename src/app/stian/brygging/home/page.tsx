@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { BryggeskjemaDocument } from "./lib/form-interface";
 import { getForms } from "./lib/db-functions";
-import Form from "./lib/form";
+import Form from "./(documents)/form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 

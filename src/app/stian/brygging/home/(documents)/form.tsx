@@ -1,4 +1,4 @@
-import { BryggeskjemaDocument } from "./form-interface";
+import { BryggeskjemaDocument } from "../lib/form-interface";
 import Link from "next/link";
 
 export default function Form({ form }: { form: BryggeskjemaDocument }) {

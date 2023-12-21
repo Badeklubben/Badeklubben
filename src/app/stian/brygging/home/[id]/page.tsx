@@ -2,7 +2,8 @@
 import { BryggeskjemaDocument, defaultForm } from "../lib/form-interface";
 import { getForm } from "../lib/db-functions";
 import { useEffect, useState } from "react";
-import Form from "../lib/form";
+import Form from "../(documents)/form";
+import Forbredelser from "../(documents)/forbredelser";
 
 export default function Page({ params }: any) {
     const [form, setForm] = useState<BryggeskjemaDocument>(defaultForm);
@@ -28,8 +29,11 @@ export default function Page({ params }: any) {
                     <Form key={params.id} form={form} />
                 )}
             </div>
+            <div className="form-container">
+                <Forbredelser id={params.id} />
+            </div>
         </div>
     );
 }
 
-export const runtime = "edge"; // 'nodejs' (default) | 'edge'
+export const runtime = "edge";
