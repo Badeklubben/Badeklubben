@@ -10,7 +10,6 @@ import {
 } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useRouter } from "next/navigation";
-import { unsubscribe } from "diagnostics_channel";
 
 // User data type interface
 interface UserType {
@@ -52,7 +51,7 @@ export const AuthContextProvider = ({
         setLoading(false);
 
         return () => unsubscribe();
-    }, [unsubscribe]);
+    }, [auth, router]);
 
     // Sign up the user
     const signUp = (email: string, password: string) => {
