@@ -52,7 +52,6 @@ export default function Form({ params }: any) {
     // Function for submitting the form
     const onSubmit = async () => {
         try {
-            console.log(navn);
             const data = {
                 abv: ABV,
                 "batch-navn": navn,
@@ -65,7 +64,6 @@ export default function Form({ params }: any) {
                 "målt-og": måltOG,
                 tappedato: tappeDato,
             } as unknown as BryggeskjemaDocument;
-            console.log(data);
             await updateForm(data, params.id);
             router.push("/stian/brygging/home/profile");
         } catch (error) {
