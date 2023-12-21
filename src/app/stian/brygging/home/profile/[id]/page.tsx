@@ -188,3 +188,5 @@ export default function Form({ params }: any) {
         </div>
     );
 }
+
+export const runtime = "edge";
