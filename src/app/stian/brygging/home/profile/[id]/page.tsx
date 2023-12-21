@@ -9,6 +9,10 @@ import { useEffect } from "react";
 import { getForm } from "../../lib/db-functions";
 import { auth } from "../../../config/firebase";
 
+// Temp imports
+import { db } from "../../../config/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+
 export default function Form({ params }: any) {
     const user = auth.currentUser;
     // Router for redirecting
@@ -48,7 +52,6 @@ export default function Form({ params }: any) {
     // Function for submitting the form
     const onSubmit = async () => {
         try {
-            console.log(navn);
             const data = {
                 abv: ABV,
                 "batch-navn": navn,
@@ -61,8 +64,7 @@ export default function Form({ params }: any) {
                 "målt-og": måltOG,
                 tappedato: tappeDato,
             } as unknown as BryggeskjemaDocument;
-            console.log(data);
-            await updateForm(data);
+            await updateForm(data, params.id);
             router.push("/stian/brygging/home/profile");
         } catch (error) {
             console.error(error);
@@ -92,6 +94,11 @@ export default function Form({ params }: any) {
             console.error(error);
             setIsLoading(false);
         }
+    };
+
+    const test = async () => {
+        const movieDoc = doc(db, "bryggeskjema", "6SZtWoYvIltU6tYYPaCT");
+        await updateDoc(movieDoc, { abv: 52 });
     };
 
     useEffect(() => {
@@ -183,6 +190,7 @@ export default function Form({ params }: any) {
                         onChange={(e) => setABV(Number(e.target.value))}
                     />
                     <button onClick={onSubmit}>Lagre</button>
+                    <button onClick={test}>Test</button>
                 </div>
             )}
         </div>
