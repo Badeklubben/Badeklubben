@@ -41,7 +41,7 @@ export default function Home() {
                         className="form-container"
                         href={`/stian/brygging/home/${form.id}`}
                     >
-                        <Form key={form.id} form={form} />
+                        <Form key={form.id} form={form} showcase={true} />
                     </Link>
                 ))}
             </div>

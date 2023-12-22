@@ -26,7 +26,7 @@ export default function Page({ params }: any) {
                 {form.id == "" ? (
                     "Loading..."
                 ) : (
-                    <Form key={params.id} form={form} />
+                    <Form key={params.id} form={form} showcase={false} />
                 )}
             </div>
             <div className="form-container">

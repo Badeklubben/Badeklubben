@@ -49,7 +49,7 @@ export default function Profile() {
             <div className="grid">
                 {forms.map((form) => (
                     <div key={form.id} className="form-container">
-                        <Form key={form.id} form={form} />
+                        <Form key={form.id} form={form} showcase={true} />
                         <div className="">
                             <button onClick={() => handleUpdate(form.id)}>
                                 Update
