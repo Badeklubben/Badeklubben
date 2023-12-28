@@ -1,8 +1,9 @@
 'use client';
-import React, { useRef, useState, MouseEvent, WheelEvent, useId } from 'react';
+import React, { useRef, useState, MouseEvent, WheelEvent, useId, useEffect } from 'react';
 import { contain, getRelMPos, genID } from '../lib/tools';
 import  recognizer, { makeEdge, makeVertex }  from '../lib/recognizer';
-import { Bound, Mover, Position } from '../lib/definitions';
+import { Bound, Graph, Mover, Position, HistoryElement } from '../lib/definitions';
+import { loadData, saveData } from '../lib/saver';
 
 /*
 Notes:
@@ -105,8 +106,6 @@ const genVertex = (position: Position, scale: number) : Mover => {
     }
 }
 
-
-
 //Exported functions
 export function CanvasSVG({ 
     instanceID,
@@ -115,10 +114,8 @@ export function CanvasSVG({
     deleteMode: boolean; 
     instanceID : string;
     }) {
-
         const [nodes, setNodes] = useState< {[id : string] : Mover} >({[instanceID] : CANVAS});   
         const [edges, setEdges] = useState< {[id : string] : {from: string, to: string}} >({});
-
 
         const ref = useRef<SVGSVGElement | null>(null);
         const [active, setActive] = useState<string | null>();
@@ -238,6 +235,7 @@ export function CanvasSVG({
         const terminateDragging = () => {
             endDrawing();
             setActive(() => null);
+            setReadyForSaving(() => true);
         }
 
         /**
@@ -302,6 +300,59 @@ export function CanvasSVG({
 
             })
         }
+
+        
+        //This section handles undoing and redoing:
+
+        const [readyForSaving, setReadyForSaving] = useState(false); //Stops any saving before the local storage has been checked and loaded.
+        const [history, setHistory] = useState<HistoryElement|undefined>();
+
+        //check for local progress
+        useEffect(() => {
+            const savedGraph = loadData();
+            if ( savedGraph ) {
+                updateGraph(savedGraph);
+            };
+            setReadyForSaving(true);
+        }, []);
+
+        //event listners
+        useEffect(() => {
+            document.addEventListener('keydown', undo);
+            return (() => document.removeEventListener('keydown', undo));
+        }, [history]);
+        //Save
+        useEffect(() => {
+            if ( !readyForSaving ) return;
+            const graph = {nodes:nodes,edges:edges};
+            saveData(graph);
+            setHistory((prev) => {
+                if (!prev) return new HistoryElement(graph);
+                return prev.add(graph);
+            })
+            setReadyForSaving(false);
+        }, [nodes,edges,readyForSaving]);
+
+        const updateGraph = (graph : Graph) => {
+            setNodes((prev) => graph.nodes);
+            setEdges((prev) => graph.edges);
+        }
+        const undo = (e: KeyboardEvent) => {
+            if (!history) return;
+            if (e.code == 'KeyZ' && e.ctrlKey) {
+                if ( e.shiftKey ) {
+                    if ( history.next ) {
+                        updateGraph(history.next!.graph);
+                        setHistory(prev => prev!.next);
+                    }
+                    return;
+                }
+                if ( history.previous ) {
+                    updateGraph(history.previous!.graph);
+                    setHistory(prev => prev!.previous);
+                }          
+            }
+        }
         
 
         return (
@@ -328,7 +379,7 @@ export function CanvasSVG({
 
                     {
                         trace.length &&
-                        <path strokeDasharray={0.5/nodes[instanceID].scale} strokeOpacity={0.2} style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke='#16FF00' fill='none' strokeWidth={0.1/nodes[instanceID].scale}></path>
+                        <path strokeDasharray={0.5/nodes[instanceID].scale} strokeOpacity={0.5} style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke='#16FF00' fill='none' strokeWidth={0.1/nodes[instanceID].scale}></path>
                     }
             </svg>
         );
