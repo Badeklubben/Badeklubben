@@ -2,44 +2,43 @@
 import React, { useRef, useState, MouseEvent, WheelEvent, useEffect } from 'react';
 import { getRelMPos, genID } from '../lib/tools';
 import  recognizer, { makeEdge, makeVertex }  from '../lib/recognizer';
-import {  Mover, Position, MoverUpdater, MoverUpdaters } from '../lib/definitions';
+import {  Node, Position, NodeUpdater, MoverUpdaters, GraphState } from '../lib/definitions';
 import { CANVAS, CANVASBOUNDS, VERTEXBOUNDS } from '../lib/globals';
+import { containsEdge } from '../lib/graphTools';
 
 /*
 Notes:
-Nothing is done to prevent duplicate edges.
-
 The html in page.tsx needs a cleanup
 */
 
 
 //Internal functions
-function Grid(movable:Mover, spacing:number = 10) {
-    return [GridAxis(movable,true,spacing),GridAxis(movable,false,spacing)]
+function Grid(node:Node, spacing:number = 10) {
+    return [GridAxis(node,true,spacing),GridAxis(node,false,spacing)]
 }
-function GridAxis(movable:Mover, xAxis:boolean, spacing:number) {
-    const currDim = spacing/movable.scale;
-    const dir = xAxis ? movable.position.x : movable.position.y;
+function GridAxis(node:Node, xAxis:boolean, spacing:number) {
+    const currDim = spacing/node.scale;
+    const dir = xAxis ? node.position.x : node.position.y;
     const key = xAxis ? 'hor' : 'vert';
-    const x = movable.position.x + 1/movable.scale;
-    const y = xAxis ? movable.position.y + 2/movable.scale : movable.position.y;
+    const x = node.position.x + 1/node.scale;
+    const y = xAxis ? node.position.y + 2/node.scale : node.position.y;
 
     return Array.from({ length: spacing}, (_,i) => 
         {
             const val = Math.round((currDim * (i + Math.round(dir/currDim))));
-            return <text style={{pointerEvents:'none'}} key={key+i}  opacity={0.5} x={x + (xAxis ? currDim * i : 0)} y={y + (xAxis ? 0 : currDim * i)} fill='#16FF00' fontSize={2/movable.scale}>{val}</text>
+            return <text style={{pointerEvents:'none'}} key={key+i}  opacity={0.5} x={x + (xAxis ? currDim * i : 0)} y={y + (xAxis ? 0 : currDim * i)} fill='#16FF00' fontSize={2/node.scale}>{val}</text>
         }
     )
 }
 
 function Vertex({
-    movable,
+    node,
     instanceID,
     scale,
     isActive,
     isHoovered
   }: {
-    movable: Mover;
+    node: Node;
     instanceID : string;
     scale: number;
     isActive : boolean;
@@ -49,9 +48,9 @@ function Vertex({
     return (
         <circle   
         id={instanceID}
-        cx={movable.position.x} 
-        cy={movable.position.y}
-        r={movable.scale} 
+        cx={node.position.x} 
+        cy={node.position.y}
+        r={node.scale} 
         strokeWidth={0.3/scale}
         stroke= {isActive ? 'yellow' : isHoovered ? 'pink' : '#16FF00'}
         />
@@ -63,8 +62,8 @@ function Edge({
     instanceID,
     scale
   }: {
-    from: Mover;
-    to : Mover;
+    from: Node;
+    to : Node;
     instanceID : string,
     scale: number
   }) 
@@ -92,22 +91,12 @@ export function CanvasSVG({
     } : {
     deleteMode: boolean; 
     instanceID : string;
-    graph : {
-        nodes : {[id : string] : Mover},
-        setNodes : React.Dispatch<React.SetStateAction<{[id : string] : Mover}>>,
-        edges : {[id : string] : {from: string, to: string}},
-        setEdges : React.Dispatch<React.SetStateAction<{[id : string] : {from: string, to: string}}>>,
-        hasUnsavedChanges: React.Dispatch<React.SetStateAction<boolean>>,
-        active : string | null,
-        setActive : React.Dispatch<React.SetStateAction<string | null>>,
-        hoover : string | null,
-        setHoover : React.Dispatch<React.SetStateAction<string | null>>,
-    }
+    graph : GraphState
     }) {
-        const [canvas, setCanvas] = useState<Mover>(CANVAS);
+        const [canvas, setCanvas] = useState<Node>(CANVAS);
 
         const ref = useRef<SVGSVGElement | null>(null);
-        const [active, setActive] = useState<string | null>();
+        const [grabbed, setGrabbed] = useState<string | null>();
         const [penDown, setPenDown] = useState(false);
         const [trace, setTrace] = useState<Position[]>([]);
 
@@ -128,21 +117,42 @@ export function CanvasSVG({
          * @param id 
          * @param method 
          */
-        const alterGraph = (e : any, id: string, method: MoverUpdater,scaling: boolean = false) => {
-            const current_position = id != instanceID && scaling ?
-                            getRelMPos(e,ref.current!,VERTEXBOUNDS.min / 10) : 
-                            getRelMPos(e,ref.current!)
-
+        const alterGraph = (e : any, id: string, method: NodeUpdater,position: Position) => {
             if (id == instanceID) {
-                setCanvas((prev) => method(prev,current_position,canvas,CANVASBOUNDS,e));
+                setCanvas((prev) => method(prev,position,canvas,CANVASBOUNDS,e));
             }
             else {
                 graph.setNodes((prev) => {
                     return {
                         ...prev,
-                        [id] : method(prev[id],current_position,canvas,VERTEXBOUNDS,e)
+                        [id] : method(prev[id],position,canvas,VERTEXBOUNDS,e)
                     }
                 })
+            }
+        }
+        const update = (e: any, method: 'grab' | 'drag' | 'scale') => {
+            const elmID = getElementID(e,'edge');
+            let current_position = getRelMPos(e,ref.current!);
+            const isCanvas = elmID == instanceID;
+
+            switch (method) {
+                case 'grab':
+                    if (e.ctrlKey) {
+                        graph.setActive(prev => isCanvas ? null : elmID);
+                        break;
+                    }
+                    setGrabbed(() => elmID);
+                    alterGraph(e,elmID,MoverUpdaters.grab,current_position);
+                    break;
+                case 'drag':
+                    if ( !grabbed ) break;
+                    alterGraph(e,grabbed,MoverUpdaters.drag,current_position);
+                    break;
+            
+                default:
+                    if (!isCanvas) current_position = getRelMPos(e,ref.current!,VERTEXBOUNDS.min / 10);
+                    alterGraph(e,elmID,MoverUpdaters.scale,current_position);
+                    break;
             }
         }
 
@@ -175,25 +185,15 @@ export function CanvasSVG({
          * @returns 
          */
         const initiateDragging = (e:MouseEvent) =>  {   
-            if (penDown || active) return
+            if (penDown || grabbed) return
             //right-clicks means drawing or deleting
             if (e.button == 2) {
                 if (deleteMode) deleteID(e);
                 setPenDown(() => true);
                 return;
             }
-
-            //set the element clicked as active
-            const elmID = getElementID(e,'edge');
-
-            if (e.ctrlKey) {
-                graph.setActive(prev => elmID == instanceID ? null : elmID);
-                return;
-            }
-
-            setActive(() => elmID);
             //update default values for the element
-            alterGraph(e,elmID,MoverUpdaters.grab);       
+            update(e,'grab');  
         }
 
         /**
@@ -217,10 +217,7 @@ export function CanvasSVG({
                 }
             }
             //drag
-            else {
-                if ( !active ) return;
-                alterGraph(e,active,MoverUpdaters.drag);
-            }
+            else update(e,'drag');
         }
 
         /**
@@ -229,8 +226,8 @@ export function CanvasSVG({
          */
         const terminateDragging = () => {
             endDrawing();
-            graph.hasUnsavedChanges(() => true);
-            setActive(() => null);
+            graph.setHasUnsavedChanges(() => true);
+            setGrabbed(() => null);
         }
 
         /**
@@ -249,8 +246,8 @@ export function CanvasSVG({
                     })
                 } else {
                     const newEdge = makeEdge(drawn.keyPoints,graph.nodes);
-                    if (newEdge)
-                    {
+                    if (newEdge && !containsEdge(Object.values(graph.edges),newEdge))
+                    {        
                         graph.setEdges(prev => {
                             return {
                                 ...prev,
@@ -272,9 +269,8 @@ export function CanvasSVG({
          */
         const doZoom = (e:WheelEvent) => {
             if (penDown) return;
-            const elmID = getElementID(e,'edge');
-            alterGraph(e,elmID,MoverUpdaters.scale,true);
-            graph.hasUnsavedChanges(() => true);
+            update(e,'scale');
+            graph.setHasUnsavedChanges(() => true);
         }
         
         //Center on global active
@@ -303,13 +299,13 @@ export function CanvasSVG({
                 id={instanceID}
 
                 ref={ref}
-                style={{backgroundColor:"black", userSelect:'none',cursor: active ? 'grabbing': 'default', border:"1px solid #16FF00"}} 
+                style={{backgroundColor:"black", userSelect:'none',cursor: grabbed ? 'grabbing': 'default', border:"1px solid #16FF00"}} 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox={canvas.position.x + " " +canvas.position.y + " " + 100/canvas.scale + " " + 100/canvas.scale}>
                     
                     <g>
                         {Object.entries(graph.edges).map(([id,edge],idx) => <Edge key={'e'+idx} from={graph.nodes[edge.from]} to={graph.nodes[edge.to]} instanceID={id} scale={canvas.scale}></Edge>)}
-                        {Object.entries(graph.nodes).map(([id,node],idx) => <Vertex key={'v'+idx} instanceID={id} movable={node} scale={canvas.scale} isActive={graph.active == id} isHoovered={graph.hoover == id}></Vertex>)}
+                        {Object.entries(graph.nodes).map(([id,node],idx) => <Vertex key={'v'+idx} instanceID={id} node={node} scale={canvas.scale} isActive={graph.active == id} isHoovered={graph.hoover == id}></Vertex>)}
                     </g>
 
                     {Grid(canvas)}

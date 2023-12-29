@@ -1,6 +1,6 @@
-import { Bound, Mover } from "./definitions";
+import { Bound, Node } from "./definitions";
 
-export const CANVAS : Mover = { 
+export const CANVAS : Node = { 
     previosPosition : {x:0,y:0},
     position : {x:0,y:0},
     mousePosOnGrab : {x:0,y:0},
@@ -15,7 +15,7 @@ export const CANVASBOUNDS : Bound = {
 }
 
 export const VERTEXBOUNDS : Bound = { 
-    sensitivity: 10,
+    sensitivity: 1,
     max: 50,
     min: 1,
     direction: -1

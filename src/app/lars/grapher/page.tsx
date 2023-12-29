@@ -1,77 +1,38 @@
 'use client';
 import Link from 'next/link';
-import {useEffect, useId, useState } from 'react';
+import {useId, useState } from 'react';
 import {CanvasSVG } from './ui/SVGElements';
 import './style.css';
-import { Graph, HistoryElement, Mover } from './lib/definitions';
-import { loadData, saveData } from './lib/saver';
+import { Edge, Node } from './lib/definitions';
+import History from './ui/History';
+import { getConnectedNode } from './lib/graphTools';
 
 export default function Grapher() {
 
     const [deleteMode, setDeleteMode] = useState(false);
 
-    const [nodes, setNodes] = useState< {[id : string] : Mover} >({});   
-    const [edges, setEdges] = useState< {[id : string] : {from: string, to: string}} >({});
+    const [nodes, setNodes] = useState< {[id : string] : Node} >({});   
+    const [edges, setEdges] = useState< {[id : string] : Edge} >({});
     const [active, setActive] = useState<string | null>(null);
     const [hoover, setHoover] = useState<string | null>(null);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
 
-    //This section handles undoing and redoing:
-    const [readyForSaving, setReadyForSaving] = useState(false); //Stops any saving before the local storage has been checked and loaded.
-    const [history, setHistory] = useState<HistoryElement|undefined>();
-
-    //check for local progress
-    useEffect(() => {
-        const savedGraph = loadData();
-        if ( savedGraph ) {
-            updateGraph(savedGraph);
-            setActive(prev => Object.keys(savedGraph.nodes)[0]);
-        };
-        setReadyForSaving(true);
-    }, []);
-    //event listners
-    useEffect(() => {
-        document.addEventListener('keydown', undo);
-        return (() => document.removeEventListener('keydown', undo));
-    }, [history]);
-
-    //Save
-    useEffect(() => {
-        if ( !readyForSaving ) return;
-        const g = {nodes:nodes,edges:edges};
-
-        if (history && history.graph.nodes === g.nodes && history.graph.edges === g.edges ) return;
-        
-        saveData(g);
-        setHistory((prev) => {
-            if (!prev) return new HistoryElement(g);
-            return prev.add(g);
-        })
-        setReadyForSaving(false);
-    }, [nodes,edges,readyForSaving]);
-
-    const updateGraph = (g : Graph) => {
-        setNodes((prev) => g.nodes);
-        setEdges((prev) => g.edges);
-    }
-    const undo = (e: KeyboardEvent) => {
-        if (!history) return;
-        if (e.code == 'KeyZ' && e.ctrlKey) {
-            if ( e.shiftKey ) {
-                if ( history.next ) {
-                    updateGraph(history.next!.graph);
-                    setHistory(prev => prev!.next);
-                }
-                return;
-            }
-            if ( history.previous ) {
-                updateGraph(history.previous!.graph);
-                setHistory(prev => prev!.previous);
-            }          
-        }
+    const graphState = {
+        nodes: nodes, 
+        setNodes: setNodes, 
+        edges: edges, 
+        setEdges: setEdges, 
+        hasUnsavedChanges : hasUnsavedChanges,
+        setHasUnsavedChanges: setHasUnsavedChanges,
+        active : active,
+        setActive: setActive,
+        hoover : hoover,
+        setHoover : setHoover
     }
 
     return (
         <div className="page-container">
+            <History graph={graphState}/>
             <div style={{fontSize:'xx-large', marginBottom:10}}>This is the Grapher project</div>
             <Link href="/lars" style={{color:'orange'}}>
                 <h1>Return</h1>
@@ -91,11 +52,8 @@ export default function Grapher() {
                         <div>
                             <div>Neighbours of {active}</div>
                             {Object.entries(edges).map(([id,edge],idx) =>  {
-                                const from = edge.from == active;
-                                const to =  edge.to == active;
-                                const nid = from ? edge.to : edge.from;
-                    
-                                return (from || to) && <div 
+                                const nid = getConnectedNode(edge, active);
+                                return (nid) && <div 
                                     key={'neighbour'+id} 
                                     style={{color: nid == active ? 'yellow' : nid == hoover ? 'pink' : 'inherit'}} 
                                     onClick={() => setActive(prev => nid)}
@@ -110,18 +68,7 @@ export default function Grapher() {
 
                 <div style={{height:"100%", aspectRatio:"1/1" , backgroundColor:"black" , overflow:'hidden'}}>
                     <div style={{display:'flex', alignItems: 'center', justifyContent: 'center', height:'100%'}}>
-                        <CanvasSVG instanceID={useId()} deleteMode={deleteMode} graph={
-                            {nodes: nodes, 
-                            setNodes: setNodes, 
-                            edges: edges, 
-                            setEdges: setEdges, 
-                            hasUnsavedChanges: setReadyForSaving,
-                            active : active,
-                            setActive: setActive,
-                            hoover : hoover,
-                            setHoover : setHoover
-                            }}>
-                        </CanvasSVG>
+                        <CanvasSVG instanceID={useId()} deleteMode={deleteMode} graph={graphState}/>
                     </div>
                 </div>
                 

@@ -1,4 +1,4 @@
-import { Mover, Position } from "./definitions";
+import { Node, Position } from "./definitions";
 import { VERTEXBOUNDS } from "./globals";
 import { contain } from "./tools";
 
@@ -57,7 +57,7 @@ function radius(points: Position[], center: Position) {
     return r/points.length;
 }
 
-export function makeVertex(points: Position[]) : Mover{
+export function makeVertex(points: Position[]) : Node{
     let c = centroid(points);
     const r = radius(points,c);
     return {
@@ -68,7 +68,7 @@ export function makeVertex(points: Position[]) : Mover{
     }
 } 
 
-export function makeEdge(points: Position[], movables: {[id : string] : Mover}){
+export function makeEdge(points: Position[], movables: {[id : string] : Node}){
     let start : null | string = null;
     let end : null | string = null;
 

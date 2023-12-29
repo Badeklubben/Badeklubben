@@ -11,7 +11,14 @@ export type Bound = {
     min: number,
     direction: 1 | -1;
 }
-export type Mover = {
+
+export type Edge = {
+    from:string;
+    to:string;
+};
+
+
+export type Node = {
     previosPosition: Position;
     position: Position;
     mousePosOnGrab: Position;
@@ -19,8 +26,21 @@ export type Mover = {
 }
 
 export type Graph = {
-    nodes : {[id : string] : Mover},
-    edges : {[id : string] : {from: string, to: string}}
+    nodes : {[id : string] : Node},
+    edges : {[id : string] : Edge}
+}
+
+export type GraphState = {
+    nodes : {[id : string] : Node},
+    setNodes : React.Dispatch<React.SetStateAction<{[id : string] : Node}>>,
+    edges : {[id : string] : Edge},
+    setEdges : React.Dispatch<React.SetStateAction<{[id : string] : Edge}>>,
+    hasUnsavedChanges: boolean,
+    setHasUnsavedChanges: React.Dispatch<React.SetStateAction<boolean>>,
+    active : string | null,
+    setActive : React.Dispatch<React.SetStateAction<string | null>>,
+    hoover : string | null,
+    setHoover : React.Dispatch<React.SetStateAction<string | null>>,
 }
 
 
@@ -39,33 +59,33 @@ export class HistoryElement {
     }
 }
 
-export type MoverUpdater = (mover : Mover, position: Position, parent: Mover,  bound : Bound, e: any) => Mover;
+export type NodeUpdater = (node : Node, position: Position, parent: Node,  bound : Bound, e: any) => Node;
 export const MoverUpdaters = {
-    grab : (mover: Mover, position: Position, parent: Mover,  bound : Bound) => {
+    grab : (node: Node, position: Position, parent: Node,  bound : Bound) => {
         return {
-            ...mover,
+            ...node,
             mousePosOnGrab: position,
-            previosPosition: mover.position,
+            previosPosition: node.position,
         }
     },
-    drag : (mover: Mover, position: Position, parent: Mover, bound : Bound) => {
+    drag : (node: Node, position: Position, parent: Node, bound : Bound) => {
         return {
-            ...mover,
+            ...node,
             position : {
-                x: mover.previosPosition.x + (mover.mousePosOnGrab.x - position.x) / parent.scale * bound.direction,
-                y: mover.previosPosition.y + (mover.mousePosOnGrab.y - position.y) / parent.scale * bound.direction
+                x: node.previosPosition.x + (node.mousePosOnGrab.x - position.x) / parent.scale * bound.direction,
+                y: node.previosPosition.y + (node.mousePosOnGrab.y - position.y) / parent.scale * bound.direction
             }
         }
     },
-    scale : (mover: Mover,position: Position, parent: Mover,  bound : Bound, e:WheelEvent) => {
-        let newScale = contain(mover.scale + bound.sensitivity * -e.deltaY/100,bound.max,bound.min);
+    scale : (node: Node,position: Position, parent: Node,  bound : Bound, e:WheelEvent) => {
+        let newScale = contain(node.scale + bound.sensitivity * -e.deltaY/100,bound.max,bound.min);
 
         return {
-            ...mover,
+            ...node,
             scale : newScale,
             position: {
-                x: mover.position.x + ((newScale-mover.scale) * position.x) / (newScale*mover.scale) ,
-                y: mover.position.y + ((newScale-mover.scale) * position.y) / (newScale*mover.scale) 
+                x: node.position.x + ((newScale-node.scale) * position.x) / (newScale*node.scale) ,
+                y: node.position.y + ((newScale-node.scale) * position.y) / (newScale*node.scale) 
             } 
         }
     }
