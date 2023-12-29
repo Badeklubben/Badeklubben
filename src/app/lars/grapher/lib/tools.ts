@@ -1,10 +1,11 @@
 import { MouseEvent } from 'react';
 
+
 //Dunctions
-export function getRelMPos(e:MouseEvent,el:Element) {
+export function getRelMPos(e:MouseEvent,el:Element, scalar: number = 100) {
     const canvas_rect = el.getBoundingClientRect();
-    const x = (e.clientX - canvas_rect.left) * 100 / canvas_rect.width;
-    const y = (e.clientY - canvas_rect.top) * 100 / canvas_rect.height;
+    const x = (e.clientX - canvas_rect.left) * scalar / canvas_rect.width;
+    const y = (e.clientY - canvas_rect.top) * scalar / canvas_rect.height;
     return {x:x,y:y};
 }
 
@@ -26,4 +27,9 @@ export function genID(length: number = 10): string {
     }
   
     return randomString;
+}
+
+export function slope(x: number, xMax: number, xMin: number): number {
+    const norm = (x - xMin) / (xMax - xMin);
+    return contain((0.5 - Math.abs(norm - 0.5)) * 2,1,0);
 }

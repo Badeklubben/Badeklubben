@@ -1,4 +1,6 @@
 import { Mover, Position } from "./definitions";
+import { VERTEXBOUNDS } from "./globals";
+import { contain } from "./tools";
 
 
 function distance(start: Position, end: Position) {
@@ -55,9 +57,15 @@ function radius(points: Position[], center: Position) {
     return r/points.length;
 }
 
-export function makeVertex(points: Position[]){
+export function makeVertex(points: Position[]) : Mover{
     let c = centroid(points);
-    return {radius: radius(points,c), center: c};
+    const r = radius(points,c);
+    return {
+        previosPosition: c,
+        position: c,
+        mousePosOnGrab: c,
+        scale: contain(r,VERTEXBOUNDS.max, VERTEXBOUNDS.min),
+    }
 } 
 
 export function makeEdge(points: Position[], movables: {[id : string] : Mover}){
@@ -77,7 +85,7 @@ export function makeEdge(points: Position[], movables: {[id : string] : Mover}){
     return (start && end) ? {from: start,to: end} : null;
 } 
 
-export default function recognizer(points: Position[]) : {id:'edge'|'vertex', keyPoints: Position[]}{
+export default function recognizer(points: Position[]) {
     let simplified = douglasPaucker(points,0.3);
 
     if (simplified.length < 4) return {id:"edge", keyPoints: simplified};
