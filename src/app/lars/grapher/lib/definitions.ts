@@ -17,8 +17,13 @@ export type Edge = {
     to:string;
 };
 
+export type Drawing = {
+    id : 'edge' | 'vertex';
+    points : Position[];
+}
 
 export type Node = {
+    value : string | null;
     previosPosition: Position;
     position: Position;
     mousePosOnGrab: Position;

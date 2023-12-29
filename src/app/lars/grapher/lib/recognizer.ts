@@ -1,11 +1,7 @@
-import { Node, Position } from "./definitions";
-import { VERTEXBOUNDS } from "./globals";
-import { contain } from "./tools";
+import { Drawing, Position } from "./definitions";
+import { distance } from "./tools";
 
 
-function distance(start: Position, end: Position) {
-    return Math.sqrt(Math.pow(end.x - start.x,2) + Math.pow(end.y - start.y,2));
-}
 function equal(A: Position, B: Position) {
     return A.x == B.x && A.y == B.y;
 }
@@ -40,54 +36,9 @@ function douglasPaucker(points: Position[], ebsilon:number): Position[]{
 }
 
 
-function centroid(points: Position[]) {
-    let cx = 0;
-    let cy = 0;
-    for (let index = 0; index < points.length; index++) {
-        cx += points[index].x;
-        cy += points[index].y;
-    }
-    return {x: cx/points.length, y: cy/points.length};
-}
-function radius(points: Position[], center: Position) {
-    let r = 0;
-    for (let index = 0; index < points.length; index++) {
-        r += distance(points[index],center);
-    }
-    return r/points.length;
-}
-
-export function makeVertex(points: Position[]) : Node{
-    let c = centroid(points);
-    const r = radius(points,c);
-    return {
-        previosPosition: c,
-        position: c,
-        mousePosOnGrab: c,
-        scale: contain(r,VERTEXBOUNDS.max, VERTEXBOUNDS.min),
-    }
-} 
-
-export function makeEdge(points: Position[], movables: {[id : string] : Node}){
-    let start : null | string = null;
-    let end : null | string = null;
-
-    Object.entries(movables).forEach(([id,mover]) => {
-        if (distance(mover.position, points[0]) <= mover.scale && !start) {
-            start = id;
-        }
-        else if (distance(mover.position, points[points.length-1]) <= mover.scale && !end) {
-            end = id;
-        }
-        if (end && start) return;
-    });
-
-    return (start && end) ? {from: start,to: end} : null;
-} 
-
-export default function recognizer(points: Position[]) {
+export default function recognizer(points: Position[]) : Drawing {
     let simplified = douglasPaucker(points,0.3);
 
-    if (simplified.length < 4) return {id:"edge", keyPoints: simplified};
-    return {id:"vertex", keyPoints: simplified};
+    if (simplified.length < 4) return {id:"edge", points: simplified};
+    return {id:"vertex", points: simplified};
 }

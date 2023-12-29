@@ -1,10 +1,10 @@
 'use client';
 import React, { useRef, useState, MouseEvent, WheelEvent, useEffect } from 'react';
-import { getRelMPos, genID } from '../lib/tools';
-import  recognizer, { makeEdge, makeVertex }  from '../lib/recognizer';
+import { getRelMPos } from '../lib/tools';
+import  recognizer  from '../lib/recognizer';
 import {  Node, Position, NodeUpdater, MoverUpdaters, GraphState } from '../lib/definitions';
 import { CANVAS, CANVASBOUNDS, VERTEXBOUNDS } from '../lib/globals';
-import { containsEdge } from '../lib/graphTools';
+import { drawingToElement } from '../lib/graphTools';
 
 /*
 Notes:
@@ -46,14 +46,18 @@ function Vertex({
   }) 
   {
     return (
-        <circle   
-        id={instanceID}
-        cx={node.position.x} 
-        cy={node.position.y}
-        r={node.scale} 
-        strokeWidth={0.3/scale}
-        stroke= {isActive ? 'yellow' : isHoovered ? 'pink' : '#16FF00'}
-        />
+        <g>
+            <circle   
+                id={instanceID}
+                cx={node.position.x} 
+                cy={node.position.y}
+                r={node.scale} 
+                strokeWidth={0.3/scale}
+                stroke= {isActive ? 'yellow' : isHoovered ? 'pink' : '#16FF00'}
+            />
+           <text style={{pointerEvents:'none'}} x={node.position.x} y={node.position.y} dominantBaseline="middle" textAnchor="middle" fill={isActive ? 'yellow' : isHoovered ? 'pink' : '#16FF00'} fontSize={0.2*node.scale*scale}>{node.value}</text> 
+        </g>
+
     );
 }
 function Edge({
@@ -237,25 +241,7 @@ export function CanvasSVG({
         const endDrawing = () => {
             if (trace.length) {
                 const drawn = recognizer(trace);
-                if (drawn.id == 'vertex') {
-                    graph.setNodes(prev => {
-                        return {
-                            ...prev,
-                            [genID()] : makeVertex(drawn.keyPoints)
-                        }
-                    })
-                } else {
-                    const newEdge = makeEdge(drawn.keyPoints,graph.nodes);
-                    if (newEdge && !containsEdge(Object.values(graph.edges),newEdge))
-                    {        
-                        graph.setEdges(prev => {
-                            return {
-                                ...prev,
-                                ['edge' + genID()] : newEdge
-                            }
-                        })
-                    }
-                }
+                drawingToElement(drawn,graph);
             }
 
             setPenDown(() => false);

@@ -49,6 +49,7 @@ export default function History({
     const undo = (e: KeyboardEvent) => {
         if (!history) return;
         if (e.code == 'KeyZ' && e.ctrlKey) {
+            graph.setActive(prev => null)
             if ( e.shiftKey ) {
                 if ( history.next ) {
                     updateGraph(history.next!.graph);

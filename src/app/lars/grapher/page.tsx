@@ -45,12 +45,12 @@ export default function Grapher() {
                             key={'list'+id} 
                             style={{color:id == active ? 'yellow' : id == hoover ? 'pink' : 'inherit'}} 
                             onClick={() => setActive(prev => id)}
-                            onMouseOver={() => setHoover(prev => id)}>{id}</div>)}
+                            onMouseOver={() => setHoover(prev => id)}>{node.value || id}</div>)}
                     </div>
 
                     { (active) &&
                         <div>
-                            <div>Neighbours of {active}</div>
+                            <div>Neighbours of {nodes[active].value || active}</div>
                             {Object.entries(edges).map(([id,edge],idx) =>  {
                                 const nid = getConnectedNode(edge, active);
                                 return (nid) && <div 
@@ -58,7 +58,7 @@ export default function Grapher() {
                                     style={{color: nid == active ? 'yellow' : nid == hoover ? 'pink' : 'inherit'}} 
                                     onClick={() => setActive(prev => nid)}
                                     onMouseOver={() => setHoover(prev => nid)}>
-                                        {nid}
+                                        {nodes[nid].value || nid}
                                 </div>})
                             }
                         </div>
