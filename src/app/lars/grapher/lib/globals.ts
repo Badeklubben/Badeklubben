@@ -1,6 +1,7 @@
 import { Bound, Node } from "./definitions";
 
 export const CANVAS : Node = { 
+    value : 'canvas',
     previosPosition : {x:0,y:0},
     position : {x:0,y:0},
     mousePosOnGrab : {x:0,y:0},

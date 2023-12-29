@@ -4,7 +4,7 @@ import { getRelMPos } from '../lib/tools';
 import  recognizer  from '../lib/recognizer';
 import {  Node, Position, NodeUpdater, MoverUpdaters, GraphState } from '../lib/definitions';
 import { CANVAS, CANVASBOUNDS, VERTEXBOUNDS } from '../lib/globals';
-import { drawingToElement } from '../lib/graphTools';
+import { DrawingToElement } from '../lib/graphTools';
 
 /*
 Notes:
@@ -241,7 +241,7 @@ export function CanvasSVG({
         const endDrawing = () => {
             if (trace.length) {
                 const drawn = recognizer(trace);
-                drawingToElement(drawn,graph);
+                DrawingToElement(drawn,graph);
             }
 
             setPenDown(() => false);

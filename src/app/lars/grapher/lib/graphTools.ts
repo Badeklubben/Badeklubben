@@ -71,7 +71,7 @@ function makeEdge(points: Position[], graph : Graph){
     return (start && end) ? {from: start,to: end} : null;
 } 
 
-export function drawingToElement(drawing : Drawing, graph: GraphState) {
+export function DrawingToElement(drawing : Drawing, graph: GraphState) {
     if (drawing.id == 'vertex') {
         const vertex = makeVertex(drawing.points,graph);
         graph.setNodes(prev => {
