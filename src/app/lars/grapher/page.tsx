@@ -1,9 +1,9 @@
 'use client';
 import Link from 'next/link';
-import {useId, useState } from 'react';
+import {useEffect, useId, useState } from 'react';
 import {CanvasSVG } from './ui/SVGElements';
 import './style.css';
-import { Edge, Node } from './lib/definitions';
+import { Dimensions, Edge, Node } from './lib/definitions';
 import History from './ui/History';
 import { getConnectedNode } from './lib/graphTools';
 
@@ -16,6 +16,9 @@ export default function Grapher() {
     const [active, setActive] = useState<string | null>(null);
     const [hoover, setHoover] = useState<string | null>(null);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
+
+    const [loaded, setLoaded] = useState<boolean>(false);
+    useEffect(() => {setLoaded(true);},[]);
 
     const graphState = {
         nodes: nodes, 
@@ -34,11 +37,10 @@ export default function Grapher() {
         <div className="page-container">
             <History graph={graphState}/>
             <div style={{fontSize:'xx-large', marginBottom:10}}>This is the Grapher project</div>
-            <Link href="/lars" style={{color:'orange'}}>
-                <h1>Return</h1>
-            </Link>
-            <div style={{display:'flex', flexDirection:'row',width:"100%", height: '100%', backgroundColor:"black", justifyContent:'space-evenly',margin:'0 0 10px 0', gap:'10px', overflow:'hidden'}}>
-                <div style={{display:'flex', flexDirection:'column',width:'300px',border:"1px solid #16FF00", gap:'10px'}}>
+            <Link href="/lars" style={{color:'orange'}}><h1>Return</h1></Link>
+            <CanvasSVG instanceID={useId()} deleteMode={deleteMode} graph={graphState}/>
+            <div style={{display:'flex', flexDirection:'row',width:"100%", height: '100%', justifyContent:'space-evenly',margin:'0 0 10px 0', gap:'10px', overflow:'hidden'}}>
+                <div style={{display:'flex', flexDirection:'column',width:'300px', gap:'10px'}}>
                     <div style={{fontSize:'x-large'}}>Nodes</div>
                     <div>
                         {Object.entries(nodes).map(([id,node],idx) => <div 
@@ -66,13 +68,8 @@ export default function Grapher() {
                     
                 </div>
 
-                <div style={{height:"100%", aspectRatio:"1/1" , backgroundColor:"black" , overflow:'hidden'}}>
-                    <div style={{display:'flex', alignItems: 'center', justifyContent: 'center', height:'100%'}}>
-                        <CanvasSVG instanceID={useId()} deleteMode={deleteMode} graph={graphState}/>
-                    </div>
-                </div>
-                
-                <div style={{display:'flex', flexDirection:'column',width:'300px', border:"1px solid #16FF00", gap:'10px'}}>
+           
+                <div style={{display:'flex', flexDirection:'column',width:'300px', gap:'10px'}}>
                     <div style={{display:'flex', flexDirection:'row', justifyContent:'space-evenly'}}>
                         <button style={{color:'orange', opacity:!deleteMode ? 0.5 : 1 }} onClick={() => setDeleteMode(prev => !prev)} disabled={deleteMode}>Delete</button>
                         <button style={{color:'orange', opacity:deleteMode ? 0.5 : 1 }} onClick={() => setDeleteMode(prev => !prev)} disabled={!deleteMode}>Draw</button>
@@ -106,7 +103,8 @@ export default function Grapher() {
                 </div>
             </div>
 
-
+                    
+            <div className={loaded ? 'curtain fade' : 'curtain'}>Grapher project</div>
         </div>
     );
 }

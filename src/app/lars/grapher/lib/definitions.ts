@@ -5,6 +5,11 @@ export type Position = {
     y:number;
 };
 
+export type Dimensions = {
+    width:number;
+    height:number;
+};
+
 export type Bound = {
     sensitivity: number,
     max: number,

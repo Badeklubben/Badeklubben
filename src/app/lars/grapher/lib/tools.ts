@@ -1,12 +1,12 @@
 import { MouseEvent } from 'react';
-import { Position } from './definitions';
+import { Dimensions, Position } from './definitions';
 
 
 //Dunctions
-export function getRelMPos(e:MouseEvent,el:Element, scalar: number = 100) {
+export function getRelMPos(e:MouseEvent,el:Element, dimensions: Dimensions) {
     const canvas_rect = el.getBoundingClientRect();
-    const x = (e.clientX - canvas_rect.left) * scalar / canvas_rect.width;
-    const y = (e.clientY - canvas_rect.top) * scalar / canvas_rect.height;
+    const x = (e.clientX - canvas_rect.left) * dimensions.width / canvas_rect.width;
+    const y = (e.clientY - canvas_rect.top) * dimensions.height / canvas_rect.height;
     return {x:x,y:y};
 }
 

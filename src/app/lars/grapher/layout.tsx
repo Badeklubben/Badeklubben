@@ -1,3 +1,5 @@
+import { bungee_hairline, monoton, orbitron } from "./ui/fonts"
+
 export const metadata = {
     title: 'Grapher',
     description: 'Grapher',
@@ -9,6 +11,6 @@ export default function GrapherLayout({
   children: React.ReactNode
 }) {
   return (
-    <div>{children}</div>
+    <div className={orbitron.className}>{children}</div>
   )
 }

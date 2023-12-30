@@ -2,8 +2,8 @@
 import React, { useRef, useState, MouseEvent, WheelEvent, useEffect } from 'react';
 import { getRelMPos } from '../lib/tools';
 import  recognizer  from '../lib/recognizer';
-import {  Node, Position, NodeUpdater, MoverUpdaters, GraphState } from '../lib/definitions';
-import { CANVAS, CANVASBOUNDS, VERTEXBOUNDS } from '../lib/globals';
+import {  Node, Position, NodeUpdater, MoverUpdaters, GraphState, Dimensions } from '../lib/definitions';
+import { CANVAS, CANVASBOUNDS, COLORS, VERTEXBOUNDS } from '../lib/globals';
 import { DrawingToElement } from '../lib/graphTools';
 
 /*
@@ -13,20 +13,20 @@ The html in page.tsx needs a cleanup
 
 
 //Internal functions
-function Grid(node:Node, spacing:number = 10) {
-    return [GridAxis(node,true,spacing),GridAxis(node,false,spacing)]
+function Grid(node:Node, dimentions:Dimensions, spacing:number = 10) {
+    return [GridAxis(node,true,dimentions.width/spacing),GridAxis(node,false,dimentions.height/spacing)]
 }
 function GridAxis(node:Node, xAxis:boolean, spacing:number) {
     const currDim = spacing/node.scale;
     const dir = xAxis ? node.position.x : node.position.y;
     const key = xAxis ? 'hor' : 'vert';
     const x = node.position.x + 1/node.scale;
-    const y = xAxis ? node.position.y + 2/node.scale : node.position.y;
+    const y = xAxis ? node.position.y + 20/node.scale : node.position.y;
 
     return Array.from({ length: spacing}, (_,i) => 
         {
             const val = Math.round((currDim * (i + Math.round(dir/currDim))));
-            return <text style={{pointerEvents:'none'}} key={key+i}  opacity={0.5} x={x + (xAxis ? currDim * i : 0)} y={y + (xAxis ? 0 : currDim * i)} fill='#16FF00' fontSize={2/node.scale}>{val}</text>
+            return <text style={{pointerEvents:'none'}} key={key+i}  opacity={0.5} x={x + (xAxis ? currDim * i : 0)} y={y + (xAxis ? 0 : currDim * i)} fill={COLORS.secondary} fontSize={20/node.scale}>{val}</text>
         }
     )
 }
@@ -52,10 +52,18 @@ function Vertex({
                 cx={node.position.x} 
                 cy={node.position.y}
                 r={node.scale} 
-                strokeWidth={0.3/scale}
-                stroke= {isActive ? 'yellow' : isHoovered ? 'pink' : '#16FF00'}
+                strokeWidth={0.5/scale}
+                fill={COLORS.secondary}
+                stroke= {isActive ? COLORS.active : isHoovered ? COLORS.hoover : COLORS.secondary}
             />
-           <text style={{pointerEvents:'none'}} x={node.position.x} y={node.position.y} dominantBaseline="middle" textAnchor="middle" fill={isActive ? 'yellow' : isHoovered ? 'pink' : '#16FF00'} fontSize={0.2*node.scale*scale}>{node.value}</text> 
+           <text 
+                style={{pointerEvents:'none'}} 
+                x={node.position.x} 
+                y={node.position.y} 
+                dominantBaseline="middle" 
+                textAnchor="middle" 
+                fill={isActive ? COLORS.active : isHoovered ? COLORS.hoover : COLORS.primary} 
+                fontSize={node.scale}>{node.value}</text> 
         </g>
 
     );
@@ -79,7 +87,8 @@ function Edge({
             y1={from.position.y} 
             x2={to.position.x} 
             y2={to.position.y} 
-            stroke='#16FF00'
+            stroke={COLORS.secondary}
+            opacity={0.5}
             strokeWidth={0.3/scale}
             />
     );
@@ -95,14 +104,25 @@ export function CanvasSVG({
     } : {
     deleteMode: boolean; 
     instanceID : string;
-    graph : GraphState
+    graph : GraphState,
     }) {
         const [canvas, setCanvas] = useState<Node>(CANVAS);
+        const [dimentions, setDimentions] = useState<Dimensions>({width:100,height:100});
 
         const ref = useRef<SVGSVGElement | null>(null);
         const [grabbed, setGrabbed] = useState<string | null>();
         const [penDown, setPenDown] = useState(false);
         const [trace, setTrace] = useState<Position[]>([]);
+
+
+        //update size on window-resize
+        useEffect(() => {
+            const updateDims = () => setDimentions(prev => {return {width: window.innerWidth, height: window.innerHeight}});
+            window.addEventListener('resize',updateDims);
+            updateDims();
+            return (() => window.removeEventListener('keydown', updateDims));
+        },[])
+
 
         /**
          * Get the id of the element beeing handled
@@ -136,7 +156,7 @@ export function CanvasSVG({
         }
         const update = (e: any, method: 'grab' | 'drag' | 'scale') => {
             const elmID = getElementID(e,'edge');
-            let current_position = getRelMPos(e,ref.current!);
+            let current_position = getRelMPos(e,ref.current!,dimentions);
             const isCanvas = elmID == instanceID;
 
             switch (method) {
@@ -154,7 +174,7 @@ export function CanvasSVG({
                     break;
             
                 default:
-                    if (!isCanvas) current_position = getRelMPos(e,ref.current!,VERTEXBOUNDS.min / 10);
+                    if (!isCanvas) current_position = getRelMPos(e,ref.current!,{width:VERTEXBOUNDS.min / 10,height:VERTEXBOUNDS.min / 10});
                     alterGraph(e,elmID,MoverUpdaters.scale,current_position);
                     break;
             }
@@ -212,7 +232,7 @@ export function CanvasSVG({
             if (penDown) {
                 if (deleteMode) deleteID(e);
                 else {
-                    const current_position = getRelMPos(e,ref.current!);
+                    const current_position = getRelMPos(e,ref.current!,dimentions);
 
                     setTrace(prev => [...prev,{
                         x: (current_position.x + canvas.position.x* canvas.scale) / canvas.scale, 
@@ -267,8 +287,8 @@ export function CanvasSVG({
                 return {
                     ...prev,
                     position : {
-                        x : graph.nodes[graph.active!].position.x - 50/prev.scale,
-                        y : graph.nodes[graph.active!].position.y - 50/prev.scale
+                        x : graph.nodes[graph.active!].position.x - (dimentions.width/2)/prev.scale,
+                        y : graph.nodes[graph.active!].position.y - (dimentions.height/2)/prev.scale
                     }
                 }
             })
@@ -285,20 +305,20 @@ export function CanvasSVG({
                 id={instanceID}
 
                 ref={ref}
-                style={{backgroundColor:"black", userSelect:'none',cursor: grabbed ? 'grabbing': 'default', border:"1px solid #16FF00"}} 
+                style={{backgroundColor:COLORS.primary, userSelect:'none',cursor: grabbed ? 'grabbing': 'default'}} 
                 xmlns="http://www.w3.org/2000/svg" 
-                viewBox={canvas.position.x + " " +canvas.position.y + " " + 100/canvas.scale + " " + 100/canvas.scale}>
+                viewBox={canvas.position.x + " " +canvas.position.y + " " + dimentions.width/canvas.scale + " " + dimentions.height/canvas.scale}>
                     
                     <g>
                         {Object.entries(graph.edges).map(([id,edge],idx) => <Edge key={'e'+idx} from={graph.nodes[edge.from]} to={graph.nodes[edge.to]} instanceID={id} scale={canvas.scale}></Edge>)}
                         {Object.entries(graph.nodes).map(([id,node],idx) => <Vertex key={'v'+idx} instanceID={id} node={node} scale={canvas.scale} isActive={graph.active == id} isHoovered={graph.hoover == id}></Vertex>)}
                     </g>
 
-                    {Grid(canvas)}
+                    {Grid(canvas, dimentions)}
 
                     {
                         trace.length &&
-                        <path strokeDasharray={0.5/canvas.scale} strokeOpacity={0.5} style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke='#16FF00' fill='none' strokeWidth={0.1/canvas.scale}></path>
+                        <path strokeDasharray={0.5/canvas.scale} strokeOpacity={0.5} style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke={COLORS.secondary} fill='none' strokeWidth={0.1/canvas.scale}></path>
                     }
             </svg>
         );

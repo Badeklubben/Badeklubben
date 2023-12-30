@@ -1,5 +1,12 @@
 import { Bound, Node } from "./definitions";
 
+export const COLORS = {
+    primary : '#1d252bff',
+    secondary : '#65e8ebff',
+    active : 'yellow',
+    hoover : 'orange'
+}
+
 export const CANVAS : Node = { 
     value : 'canvas',
     previosPosition : {x:0,y:0},
@@ -10,7 +17,7 @@ export const CANVAS : Node = {
 
 export const CANVASBOUNDS : Bound = {
     sensitivity: 0.1,
-    max: 5,
+    max: 10,
     min: 0.1,
     direction: 1     
 }
