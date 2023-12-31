@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {useEffect, useId, useState } from 'react';
 import {CanvasSVG } from './ui/SVGElements';
 import './style.css';
-import { Dimensions, Edge, Node } from './lib/definitions';
+import { Edge, Node } from './lib/definitions';
 import History from './ui/History';
 import { getConnectedNode } from './lib/graphTools';
 
@@ -17,6 +17,7 @@ export default function Grapher() {
     const [hoover, setHoover] = useState<string | null>(null);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
 
+    const [help, setHelp] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
     useEffect(() => {setLoaded(true);},[]);
 
@@ -33,78 +34,109 @@ export default function Grapher() {
         setHoover : setHoover
     }
 
-    return (
-        <div className="page-container">
-            <History graph={graphState}/>
-            <div style={{fontSize:'xx-large', marginBottom:10}}>This is the Grapher project</div>
-            <Link href="/lars" style={{color:'orange'}}><h1>Return</h1></Link>
-            <CanvasSVG instanceID={useId()} deleteMode={deleteMode} graph={graphState}/>
-            <div style={{display:'flex', flexDirection:'row',width:"100%", height: '100%', justifyContent:'space-evenly',margin:'0 0 10px 0', gap:'10px', overflow:'hidden'}}>
-                <div style={{display:'flex', flexDirection:'column',width:'300px', gap:'10px'}}>
-                    <div style={{fontSize:'x-large'}}>Nodes</div>
-                    <div>
-                        {Object.entries(nodes).map(([id,node],idx) => <div 
-                            key={'list'+id} 
-                            style={{color:id == active ? 'yellow' : id == hoover ? 'pink' : 'inherit'}} 
-                            onClick={() => setActive(prev => id)}
-                            onMouseOver={() => setHoover(prev => id)}>{node.value || id}</div>)}
-                    </div>
 
-                    { (active) &&
-                        <div>
-                            <div>Neighbours of {nodes[active].value || active}</div>
-                            {Object.entries(edges).map(([id,edge],idx) =>  {
-                                const nid = getConnectedNode(edge, active);
-                                return (nid) && <div 
-                                    key={'neighbour'+id} 
-                                    style={{color: nid == active ? 'yellow' : nid == hoover ? 'pink' : 'inherit'}} 
-                                    onClick={() => setActive(prev => nid)}
-                                    onMouseOver={() => setHoover(prev => nid)}>
-                                        {nodes[nid].value || nid}
-                                </div>})
+
+    return (
+        <div className="container">
+            <History graph={graphState}/>
+            <div className='header'>
+                <Link href="/lars"><h1 className='button'>Return</h1></Link>
+                <div style={{fontSize:'xx-large'}}>This is the Grapher project</div>
+                <div className='button' onClick={() => setHelp(prev => !prev)}>help</div>
+            </div>
+            <div className="body">
+                <div className="part">
+                    <div className='inner'>
+                        <div style={{fontSize:'large'}}>Nodes</div>
+                        <div className='list'>
+                            <div className='scrollable'>
+                                {Object.entries(nodes).map(([id,node],idx) => <div 
+                                    key={'list'+id} 
+                                    style={{color:id == active ? 'yellow' : id == hoover ? 'pink' : 'inherit'}} 
+                                    onClick={() => setActive(prev => id)}
+                                    onMouseOver={() => setHoover(prev => id)}>{node.value || id}</div>)}
+                            </div>
+                        </div>
+                    </div>
+                    <div className='inner'>
+                        <div style={{fontSize:'large'}} >Neighbours</div>
+                        <div className='list'>
+                            { active && <div className='scrollable'>
+                                {Object.entries(edges).map(([id,edge],idx) =>  {
+                                    const nid = getConnectedNode(edge, active);
+                                    return (nid) && <div 
+                                        key={'neighbour'+id} 
+                                        style={{color: nid == active ? 'yellow' : nid == hoover ? 'pink' : 'inherit'}} 
+                                        onClick={() => setActive(prev => nid)}
+                                        onMouseOver={() => setHoover(prev => nid)}>{nodes[nid].value || nid}</div>})}
+                                </div>
                             }
                         </div>
-                    }
-                    
+                    </div>        
+         
                 </div>
-
-           
-                <div style={{display:'flex', flexDirection:'column',width:'300px', gap:'10px'}}>
-                    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-evenly'}}>
+                <div className="part middle">
+                    <CanvasSVG instanceID={useId()} deleteMode={deleteMode} graph={graphState}/>
+                 </div>
+                <div className="part">                
+                    <div className='inner'>
+                        <div style={{fontSize:'large'}}>Settings</div>
+                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-evenly'}}>
                         <button style={{color:'orange', opacity:!deleteMode ? 0.5 : 1 }} onClick={() => setDeleteMode(prev => !prev)} disabled={deleteMode}>Delete</button>
                         <button style={{color:'orange', opacity:deleteMode ? 0.5 : 1 }} onClick={() => setDeleteMode(prev => !prev)} disabled={!deleteMode}>Draw</button>
                     </div>
+                    </div>
+                    <div className='inner'>
+                        <div style={{fontSize:'large'}}>Data</div>
+                    </div>
+                </div>
+                {help && <div className='help'>
                     <div>
-                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <div className='help-data'>
                             <div>LMB</div>
                             <div>drag & pan</div>
                         </div>
-                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <div className='help-data'>
                             <div>MMB</div>
                             <div>scale & zoom</div>
                         </div>
-                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <div className='help-data'>
                             <div>LMB+CRTL</div>
                             <div>select</div>
                         </div>
-                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <div className='help-data'>
                             <div>RMB</div>
                             <div>{deleteMode ? 'delete' : 'draw'}</div>
                         </div>
-                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <div className='help-data'>
                             <div>CTRL+Z</div>
                             <div>undo</div>
                         </div>
-                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <div className='help-data'>
                             <div>CTRL+SHIFT+Z</div>
                             <div>redo</div>
                         </div>
                     </div>
-                </div>
+                </div>}
             </div>
-
-                    
-            <div className={loaded ? 'curtain fade' : 'curtain'}>Grapher project</div>
+            <div className="footer">
+                <div className="part outer">
+                    <div style={{fontSize:'large'}}>Node {active && nodes[active].value}</div>
+                    {active && 
+                    <div>
+                        <div>ID: {active}</div>
+                        <div>X: {Math.round(nodes[active].position.x)} Y: {Math.round(nodes[active].position.y)}</div>
+                        <div>scale: {Math.round(nodes[active].scale)}</div>
+                    </div>}
+                </div>
+                <div className="part"><div style={{fontSize:'large'}}>Edge data?</div></div>
+                <div className="part"><div style={{fontSize:'large'}}>Tools?</div></div>
+                <div className="part outer"><div style={{fontSize:'large'}}>Output?</div></div>
+            </div>
+            <div className={loaded ? 'curtain fade' : 'curtain'}>Loading..</div>
         </div>
+
+
+    
     );
 }

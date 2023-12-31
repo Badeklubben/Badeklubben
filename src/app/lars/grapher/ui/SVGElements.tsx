@@ -89,7 +89,7 @@ function Edge({
             y2={to.position.y} 
             stroke={COLORS.secondary}
             opacity={0.5}
-            strokeWidth={0.3/scale}
+            strokeWidth={1/scale}
             />
     );
 }
@@ -318,7 +318,7 @@ export function CanvasSVG({
 
                     {
                         trace.length &&
-                        <path strokeDasharray={0.5/canvas.scale} strokeOpacity={0.5} style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke={COLORS.secondary} fill='none' strokeWidth={0.1/canvas.scale}></path>
+                        <path strokeDasharray={0.5/canvas.scale} strokeOpacity={1} style={{pointerEvents:'none'}} d={'M ' + trace.map((position,i) => position.x + ' ' + position.y).join(' ')} stroke={COLORS.secondary} fill='none' strokeWidth={1/canvas.scale}></path>
                     }
             </svg>
         );

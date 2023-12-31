@@ -1,22 +1,15 @@
 /* styles.css (or your preferred CSS file) */
 
+:root {
+    --main-color: #3b4c58ff;
+    --edges: rgba(0, 0, 0, 0.2);
+  }
 
 body, html {
     height: 100%;
     margin: 0;
-    overflow: hidden; /* Disable scrolling */
-
-}
-  
-.page-container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: whitesmoke;
-    background-color: #3b4c58ff;
+    padding: 0;
+    overflow: hidden;
 }
 
 .curtain {
@@ -24,7 +17,7 @@ body, html {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #3b4c58ff;
+    background-color: var(--main-color);
     font-size: xx-large;
     justify-content: center;
     align-items: center;
@@ -43,3 +36,125 @@ body, html {
       opacity: 0;
     }
   }
+
+
+
+.button {
+    margin: 0 10px 0 10px;
+    cursor: pointer;
+}
+
+.help {
+    position: absolute;
+    right: 0;
+    border: 1px solid var(--edges);
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    gap: 10px;
+    height: fit-content;
+    background-color: var(--main-color);
+    border-end-start-radius: 20px;
+    padding: 5px;
+}
+
+.help-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+
+.list {
+    overflow: scroll;
+}
+
+.scrollable {
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+
+.container {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--main-color);
+}
+
+.header {
+    height: 5vh; /* 5% of the viewport height */
+    background-color: var(--main-color);
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    width: 100vw;
+    flex: 1;
+    outline: 1px solid var(--edges);
+}
+
+.body {
+    flex: 0 0 70vh; /* 70% of the viewport height */
+    display: flex;
+    overflow: hidden;
+    outline: 1px solid var(--edges);
+}
+
+.body .part {
+    flex: 0 0 15vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+
+.body .part.middle {
+    flex: 0 0 70vw; /* Should equal body*/
+    justify-content: center;
+    align-items: center;
+}
+
+.footer {
+    flex: 0 0 25vh; /* 25% of the viewport height */
+    display: flex;
+    overflow: hidden;
+    outline: 1px solid var(--edges);
+}
+
+.footer .part {
+    flex: 0 0 35vw; 
+    box-sizing: border-box;
+    padding: 10px; 
+    outline: 1px solid var(--edges);
+}
+
+.footer .part.outer {
+    flex: 0 0 15vw; /*equal body part*/
+}
+
+.body .inner {
+    padding: 10px;
+    outline: 1px solid var(--edges);
+    flex: 0 0 35vh; /* half the body*/
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
