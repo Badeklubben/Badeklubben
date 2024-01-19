@@ -24,7 +24,18 @@ export default function Grapher() {
 
     const [help, setHelp] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
-    useEffect(() => {setLoaded(true);},[]);
+    const [suppordedDevice, setSupportedDevice] = useState<boolean>(false);
+    useEffect(() => {
+        setSupportedDevice(() => {
+            try{
+                document.createEvent('TouchEvent');
+                return false;
+            }catch(e){
+                return true;
+            }
+        })
+        setLoaded(true);
+    },[]);
 
     const graphState = {
         nodes: nodes, 
@@ -115,9 +126,7 @@ export default function Grapher() {
                 <div className="part outer"><div style={{fontSize:'large'}}>Output?</div></div>
             </div>
             <div className={loaded ? 'curtain fade' : 'curtain'}>Loading..</div>
+            {!suppordedDevice && <div className={'curtain'}>Sorry, touch-screen devices are not yet supported...</div>} 
         </div>
-
-
-    
     );
 }
