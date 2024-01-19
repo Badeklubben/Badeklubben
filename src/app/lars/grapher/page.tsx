@@ -6,6 +6,9 @@ import './style.css';
 import { Edge, Node } from './lib/definitions';
 import History from './ui/History';
 import { getConnectedNode } from './lib/graphTools';
+import ToggleButton from './ui/ToggleButton';
+import HelpBox from './ui/HelpBox';
+import { CONTROLS } from './lib/globals';
 
 export default function Grapher() {
 
@@ -16,6 +19,8 @@ export default function Grapher() {
     const [active, setActive] = useState<string | null>(null);
     const [hoover, setHoover] = useState<string | null>(null);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
+    const [directed, setDirected] = useState<boolean>(false);
+    const [weighted, setWeighted] = useState<boolean>(false);
 
     const [help, setHelp] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -31,7 +36,11 @@ export default function Grapher() {
         active : active,
         setActive: setActive,
         hoover : hoover,
-        setHoover : setHoover
+        setHoover : setHoover,
+        directed : directed,
+        setDirected: setDirected,
+        weighted: weighted,
+        setWeighted: setWeighted
     }
 
 
@@ -81,43 +90,15 @@ export default function Grapher() {
                 <div className="part">                
                     <div className='inner'>
                         <div style={{fontSize:'large'}}>Settings</div>
-                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-evenly'}}>
-                        <button style={{color:'orange', opacity:!deleteMode ? 0.5 : 1 }} onClick={() => setDeleteMode(prev => !prev)} disabled={deleteMode}>Delete</button>
-                        <button style={{color:'orange', opacity:deleteMode ? 0.5 : 1 }} onClick={() => setDeleteMode(prev => !prev)} disabled={!deleteMode}>Draw</button>
-                    </div>
+                        <ToggleButton state={deleteMode} setState={setDeleteMode} trueLabel='Delete' falseLabel='Draw'/>
+                        <ToggleButton state={directed} setState={setDirected} trueLabel='Directed' falseLabel='Undirected'/>
+                        <ToggleButton state={weighted} setState={setWeighted} trueLabel='Weighted' falseLabel='Unweighted'/>
                     </div>
                     <div className='inner'>
                         <div style={{fontSize:'large'}}>Data</div>
                     </div>
                 </div>
-                {help && <div className='help'>
-                    <div>
-                        <div className='help-data'>
-                            <div>LMB</div>
-                            <div>drag & pan</div>
-                        </div>
-                        <div className='help-data'>
-                            <div>MMB</div>
-                            <div>scale & zoom</div>
-                        </div>
-                        <div className='help-data'>
-                            <div>LMB+CRTL</div>
-                            <div>select</div>
-                        </div>
-                        <div className='help-data'>
-                            <div>RMB</div>
-                            <div>{deleteMode ? 'delete' : 'draw'}</div>
-                        </div>
-                        <div className='help-data'>
-                            <div>CTRL+Z</div>
-                            <div>undo</div>
-                        </div>
-                        <div className='help-data'>
-                            <div>CTRL+SHIFT+Z</div>
-                            <div>redo</div>
-                        </div>
-                    </div>
-                </div>}
+                <HelpBox controls={CONTROLS} active={help}/>
             </div>
             <div className="footer">
                 <div className="part outer">

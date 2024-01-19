@@ -20,6 +20,7 @@ export type Bound = {
 export type Edge = {
     from:string;
     to:string;
+    directed: boolean;
 };
 
 export type Drawing = {
@@ -51,6 +52,10 @@ export type GraphState = {
     setActive : React.Dispatch<React.SetStateAction<string | null>>,
     hoover : string | null,
     setHoover : React.Dispatch<React.SetStateAction<string | null>>,
+    directed : boolean,
+    setDirected : React.Dispatch<React.SetStateAction<boolean>>,
+    weighted : boolean,
+    setWeighted : React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 

@@ -7,6 +7,15 @@ export const COLORS = {
     hoover : 'orange'
 }
 
+export const CONTROLS = {
+    "LMB" : "drag & pan",
+    "MMB" : "scale & zoom",
+    "LMB+CTRL" : "select",
+    "RMB" : "delete / draw",
+    "CTRL+Z" : "undo",
+    "CTRL+SHIFT+Z" : "redo",
+}
+
 export const CANVAS : Node = { 
     value : 'canvas',
     previosPosition : {x:0,y:0},

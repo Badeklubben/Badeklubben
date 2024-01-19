@@ -35,6 +35,11 @@ export function genID(length: number = 10): string {
     return randomString;
 }
 
+export function normal(p1: Position, p2: Position) : Position {
+    const d = distance(p1,p2);
+    return {x: (-p2.y + p1.y)/d, y: (p2.x - p1.x)/d};
+}
+
 export function slope(x: number, xMax: number, xMin: number): number {
     const norm = (x - xMin) / (xMax - xMin);
     return contain((0.5 - Math.abs(norm - 0.5)) * 2,1,0);

@@ -1,6 +1,6 @@
 'use client';
 import React, { useRef, useState, MouseEvent, WheelEvent, useEffect } from 'react';
-import { getRelMPos } from '../lib/tools';
+import { getRelMPos, normal } from '../lib/tools';
 import  recognizer  from '../lib/recognizer';
 import {  Node, Position, NodeUpdater, MoverUpdaters, GraphState, Dimensions } from '../lib/definitions';
 import { CANVAS, CANVASBOUNDS, COLORS, VERTEXBOUNDS } from '../lib/globals';
@@ -8,7 +8,7 @@ import { DrawingToElement } from '../lib/graphTools';
 
 /*
 Notes:
-The html in page.tsx needs a cleanup
+There should be the same number of grid numbers regardless of screen_size
 */
 
 
@@ -72,23 +72,35 @@ function Edge({
     from,
     to,
     instanceID,
-    scale
+    scale,
+    delta
   }: {
     from: Node;
     to : Node;
-    instanceID : string,
-    scale: number
+    instanceID : string;
+    scale: number;
+    delta: Position
   }) 
   {
     return (
+        from != to ?
         <line 
             id={instanceID}
-            x1={from.position.x} 
-            y1={from.position.y} 
-            x2={to.position.x} 
-            y2={to.position.y} 
+            x1={from.position.x + delta.x * scale} 
+            y1={from.position.y + delta.y * scale} 
+            x2={to.position.x + delta.x * scale} 
+            y2={to.position.y + delta.y * scale} 
             stroke={COLORS.secondary}
             opacity={0.5}
+            strokeWidth={1/scale}
+            />
+        :
+        <path 
+            id={instanceID}
+            d={`M ${from.position.x} ${from.position.y}  A ${from.scale} ${from.scale} 0 1 1 ${from.position.x + 0.1} ${from.position.y + 0.1}`} 
+            stroke={COLORS.secondary}
+            opacity={0.5}
+            fill="none"
             strokeWidth={1/scale}
             />
     );
@@ -261,7 +273,7 @@ export function CanvasSVG({
         const endDrawing = () => {
             if (trace.length) {
                 const drawn = recognizer(trace);
-                DrawingToElement(drawn,graph);
+                DrawingToElement(drawn,graph, graph.directed);
             }
 
             setPenDown(() => false);
@@ -310,8 +322,8 @@ export function CanvasSVG({
                 viewBox={canvas.position.x + " " +canvas.position.y + " " + dimentions.width/canvas.scale + " " + dimentions.height/canvas.scale}>
                     
                     <g>
-                        {Object.entries(graph.edges).map(([id,edge],idx) => <Edge key={'e'+idx} from={graph.nodes[edge.from]} to={graph.nodes[edge.to]} instanceID={id} scale={canvas.scale}></Edge>)}
-                        {Object.entries(graph.nodes).map(([id,node],idx) => <Vertex key={'v'+idx} instanceID={id} node={node} scale={canvas.scale} isActive={graph.active == id} isHoovered={graph.hoover == id}></Vertex>)}
+                    {Object.entries(graph.edges).map(([id,edge],idx) => !(!graph.directed && edge.directed) && <Edge key={'e'+idx} from={graph.nodes[edge.from]} to={graph.nodes[edge.to]} delta={edge.directed ? normal(graph.nodes[edge.from].position,graph.nodes[edge.to].position) : {x:0,y:0}} instanceID={id} scale={canvas.scale}></Edge>)}
+                    {Object.entries(graph.nodes).map(([id,node],idx) => <Vertex key={'v'+idx} instanceID={id} node={node} scale={canvas.scale} isActive={graph.active == id} isHoovered={graph.hoover == id}></Vertex>)}
                     </g>
 
                     {Grid(canvas, dimentions)}
