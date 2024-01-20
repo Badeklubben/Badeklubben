@@ -10,8 +10,9 @@ export const COLORS = {
 export const CONTROLS = {
     "LMB" : "drag & pan",
     "MMB" : "scale & zoom",
-    "LMB+CTRL" : "select",
-    "RMB" : "delete / draw",
+    "LMB x 2" : "select",
+    "RMB" : "draw",
+    "RMB+CTRL" : "draw",
     "CTRL+Z" : "undo",
     "CTRL+SHIFT+Z" : "redo",
 }

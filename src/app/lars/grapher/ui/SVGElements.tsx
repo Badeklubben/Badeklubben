@@ -111,10 +111,8 @@ function Edge({
 //Exported functions
 export function CanvasSVG({ 
     instanceID,
-    deleteMode,
     graph,
     } : {
-    deleteMode: boolean; 
     instanceID : string;
     graph : GraphState,
     }) {
@@ -135,6 +133,14 @@ export function CanvasSVG({
             return (() => window.removeEventListener('keydown', updateDims));
         },[])
 
+        const [clicked, setClicked] = useState<string | null>(null);
+        useEffect(() => {
+            if (clicked){
+                setTimeout(() => {
+                    setClicked(() => null);
+                },250);
+            }
+        },[clicked])
 
         /**
          * Get the id of the element beeing handled
@@ -173,10 +179,11 @@ export function CanvasSVG({
 
             switch (method) {
                 case 'grab':
-                    if (e.ctrlKey) {
+                    if (elmID == clicked) {
                         graph.setActive(prev => isCanvas ? null : elmID);
                         break;
                     }
+                    setClicked(() => elmID);
                     setGrabbed(() => elmID);
                     alterGraph(e,elmID,MoverUpdaters.grab,current_position);
                     break;
@@ -224,7 +231,7 @@ export function CanvasSVG({
             if (penDown || grabbed) return
             //right-clicks means drawing or deleting
             if (e.button == 2) {
-                if (deleteMode) deleteID(e);
+                if (e.ctrlKey) deleteID(e);
                 setPenDown(() => true);
                 return;
             }
@@ -242,7 +249,10 @@ export function CanvasSVG({
             graph.setHoover(prev => elmID == instanceID ? null : elmID);
             //draw or delete
             if (penDown) {
-                if (deleteMode) deleteID(e);
+                if (e.ctrlKey){
+                    deleteID(e);
+                    if (trace.length) setTrace(() => []);
+                }
                 else {
                     const current_position = getRelMPos(e,ref.current!,dimentions);
 

@@ -12,8 +12,6 @@ import { CONTROLS } from './lib/globals';
 
 export default function Grapher() {
 
-    const [deleteMode, setDeleteMode] = useState(false);
-
     const [nodes, setNodes] = useState< {[id : string] : Node} >({});   
     const [edges, setEdges] = useState< {[id : string] : Edge} >({});
     const [active, setActive] = useState<string | null>(null);
@@ -96,12 +94,11 @@ export default function Grapher() {
          
                 </div>
                 <div className="part middle">
-                    <CanvasSVG instanceID={useId()} deleteMode={deleteMode} graph={graphState}/>
+                    <CanvasSVG instanceID={useId()} graph={graphState}/>
                  </div>
                 <div className="part">                
                     <div className='inner'>
                         <div style={{fontSize:'large'}}>Settings</div>
-                        <ToggleButton state={deleteMode} setState={setDeleteMode} trueLabel='Delete' falseLabel='Draw'/>
                         <ToggleButton state={directed} setState={setDirected} trueLabel='Directed' falseLabel='Undirected'/>
                         <ToggleButton state={weighted} setState={setWeighted} trueLabel='Weighted' falseLabel='Unweighted'/>
                     </div>
