@@ -86,10 +86,10 @@ function Edge({
         from != to ?
         <line 
             id={instanceID}
-            x1={from.position.x + delta.x * scale} 
-            y1={from.position.y + delta.y * scale} 
-            x2={to.position.x + delta.x * scale} 
-            y2={to.position.y + delta.y * scale} 
+            x1={from.position.x + delta.x} 
+            y1={from.position.y + delta.y } 
+            x2={to.position.x + delta.x } 
+            y2={to.position.y + delta.y } 
             stroke={COLORS.secondary}
             opacity={0.5}
             strokeWidth={1/scale}
@@ -112,9 +112,11 @@ function Edge({
 export function CanvasSVG({ 
     instanceID,
     graph,
+    showGrid,
     } : {
     instanceID : string;
     graph : GraphState,
+    showGrid : boolean
     }) {
         const [canvas, setCanvas] = useState<Node>(CANVAS);
         const [dimentions, setDimentions] = useState<Dimensions>({width:100,height:100});
@@ -246,7 +248,7 @@ export function CanvasSVG({
          */
         const drag = (e:MouseEvent) => {
             const elmID = getElementID(e,'edge');
-            graph.setHoover(prev => elmID == instanceID ? null : elmID);
+            if (!grabbed) graph.setHoover(prev => elmID == instanceID ? null : elmID);
             //draw or delete
             if (penDown) {
                 if (e.ctrlKey){
@@ -332,11 +334,11 @@ export function CanvasSVG({
                 viewBox={canvas.position.x + " " +canvas.position.y + " " + dimentions.width/canvas.scale + " " + dimentions.height/canvas.scale}>
                     
                     <g>
-                    {Object.entries(graph.edges).map(([id,edge],idx) => !(!graph.directed && edge.directed) && <Edge key={'e'+idx} from={graph.nodes[edge.from]} to={graph.nodes[edge.to]} delta={edge.directed ? normal(graph.nodes[edge.from].position,graph.nodes[edge.to].position) : {x:0,y:0}} instanceID={id} scale={canvas.scale}></Edge>)}
+                    {Object.entries(graph.edges).map(([id,edge],idx) => !(!graph.directed && edge.directed) && <Edge key={'e'+idx} from={graph.nodes[edge.from]} to={graph.nodes[edge.to]} delta={graph.directed ? normal(graph.nodes[edge.from].position,graph.nodes[edge.to].position) : {x:0,y:0}} instanceID={id} scale={canvas.scale}></Edge>)}
                     {Object.entries(graph.nodes).map(([id,node],idx) => <Vertex key={'v'+idx} instanceID={id} node={node} scale={canvas.scale} isActive={graph.active == id} isHoovered={graph.hoover == id}></Vertex>)}
                     </g>
 
-                    {Grid(canvas, dimentions)}
+                    {showGrid && Grid(canvas, dimentions)} 
 
                     {
                         trace.length &&

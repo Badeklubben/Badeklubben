@@ -22,6 +22,9 @@ export default function Grapher() {
 
     const [help, setHelp] = useState<boolean>(false);
     const [loaded, setLoaded] = useState<boolean>(false);
+
+    const [showGrid, setShowGrid] = useState<boolean>(false);
+
     const [suppordedDevice, setSupportedDevice] = useState<boolean>(false);
     useEffect(() => {
         setSupportedDevice(() => {
@@ -57,14 +60,47 @@ export default function Grapher() {
     return (
         <div className="container">
             <History graph={graphState}/>
-            <div className='header'>
-                <Link href="/lars"><h1 className='button'>Return</h1></Link>
-                <div style={{fontSize:'xx-large'}}>This is the Grapher project</div>
-                <div className='button' onClick={() => setHelp(prev => !prev)}>help</div>
+            <CanvasSVG instanceID={useId()} graph={graphState} showGrid={showGrid}/>
+   
+
+            <div className='floating v headerr'>
+                <div className='strip'>
+                    <Link href="/lars"><h1 className='button'>Return</h1></Link>
+                    <div style={{fontSize:'xx-large'}}>This is the Grapher project</div>
+                    <div className='button' onClick={() => setHelp(prev => !prev)}>help</div>
+                    
+                </div>
             </div>
-            <div className="body">
-                <div className="part">
-                    <div className='inner'>
+
+            {active && <div className='floating h headerr'>
+                <div className='card'>
+                    <div>
+                        <div>ID: {active}</div>
+                        <div>X: {Math.round(nodes[active].position.x)} Y: {Math.round(nodes[active].position.y)}</div>
+                        <div>scale: {Math.round(nodes[active].scale)}</div>
+                    </div>
+                    <div className='list-container'>
+                        <div style={{fontSize:'large'}} >Neighbours</div>
+                        <div className='list'>
+                           <div className='scrollable'>
+                                {Object.entries(edges).map(([id,edge],idx) =>  {
+                                    const nid = getConnectedNode(edge, active);
+                                    const show = !edge.directed;
+                                    return (nid && show) && <div 
+                                        key={'neighbour'+id} 
+                                        style={{color: nid == active ? 'yellow' : nid == hoover ? 'pink' : 'inherit'}} 
+                                        onClick={() => setActive(prev => nid)}
+                                        onMouseOver={() => setHoover(prev => nid)}>{nodes[nid].value || nid}</div>})}
+                            </div>
+                            
+                        </div>
+                    </div>  
+                </div>
+            </div>}
+
+            <div className='floating h footer'>
+                <div className='card'>
+                    <div className='list-container'>
                         <div style={{fontSize:'large'}}>Nodes</div>
                         <div className='list'>
                             <div className='scrollable'>
@@ -76,54 +112,37 @@ export default function Grapher() {
                             </div>
                         </div>
                     </div>
-                    <div className='inner'>
-                        <div style={{fontSize:'large'}} >Neighbours</div>
+                    <div className='list-container'>
+                        <div style={{fontSize:'large'}} >Edges</div>
                         <div className='list'>
-                            { active && <div className='scrollable'>
+                           <div className='scrollable'>
                                 {Object.entries(edges).map(([id,edge],idx) =>  {
-                                    const nid = getConnectedNode(edge, active);
-                                    return (nid) && <div 
+                                    const show = directed || !edge.directed;
+                                    return show && <div 
                                         key={'neighbour'+id} 
-                                        style={{color: nid == active ? 'yellow' : nid == hoover ? 'pink' : 'inherit'}} 
-                                        onClick={() => setActive(prev => nid)}
-                                        onMouseOver={() => setHoover(prev => nid)}>{nodes[nid].value || nid}</div>})}
-                                </div>
-                            }
+                                        style={{color:  'inherit'}}>
+                                            {nodes[edge.from].value + "-" + nodes[edge.to].value}
+                                        </div>})}
+                            </div>
+                            
                         </div>
-                    </div>        
-         
+                    </div>  
                 </div>
-                <div className="part middle">
-                    <CanvasSVG instanceID={useId()} graph={graphState}/>
-                 </div>
-                <div className="part">                
-                    <div className='inner'>
-                        <div style={{fontSize:'large'}}>Settings</div>
-                        <ToggleButton state={directed} setState={setDirected} trueLabel='Directed' falseLabel='Undirected'/>
-                        <ToggleButton state={weighted} setState={setWeighted} trueLabel='Weighted' falseLabel='Unweighted'/>
-                    </div>
-                    <div className='inner'>
-                        <div style={{fontSize:'large'}}>Data</div>
-                    </div>
-                </div>
-                <HelpBox controls={CONTROLS} active={help}/>
             </div>
-            <div className="footer">
-                <div className="part outer">
-                    <div style={{fontSize:'large'}}>Node {active && nodes[active].value}</div>
-                    {active && 
-                    <div>
-                        <div>ID: {active}</div>
-                        <div>X: {Math.round(nodes[active].position.x)} Y: {Math.round(nodes[active].position.y)}</div>
-                        <div>scale: {Math.round(nodes[active].scale)}</div>
-                    </div>}
+
+            <div className='floating v footer'>
+                <div className='strip'>
+                    <ToggleButton state={directed} setState={setDirected} label='D'/>
+                    <ToggleButton state={weighted} setState={setWeighted} label='W'/>
+                    <ToggleButton state={showGrid} setState={setShowGrid} label='G'/>
                 </div>
-                <div className="part"><div style={{fontSize:'large'}}>Edge data?</div></div>
-                <div className="part"><div style={{fontSize:'large'}}>Tools?</div></div>
-                <div className="part outer"><div style={{fontSize:'large'}}>Output?</div></div>
             </div>
-            <div className={loaded ? 'curtain fade' : 'curtain'}>Loading..</div>
-            {!suppordedDevice && <div className={'curtain'}>Sorry, touch-screen devices are not yet supported...</div>} 
+
+            <HelpBox controls={CONTROLS} active={help} setActive={setHelp}/>
+
+            {!suppordedDevice && <div className={'floating curtain'}>Sorry, touch-screen devices are not yet supported...</div>}             
+            <div className={loaded ? 'floating curtain fade' : 'floating curtain'}>Loading..</div>
+
         </div>
     );
 }

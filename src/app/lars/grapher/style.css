@@ -12,20 +12,135 @@ body, html {
     overflow: hidden;
 }
 
-.curtain {
+
+
+.button {
+    margin: 0 10px 0 10px;
+    cursor: pointer;
+    font-size: small;
+}
+
+.toggle-button {
     display: flex;
+    cursor: pointer;
+    outline: 1px solid white;
+    width: 2ch;
+    aspect-ratio: 1/1;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+
+
+.container {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    overflow: hidden;
+}
+
+
+
+.floating{
     position: absolute;
+    display: flex;
     width: 100%;
     height: 100%;
+    pointer-events: none;
+    opacity: 0.9;
+}
+.floating.v{
+    justify-content: center;
+}
+.floating.h{
+    align-items: center;
+}
+
+
+.floating.v.footer{
+    align-items: end;
+}
+.floating.v.headerr{
+    align-items: start;
+}
+.floating.h.footer{
+    justify-content: end;
+}
+.floating.h.headerr{
+    justify-content: start;
+}
+.floating.c{
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.floating .strip{
+    pointer-events: all;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin: 10px;
+    border-radius: 10px;
+    font-size: xx-large;
+    padding: 0px 1ch 0px 1ch;
+    background-color: var(--main-color);
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.floating .card{
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin: 10px;
+    height: 80%;
+    border-radius: 10px;
+    padding: 0px 1ch 0px 1ch;
+    background-color: var(--main-color);
+}
+
+
+.floating.curtain {
+    opacity: 1;
     background-color: var(--main-color);
     font-size: xx-large;
     justify-content: center;
     align-items: center;
 }
 
-.curtain.fade{
+.floating.curtain.fade{
     animation: fadeOut 2s ease forwards;
     pointer-events: none;
+}
+
+.floating.info {
+    pointer-events: all;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--edges);
+    width: 20%;
+    height: fit-content;
+    gap: 10px;
+    background-color: var(--main-color);
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.floating.info .data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.floating.info .title {
+    text-align: center;
+    font-size: xx-large;
 }
 
 @keyframes fadeOut {
@@ -39,38 +154,21 @@ body, html {
 
 
 
-.button {
-    margin: 0 10px 0 10px;
-    cursor: pointer;
-}
 
-.help {
-    position: absolute;
-    right: 0;
-    border: 1px solid var(--edges);
+.list-container {
+    border-bottom: 1px solid var(--edges);
+    flex: 0 0 50%; /* half the body*/
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    width: 300px;
-    gap: 10px;
-    height: fit-content;
-    background-color: var(--main-color);
-    border-end-start-radius: 20px;
-    padding: 5px;
+    overflow: hidden;
 }
 
-.help-data {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-
-
-.list {
+.list-container .list {
     overflow: scroll;
 }
 
-.scrollable {
+.list-container .list .scrollable {
     position: relative;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -79,82 +177,6 @@ body, html {
     margin: 0;
 }
 
-.list::-webkit-scrollbar {
+.list-container .list::-webkit-scrollbar {
     display: none;
-}
-
-
-
-
-
-.container {
-    min-height: 100vh;
-    min-width: 100vw;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background-color: var(--main-color);
-}
-
-.header {
-    height: 5vh; /* 5% of the viewport height */
-    background-color: var(--main-color);
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    align-items: center;
-    width: 100vw;
-    flex: 1;
-    outline: 1px solid var(--edges);
-}
-
-.body {
-    flex: 0 0 70vh; /* 70% of the viewport height */
-    display: flex;
-    overflow: hidden;
-    outline: 1px solid var(--edges);
-}
-
-.body .part {
-    flex: 0 0 15vw;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-
-
-.body .part.middle {
-    flex: 0 0 70vw; /* Should equal body*/
-    justify-content: center;
-    align-items: center;
-}
-
-.footer {
-    flex: 0 0 25vh; /* 25% of the viewport height */
-    display: flex;
-    overflow: hidden;
-    outline: 1px solid var(--edges);
-}
-
-.footer .part {
-    flex: 0 0 35vw; 
-    box-sizing: border-box;
-    padding: 10px; 
-    outline: 1px solid var(--edges);
-}
-
-.footer .part.outer {
-    flex: 0 0 15vw; /*equal body part*/
-}
-
-.body .inner {
-    padding: 10px;
-    outline: 1px solid var(--edges);
-    flex: 0 0 35vh; /* half the body*/
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
 }

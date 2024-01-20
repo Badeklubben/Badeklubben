@@ -14,7 +14,6 @@ export default function History({
         const savedGraph = loadData();
         if ( savedGraph ) {
             updateGraph(savedGraph);
-            graph.setActive(prev => Object.keys(savedGraph.nodes)[0]);
         };
         graph.setHasUnsavedChanges(true);
     }, []);
@@ -29,7 +28,7 @@ export default function History({
     //Save
     useEffect(() => {
         if ( !graph.hasUnsavedChanges ) return;
-        const g = {nodes:graph.nodes,edges:graph.edges};
+        const g = {nodes:graph.nodes,edges:graph.edges,weighted:graph.weighted,directed:graph.directed};
 
         if (history && history.graph.nodes === g.nodes && history.graph.edges === g.edges ) return;
         
@@ -44,6 +43,8 @@ export default function History({
     const updateGraph = (g : Graph) => {
         graph.setNodes((prev) => g.nodes);
         graph.setEdges((prev) => g.edges);
+        graph.setDirected((prev) => g.directed);
+        graph.setWeighted((prev) => g.weighted);
     }
 
     const undo = (e: KeyboardEvent) => {

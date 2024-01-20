@@ -11,22 +11,23 @@ export const getConnectedNode = (e: Edge,n: string) => {
 export const isEqualEdges = (e1: Edge, e2: Edge) => {
     const equal = e1.from == e2.from && e1.to == e2.to;
     const reversed = e1.to == e2.from && e1.from == e2.to;
-    if (equal) return 2;
+    if (equal) return 3;
+    if (reversed && e2.directed) return 2;
     if (reversed) return 1;
     return 0    
 }
 
 /**
  * 
- * @returns 0 : The edge does not exist | 1 : The reversed edge exists | 2 : the edge exists
+ * @returns 0 : The edge does not exist | 1 : The reversed edge exists | 2 : The reversed edge exists and is flagged as directed | 3 : the edge exists
  */
-export const containsEdge = (edges : Edge[], e: Edge) : 0 | 1 | 2 => {
+export const containsEdge = (edges : Edge[], e: Edge) : 0 | 1 | 2 | 3 => {
     let status = 0;
     for (let i = 0; i < edges.length; i++) {
         status = Math.max(status, isEqualEdges(e, edges[i]));
         if (status == 2) return 2
     }
-    return status as (0|1|2);
+    return status as (0|1|2|3);
 }
 
 const getLabels = (nodes : {[id: string] : Node}) => {
@@ -80,7 +81,7 @@ export function DrawingToElement(drawing : Drawing, graph: GraphState, directed 
     if (drawing.id == 'edge' || directed && (edge && edge.from == edge.to)) {
         if (edge){
             const edgeExists = containsEdge(Object.values(graph.edges),edge)
-            if(edgeExists == 2 || (edgeExists == 1 && !directed)) return
+            if(edgeExists == 3 || (edgeExists == 1 && !directed)) return
             else if (edgeExists == 1) edge.directed = true;
             graph.setEdges(prev => {
                 return {

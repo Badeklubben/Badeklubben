@@ -38,7 +38,10 @@ export type Node = {
 
 export type Graph = {
     nodes : {[id : string] : Node},
-    edges : {[id : string] : Edge}
+    edges : {[id : string] : Edge},
+    weighted : boolean,
+    directed: boolean
+    
 }
 
 export type GraphState = {
