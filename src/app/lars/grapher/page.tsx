@@ -85,7 +85,7 @@ export default function Grapher() {
                            <div className='scrollable'>
                                 {Object.entries(edges).map(([id,edge],idx) =>  {
                                     const nid = getConnectedNode(edge, active);
-                                    const show = !edge.directed;
+                                    const show = !edge.directed || (directed && edge.from == edge.to);
                                     return (nid && show) && <div 
                                         key={'neighbour'+id} 
                                         style={{color: nid == active ? 'yellow' : nid == hoover ? 'pink' : 'inherit'}} 

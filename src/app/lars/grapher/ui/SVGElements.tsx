@@ -7,8 +7,11 @@ import { CANVAS, CANVASBOUNDS, COLORS, VERTEXBOUNDS } from '../lib/globals';
 import { DrawingToElement } from '../lib/graphTools';
 
 /*
-Notes:
-There should be the same number of grid numbers regardless of screen_size
+Next steps:
+    - Clickable edegs
+    - Generalised lists
+    - Seperate double-click (hook?)
+    - There should be the same number of grid numbers regardless of screen_size (?)
 */
 
 
