@@ -11,7 +11,7 @@ export const LIST = {
         return ObjectList(
             "Neighbours",
             graph.edges,
-            getCallback(
+            GetCallback(
                 "neighbour_list",
                 graph,
                 (object,graph,nid) => graph.nodes[nid].value || nid,
@@ -24,7 +24,7 @@ export const LIST = {
         return ObjectList(
             "Edges",
             graph.edges,
-            getCallback(
+            GetCallback(
                 "edge_list",
                 graph,
                 (object,graph,nid) => graph.nodes[(object as Edge).from].value + "-" + graph.nodes[(object as Edge).to].value,
@@ -37,7 +37,7 @@ export const LIST = {
         return ObjectList(
             "Nodes",
             graph.nodes,
-            getCallback(
+            GetCallback(
                 "node_list",
                 graph,
                 (object,graph,nid) => {return (object as Node).value || nid},
@@ -61,7 +61,7 @@ function ObjectList(title:string, objects: {[id: string]: unknown}, callback : C
 }
 
 
-function getCallback(key:string, graph : GraphState, label: InnerCallback, getId: InnerCallback | null = null, show: ShowCallback | null = null) : Callback {
+function GetCallback(key:string, graph : GraphState, label: InnerCallback, getId: InnerCallback | null = null, show: ShowCallback | null = null) : Callback {
     return ([id, object],idx) => {
         const nid = getId ? getId(object,graph,id) : id;
         const visible = show ? show(object,graph) : true;
