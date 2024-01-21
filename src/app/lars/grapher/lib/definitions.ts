@@ -20,6 +20,7 @@ export type Bound = {
 export type Edge = {
     from:string;
     to:string;
+    weight:number;
     directed: boolean;
 };
 

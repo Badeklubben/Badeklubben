@@ -3,7 +3,7 @@ import { Bound, Node } from "./definitions";
 export const COLORS = {
     primary : '#1d252bff',
     secondary : '#65e8ebff',
-    active : 'yellow',
+    active : 'white',
     hoover : 'orange'
 }
 

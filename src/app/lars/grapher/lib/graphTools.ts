@@ -5,7 +5,12 @@ import { centroid, contain, distance, genID, radius } from "./tools";
 export const getConnectedNode = (e: Edge,n: string) => {
     if (e.from == n) return e.to;
     if (e.to == n) return e.from;
-    return null;
+    return "";
+}
+
+
+export const isEdge = (id:string) : boolean => {
+    return id.startsWith("edge")
 }
 
 export const isEqualEdges = (e1: Edge, e2: Edge) => {
@@ -58,7 +63,7 @@ function makeVertex(points : Position[], graph: Graph) : Node{
     }
 } 
 
-function makeEdge(points: Position[], graph : Graph){
+function makeEdge(points: Position[], graph : Graph) : Edge | null{
     let start : null | string = null;
     let end : null | string = null;
 
@@ -72,7 +77,7 @@ function makeEdge(points: Position[], graph : Graph){
         if (end && start) return;
     });
 
-    return (start && end) ? {from: start,to: end, directed: start == end} : null;
+    return (start && end) ? {from: start,to: end,weight:0, directed: false} : null;
 } 
 
 export function DrawingToElement(drawing : Drawing, graph: GraphState, directed : boolean) {

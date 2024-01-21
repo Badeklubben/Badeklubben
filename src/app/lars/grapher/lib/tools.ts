@@ -35,6 +35,16 @@ export function genID(length: number = 10): string {
     return randomString;
 }
 
+/**
+ * Get the id of the element beeing handled
+ * @param e mouse event
+ * @param ignoreWithPrefix if the element's id starts with this a default value will be returned (instanceID)
+ * @returns 
+ */
+export const getElementID = (e:MouseEvent) => {
+    return (e.target as HTMLElement).getAttribute('id')!;;
+}
+
 export function normal(p1: Position, p2: Position) : Position {
     const d = distance(p1,p2);
     return {x: (-p2.y + p1.y)/d, y: (p2.x - p1.x)/d};
@@ -43,6 +53,18 @@ export function normal(p1: Position, p2: Position) : Position {
 export function slope(x: number, xMax: number, xMin: number): number {
     const norm = (x - xMin) / (xMax - xMin);
     return contain((0.5 - Math.abs(norm - 0.5)) * 2,1,0);
+}
+export function addPos(p1: Position, p2: Position) : Position {
+    return {x: p1.x + p2.x, y: p1.y + p2.y};
+}
+export function subPos(p1: Position, p2: Position) : Position {
+    return {x: p1.x - p2.x, y: p1.y - p2.y};
+}
+
+export function offsetBy(p1: Position, p2: Position, offset: number) : Position {
+    const vect = subPos(p2,p1);
+    const d = distance(p1,p2);
+    return {x: p1.x + vect.x - vect.x * offset / d, y: p1.y + vect.y - vect.y * offset / d};
 }
 
 export function centroid(points: Position[]) {

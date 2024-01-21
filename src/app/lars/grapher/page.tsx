@@ -1,14 +1,15 @@
 'use client';
 import Link from 'next/link';
 import {useEffect, useId, useState } from 'react';
-import {CanvasSVG } from './ui/SVGElements';
+import {CanvasSVG } from './ui/CanvasSVG';
 import './style.css';
 import { Edge, Node } from './lib/definitions';
 import History from './ui/History';
-import { getConnectedNode } from './lib/graphTools';
+import { getConnectedNode, isEdge } from './lib/graphTools';
 import ToggleButton from './ui/ToggleButton';
 import HelpBox from './ui/HelpBox';
 import { CONTROLS } from './lib/globals';
+import { LIST } from './ui/ObjectList';
 
 export default function Grapher() {
 
@@ -71,62 +72,33 @@ export default function Grapher() {
                     
                 </div>
             </div>
-
+     
             {active && <div className='floating h headerr'>
-                <div className='card'>
-                    <div>
-                        <div>ID: {active}</div>
-                        <div>X: {Math.round(nodes[active].position.x)} Y: {Math.round(nodes[active].position.y)}</div>
-                        <div>scale: {Math.round(nodes[active].scale)}</div>
-                    </div>
-                    <div className='list-container'>
-                        <div style={{fontSize:'large'}} >Neighbours</div>
-                        <div className='list'>
-                           <div className='scrollable'>
-                                {Object.entries(edges).map(([id,edge],idx) =>  {
-                                    const nid = getConnectedNode(edge, active);
-                                    const show = !edge.directed || (directed && edge.from == edge.to);
-                                    return (nid && show) && <div 
-                                        key={'neighbour'+id} 
-                                        style={{color: nid == active ? 'yellow' : nid == hoover ? 'pink' : 'inherit'}} 
-                                        onClick={() => setActive(prev => nid)}
-                                        onMouseOver={() => setHoover(prev => nid)}>{nodes[nid].value || nid}</div>})}
-                            </div>
-                            
+                {isEdge(active) ?
+                    <div className='card'>
+                        <div>
+                            <div>ID: {active}</div>
+                            <div>{nodes[edges[active].from].value} - {nodes[edges[active].to].value}</div>
+                            {weighted && <div>Weight: {edges[active].weight}</div>}
                         </div>
-                    </div>  
-                </div>
+                    </div>
+                    :
+                    <div className='card'>
+                        <div>
+                            <div>ID: {active}</div>
+                            <div>X: {Math.round(nodes[active].position.x)} Y: {Math.round(nodes[active].position.y)}</div>
+                            <div>scale: {Math.round(nodes[active].scale)}</div>
+                        </div>
+                        {LIST.neighbours(graphState)}
+                    </div>
+                }
             </div>}
+    
 
             <div className='floating h footer'>
                 <div className='card'>
-                    <div className='list-container'>
-                        <div style={{fontSize:'large'}}>Nodes</div>
-                        <div className='list'>
-                            <div className='scrollable'>
-                                {Object.entries(nodes).map(([id,node],idx) => <div 
-                                    key={'list'+id} 
-                                    style={{color:id == active ? 'yellow' : id == hoover ? 'pink' : 'inherit'}} 
-                                    onClick={() => setActive(prev => id)}
-                                    onMouseOver={() => setHoover(prev => id)}>{node.value || id}</div>)}
-                            </div>
-                        </div>
-                    </div>
-                    <div className='list-container'>
-                        <div style={{fontSize:'large'}} >Edges</div>
-                        <div className='list'>
-                           <div className='scrollable'>
-                                {Object.entries(edges).map(([id,edge],idx) =>  {
-                                    const show = directed || !edge.directed;
-                                    return show && <div 
-                                        key={'neighbour'+id} 
-                                        style={{color:  'inherit'}}>
-                                            {nodes[edge.from].value + "-" + nodes[edge.to].value}
-                                        </div>})}
-                            </div>
-                            
-                        </div>
-                    </div>  
+                    {LIST.nodes(graphState)}
+                    {LIST.edges(graphState)} 
                 </div>
             </div>
 
