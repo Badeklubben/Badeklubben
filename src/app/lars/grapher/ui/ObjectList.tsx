@@ -7,7 +7,7 @@ export type InnerCallback = (object:unknown, graph: GraphState, id:string) => st
 export type ShowCallback = (object:unknown, graph: GraphState) => boolean;
 
 export const LIST = {
-    neighbours : (graph: GraphState) =>  { 
+    neighbours : function(graph: GraphState){ 
         return ObjectList(
             "Neighbours",
             graph.edges,
@@ -20,7 +20,7 @@ export const LIST = {
             )
         )
     },
-    edges : (graph: GraphState) =>  { 
+    edges : function(graph: GraphState){ 
         return ObjectList(
             "Edges",
             graph.edges,
@@ -33,7 +33,7 @@ export const LIST = {
             )
         )
     },
-    nodes : (graph: GraphState) =>  { 
+    nodes : function(graph: GraphState){ 
         return ObjectList(
             "Nodes",
             graph.nodes,
@@ -62,7 +62,7 @@ function ObjectList(title:string, objects: {[id: string]: unknown}, callback : C
 
 
 function GetCallback(key:string, graph : GraphState, label: InnerCallback, getId: InnerCallback | null = null, show: ShowCallback | null = null) : Callback {
-    return ([id, object],idx) => {
+    return function([id, object],idx){
         const nid = getId ? getId(object,graph,id) : id;
         const visible = show ? show(object,graph) : true;
         return (nid && visible) && <div
