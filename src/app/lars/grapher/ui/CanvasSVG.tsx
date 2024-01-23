@@ -11,7 +11,7 @@ import Grid from './Grid';
 
 /*
 Next steps:
-    - Edit labels and weights
+    - Edit labels and weightss
 */
 
 export function CanvasSVG({ 
