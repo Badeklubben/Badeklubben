@@ -62,7 +62,7 @@ function ObjectList(title:string, objects: {[id: string]: unknown}, callback : C
 
 
 function GetCallback(key:string, graph : GraphState, label: InnerCallback, getId: InnerCallback | null = null, show: ShowCallback | null = null) : Callback {
-    return function([id, object],idx){
+    return function CBack([id, object],idx){
         const nid = getId ? getId(object,graph,id) : id;
         const visible = show ? show(object,graph) : true;
         return (nid && visible) && <div
