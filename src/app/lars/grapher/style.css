@@ -1,0 +1,182 @@
+/* styles.css (or your preferred CSS file) */
+
+:root {
+    --main-color: #3b4c58ff;
+    --edges: rgba(0, 0, 0, 0.2);
+  }
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+
+.button {
+    margin: 0 10px 0 10px;
+    cursor: pointer;
+    font-size: small;
+}
+
+.toggle-button {
+    display: flex;
+    cursor: pointer;
+    outline: 1px solid white;
+    width: 2ch;
+    aspect-ratio: 1/1;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+
+
+.container {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    overflow: hidden;
+}
+
+
+
+.floating{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.9;
+}
+.floating.v{
+    justify-content: center;
+}
+.floating.h{
+    align-items: center;
+}
+
+
+.floating.v.footer{
+    align-items: end;
+}
+.floating.v.headerr{
+    align-items: start;
+}
+.floating.h.footer{
+    justify-content: end;
+}
+.floating.h.headerr{
+    justify-content: start;
+}
+.floating.c{
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.floating .strip{
+    pointer-events: all;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin: 10px;
+    border-radius: 10px;
+    font-size: xx-large;
+    padding: 0px 1ch 0px 1ch;
+    background-color: var(--main-color);
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.floating .card{
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    width: 20ch;
+    margin: 10px;
+    height: 80%;
+    border-radius: 10px;
+    padding: 0px 1ch 0px 1ch;
+    background-color: var(--main-color);
+}
+
+
+.floating.curtain {
+    opacity: 1;
+    background-color: var(--main-color);
+    font-size: xx-large;
+    justify-content: center;
+    align-items: center;
+}
+
+.floating.curtain.fade{
+    animation: fadeOut 2s ease forwards;
+    pointer-events: none;
+}
+
+.floating.info {
+    pointer-events: all;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--edges);
+    width: 20%;
+    height: fit-content;
+    gap: 10px;
+    background-color: var(--main-color);
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.floating.info .data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.floating.info .title {
+    text-align: center;
+    font-size: xx-large;
+}
+
+@keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+
+
+
+.list-container {
+    border-bottom: 1px solid var(--edges);
+    flex: 0 0 50%; /* half the body*/
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.list-container .list {
+    overflow: scroll;
+}
+
+.list-container .list .scrollable {
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-container .list::-webkit-scrollbar {
+    display: none;
+}

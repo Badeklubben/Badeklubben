@@ -9,6 +9,10 @@ import { useEffect } from "react";
 import { getForm } from "../../lib/db-functions";
 import { auth } from "../../../config/firebase";
 
+// Temp imports
+import { db } from "../../../config/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+
 export default function Form({ params }: any) {
     const user = auth.currentUser;
     // Router for redirecting
@@ -61,8 +65,7 @@ export default function Form({ params }: any) {
                 "målt-og": måltOG,
                 tappedato: tappeDato,
             } as unknown as BryggeskjemaDocument;
-            console.log(data);
-            await updateForm(data);
+            await updateForm(data, params.id);
             router.push("/stian/brygging/home/profile");
         } catch (error) {
             console.error(error);

@@ -35,7 +35,6 @@ export const AuthContextProvider = ({
 
     const router = useRouter();
 
-    // Update the state depending on auth
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {

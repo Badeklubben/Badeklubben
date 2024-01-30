@@ -43,10 +43,14 @@ export async function createForm(form: BryggeskjemaDocument) {
     }
 }
 
-export async function updateForm(form: BryggeskjemaDocument) {
+export async function updateForm(form: BryggeskjemaDocument, id: string) {
     try {
-        const bryggDoc = doc(db, "bryggeskjema", form.id);
-        await updateDoc(bryggDoc, { "batch-navn": "What" });
+        const bryggDoc = doc(db, "bryggeskjema", id);
+        // Lmao this interface worked, idk how
+        interface BryggeskjemaDocument {
+            [key: string]: any;
+        }
+        await updateDoc(bryggDoc, form as BryggeskjemaDocument);
     } catch (error) {
         console.log(error);
     }
