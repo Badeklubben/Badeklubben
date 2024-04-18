@@ -1,0 +1,198 @@
+:root{
+    --background-color : #96CEB4;
+    --header-color: #D9534F;
+    --main-color: #FFEEAD;
+    --label-pad: 10px;
+    --b-radius: 10px;
+}
+
+body, html {
+    margin: 0;
+    padding: 1vw;
+    background: none;
+    background-color: var(--background-color);
+}
+
+/*ActionBox*/
+
+.action-box {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    padding: calc(1ch + var(--label-pad));
+}
+
+.action-box .label-box {
+    position: absolute;
+    background-color: var(--header-color);
+    border-radius: var(--b-radius);
+    width: fit-content;
+    z-index: 1;
+}
+.action-box .label-box.a {
+    left: calc(1ch - var(--label-pad));
+    top: calc(1ch - var(--label-pad));
+}
+
+.action-box .label-box.b {
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+.action-box .label-box.b:hover {
+    opacity: 0.8;
+}
+
+.action-box .label-box .label {
+    color: var(--main-color);
+    text-wrap: nowrap;
+    text-align: center;
+    padding: var(--label-pad);
+    user-select: none;
+}
+
+.action-box .content {
+    position: relative;
+    background-color: var(--main-color);
+    color: var(--header-color);
+    width: 300px;
+    height: fit-content;
+    border-radius: var(--b-radius);
+    padding: 1ch;
+    padding-top: calc(2ch + var(--label-pad));
+    padding-bottom: calc(2ch + var(--label-pad));
+    z-index: 0;
+}
+
+/*PropField*/
+
+.prop-field{
+    height: fit-content;
+}
+
+.prop-field .label {
+    font-weight: bold;
+    color: var(--header-color);
+    text-wrap: nowrap;
+    text-align: start;
+    user-select: none;
+}
+
+.prop-field .settings {
+    border-top: 1px solid var(--header-color);
+    border-radius: 0%;
+}
+
+/*TextInput*/
+
+.text-input{
+    position: relative;
+    display: flex;
+}
+
+.text-input .label{
+    margin-left: 1ch;
+    font-weight: normal;
+}
+
+.text-input .input{
+    position: absolute;
+    background-color: transparent;
+    border-bottom: 1px dashed var(--header-color);
+    outline: none;
+    width: 60%;
+    right: 0%;
+}
+
+/*Choice*/
+
+.choice {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    cursor: pointer;
+    justify-content:space-between;
+}
+
+.choice .option{
+    display: flex;
+    padding-left: 1ch;
+    align-items: center;
+}
+
+.choice .option .label {
+    font-weight: normal;
+}
+.choice .option .checkbox{
+    display: flex;
+    margin-left: 3ch;
+    width: 2ch;
+    height: 2ch;
+    outline: 1px solid var(--header-color);
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.choice .option .checkbox .mark{
+    width: 80%;
+    height: 80%;
+    border-radius: 5px;
+    background-color: var(--header-color);
+}
+
+/*Dropdown*/
+
+.dropdown{
+    position: relative;
+    display: flex;
+    user-select: none;
+}
+.dropdown .label{
+    margin-left: 1ch;
+    font-weight: normal;
+}
+
+
+.dropdown .container {
+    position: relative;
+    cursor: pointer;
+}
+  
+.dropdown .container .dropbtn {
+    position: absolute;
+    right: 0;
+}
+  
+
+.dropdown .container .dropdown-content {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 0;
+    background-color: var(--main-color);
+    outline: 1px solid var(--header-color);
+    overflow-x: scroll;
+    max-width: 100%;
+    z-index: 1;
+}
+
+.dropdown .container .dropdown-content.hidden {
+    display: none;
+}
+
+
+  
+.dropdown .container .dropdown-content .value {
+    text-decoration: none;
+    display: block;
+    padding-left: 1ch;
+    padding-right: 1ch;
+}
+  
+.dropdown .container .dropdown-content .value:hover {
+    font-weight: bold;
+}
+  
+
+  
