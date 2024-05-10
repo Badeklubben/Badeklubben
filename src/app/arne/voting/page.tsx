@@ -100,7 +100,7 @@ export default function Arne() {
 
     const handleChange = (event : SelectChangeEvent<number>, index : number) => {
         const newVotes: number[] = [...votes];
-        newVotes[index] = event.target.value;
+        newVotes[index] = Number(event.target.value);
         setVotes(newVotes);
     };
 
@@ -132,7 +132,7 @@ export default function Arne() {
             </Box>
             <br/>
             <Input onChange={(e) => setUsername(e.target.value)} placeholder={"Skriv ditt navn her"}/>
-            <Typography colorText={"000"}>Skriv navnet ditt slik: Arne</Typography>
+            <Typography>Skriv navnet ditt slik: Arne</Typography>
             <br/>
             <Button onClick={handleVote} variant={"contained"}>Send inn stemme</Button>
 
