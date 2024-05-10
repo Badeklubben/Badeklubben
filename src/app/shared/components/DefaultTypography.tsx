@@ -6,12 +6,14 @@ interface DefaultTypographyProps {
     children: React.ReactNode;
     href?: string;
     colorText?: string;
+    fontWeight?: number;
 }
 
-const DefaultTypography: React.FC<DefaultTypographyProps> = ({ children, href, colorText = "white" }) => {
+const DefaultTypography: React.FC<DefaultTypographyProps> = (
+    { children, href, colorText = "white", fontWeight = 400  }) => {
     return (
         <Typography
-            variant="h5"
+            variant= "h5"
             noWrap
             component={href ? 'a' : 'span'}
             href={href}
@@ -19,8 +21,8 @@ const DefaultTypography: React.FC<DefaultTypographyProps> = ({ children, href, c
                 mr: 2,
                 flexGrow: 1,
                 fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
+                fontWeight: fontWeight,
+                letterSpacing: '.1rem',
                 color: colorText,
             }}
         >
