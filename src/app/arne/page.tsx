@@ -24,6 +24,14 @@ export default function Arne() {
                     Velg telefonnummer!
                 </DefaultTypography>
             </Link>
+            <br/>
+            <Link href={"/arne/voting"}>
+                <DefaultTypography fontWeight={700} colorText={"#000"}>Stem på leilighet</DefaultTypography>
+            </Link>
+            <br/>
+            <Link href={"/arne/fb_test"}>
+                <DefaultTypography fontWeight={700} colorText={"#000"}>Test firebase!</DefaultTypography>
+            </Link>
 
 
         </Box>
