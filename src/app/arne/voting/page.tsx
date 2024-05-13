@@ -1,88 +1,88 @@
 'use client'
 import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
 import Link from "next/link";
-import React, {useState} from "react";
-import { Box, Stack, MenuItem, FormControl, Select, SelectChangeEvent, Typography, Input} from "@mui/material"
+import React, {useEffect, useState} from "react";
+import {
+    Box,
+    MenuItem,
+    FormControl,
+    Select,
+    SelectChangeEvent,
+    Grid,
+    Typography,
+    Input,
+    Card,
+    CardContent,
+    Skeleton
+} from "@mui/material"
 import Button from '@mui/material/Button';
 import {db} from "../../arne/config/firebase_a";
-import {getDocs, collection, query, addDoc, deleteDoc, doc, where} from "firebase/firestore";
+import {collection, addDoc} from "firebase/firestore";
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase_a"
+import {signInWithEmailAndPassword} from "firebase/auth";
+import {auth} from "../config/firebase_a"
+import {getData} from "@/app/arne/voting/getData";
+import {apartments} from "@/app/arne/voting/apartments";
 
-const registerUser = async (email : string, password :string) => {
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        console.log("Registrert bruker:", userCredential.user);
-    } catch (error) {
-        console.error("Feil ved registrering:");
+interface ResultType {
+    scores: {
+        [key: string]: {
+            1: number;
+            2: number;
+            3: number;
+            4: number;
+        }
     }
-};
-
-const loginUser = async (usr : string, password :string) => {
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, usr, password);
-        console.log("Logget inn bruker:", userCredential.user);
-    } catch (error) {
-        console.error("Feil ved innlogging:");
-    }
-};
-
+}
 export default function Arne() {
     const [votes, setVotes] = useState([0, 0, 0, 0]);  // Initialtilstand for rangeringer
     const [usr, setUsr] = useState("");
     const [pass, setPass] = useState("");
-    const apartments = [
-        {
-            id: 0,
-            name: "a",
-            link: "https://www.finn.no/reise/feriehus-hytteutleie/ad.html?finnkode=300229923",
-            price: 41519,
-            beds: 11,
-            img: "/img/ap1"
-        },
-        {
-            id: 1,
-            name: "b",
-            link: "https://www.finn.no/reise/feriehus-hytteutleie/ad.html?finnkode=300375762&ci=2",
-            price: 46140,
-            beds: 12,
-            img: "/img/ap2"
-        },
-        {
-            id: 2,
-            name: "c",
-            link: "https://www.finn.no/reise/feriehus-hytteutleie/ad.html?finnkode=300346121&ci=37",
-            price: 45845,
-            beds: 12,
-            img: "/img/ap3"
-
-        },
-        {
-            id: 3,
-            name: "d",
-            link: "https://www.finn.no/reise/feriehus-hytteutleie/ad.html?finnkode=303523567&ci=21",
-            price: 28769,
-            beds: 12,
-            img: "/img/ap4"
-        }
-    ]
+    const [infoText, setInfoText] = useState("Skriv navnet ditt slik: Arne")
+    const [results, setResults] = useState<ResultType | null>(null);
     const [username, setUsername] = useState("");
+    const [logInMessage, setLogInMessage] = useState("Log in - kun admin")
+    const [dbInfo, setdbInfo] = useState("")
+    const [loading, setLoading] = useState(true);
 
+    const objectNames = ['a', 'b', 'c', 'd'];
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getData();
+            // @ts-ignore
+            setResults(data);
+            console.log(data)
+            setLoading(false);
+
+        };
+        fetchData();
+    }, []);
+
+    const loginUser = async (usr: string, password: string) => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, usr, password);
+            setLogInMessage('Logged in as' + userCredential.user.email)
+            setdbInfo("")
+            console.log("Logget inn bruker:", userCredential.user);
+        } catch (error) {
+            console.error("Feil ved innlogging:");
+        }
+    };
 
     const handleVote = async () => {
 
         if (votes.includes(0)) {
-            alert('Vennligst ranger alle kandidatene.');
+            setInfoText('Vennligst ranger alle kandidatene.');
             return;
         }
-        if (username == ""){
-            alert("Vennligst fyll inn navn")
+        if (username == "") {
+            setInfoText("Vennligst fyll inn navn")
             return
         }
         const uniqueVotes = new Set(votes);
         if (uniqueVotes.size !== votes.length) {
-            alert('Duplikate rangeringer er ikke tillatt.');
+            setInfoText('Duplikate rangeringer er ikke tillatt.');
             return;
         }
         try {
@@ -91,21 +91,22 @@ export default function Arne() {
                 votes,
                 timestamp: new Date()
             });
-            alert('Din stemme er registrert!');
+            setInfoText(`Takk for din stemme ${username}`)
         } catch (error) {
-            console.error('Feil ved lagring av stemme:', error);
-            alert('Det oppstod en feil under lagring av stemmen.');
+            setInfoText('Det oppstod en feil under lagring av stemmen.');
         }
     };
 
-    const handleChange = (event : SelectChangeEvent<number>, index : number) => {
+    const handleChange = (event: SelectChangeEvent<number>, index: number) => {
         const newVotes: number[] = [...votes];
         newVotes[index] = Number(event.target.value);
         setVotes(newVotes);
     };
 
+    // @ts-ignore
+
     return (
-        <Box >
+        <Box>
             <DefaultNavbar/>
             <DefaultTypography colorText={"000"} fontWeight={700}>Vote på din favoritt!</DefaultTypography>
             <Box sx={{display: 'flex'}}>
@@ -132,22 +133,76 @@ export default function Arne() {
             </Box>
             <br/>
             <Input onChange={(e) => setUsername(e.target.value)} placeholder={"Skriv ditt navn her"}/>
-            <Typography>Skriv navnet ditt slik: Arne</Typography>
+            <Typography>{infoText}</Typography>
             <br/>
             <Button onClick={handleVote} variant={"contained"}>Send inn stemme</Button>
-
-
-            <Box sx={{display: 'column', marginTop:"100px", boxSize:"10px"}}>
+            <Box sx={{display: 'column', marginTop: "100px"}}>
                 <Typography>
-                    Log in for å sjekke resultatene (kun admin)
+                    {dbInfo}
                 </Typography>
-                <Input onChange={(e) => setUsr(e.target.value)} placeholder={"Brukernavn"} ></Input>
+            </Box>
+            <Box>
+                <Grid container direction="row">
+                    {objectNames.map((key) => (
+                        <Grid item key={key} md={3}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h5" component="div">
+                                        Leilighet {key.toUpperCase()}
+                                    </Typography>
+                                    <Typography sx={{mb: 1.5}} color="text.secondary">
+                                        Har fått:
+                                    </Typography>
+                                    {loading  ? (
+                                        <>
+                                            <Skeleton variant="text" width="80%"/>
+                                            <Skeleton variant="text" width="80%"/>
+                                            <Skeleton variant="text" width="80%"/>
+                                            <Skeleton variant="text" width="80%"/>
+                                        </>
+                                    ) : (
+                                        results ? (
+                                            <>
+                                                <Typography variant="body2">
+                                                    {results.scores[key][1]} førsteplasser
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    {results.scores[key][2]} andreplasser
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    {results.scores[key][3]} tredjeplasser
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    {results.scores[key][4]} fjerdeplasser
+                                                </Typography>
+                                            </>
+                                        ) : (
+                                            <Typography variant="body2">
+                                                Ingen data tilgjengelig.
+                                            </Typography>
+                                        )
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
+
+            <Box hidden={true}>
+                <br/><br/>
+
+                <Typography>
+                    {logInMessage}
+                </Typography>
+                <Input onChange={(e) => setUsr(e.target.value)} placeholder={"Brukernavn"}></Input>
                 <br/>
                 <Input onChange={(e) => setPass(e.target.value)} placeholder={"Passord"}/>
-                <br/>
-                <br/>
-                <Button onClick={() => loginUser(usr,pass)} variant={'contained'}>Log in!</Button>
+                <br/><br/>
+                <Button onClick={() => loginUser(usr, pass)} variant={'contained'}>Log in!</Button>
             </Box>
+
+
         </Box>
     );
 }
