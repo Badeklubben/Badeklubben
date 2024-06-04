@@ -10,7 +10,7 @@ export default function Choice({
         <div className="choice">
             {
                 options.map(({label,state,setState},idx) => 
-                    <div className="option" key={React.useId()} onClick={() => setState(() => !state)}>
+                    <div className="option" key={idx} onClick={() => setState(() => !state)}>
                         <div className="label">{label}</div>
                         <div className="checkbox">
                             {state && <div className="mark"/>}

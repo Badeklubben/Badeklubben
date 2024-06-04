@@ -19,7 +19,7 @@ export default function DropDown({
                 <div className={hidden ? "dropdown-content hidden" : "dropdown-content"}>
                     {
                         options.options.map((option,idx) => 
-                            <div className="value" key={React.useId()} onClick={() => options.setState(() => option)}>{option}</div>
+                            <div className="value" key={idx} onClick={() => options.setState(() => option)}>{option}</div>
                         )
                     }
                 </div>
