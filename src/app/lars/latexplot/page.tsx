@@ -1,3 +1,5 @@
+
+/*
 'use client';
 import './style.css';
 import {useEffect, useId, useState } from 'react';
@@ -57,3 +59,5 @@ export default function Latexplot() {
         </div>
     );
 }
+
+*/
