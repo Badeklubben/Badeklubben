@@ -4,6 +4,8 @@ import Image from 'next/image'
 export default function Home() {
   return (
     <div>
+      <title>Velkommen til Badeklubben!</title>
+
       <div className="header-tmp">
         <div className="spin-logo-container">
           <div className="spin-logo-mask">
