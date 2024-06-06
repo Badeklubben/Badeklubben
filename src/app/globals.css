@@ -58,10 +58,9 @@ body {
   display: flex;
   position: relative;
   display: flex;
-  padding-top: 50px;
-  padding-left: 15%;
-  padding-right: 15%;
+  padding: 50px;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  gap: 50px;
 }
