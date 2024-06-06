@@ -1,7 +1,4 @@
-import Link from "next/link";
 import SpinLogo from "@/components/SpinLogo";
-import Image from 'next/image'
-import { RiLockPasswordFill } from "react-icons/ri";
 import MemberCard from "@/components/MemberCard";
 import LoadMembers, { LoadText } from "@/common/sanityLoader";
 

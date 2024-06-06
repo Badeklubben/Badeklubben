@@ -1,3 +1,5 @@
+"use client"
+
 import Image from 'next/image'
 import Link from "next/link";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -7,13 +9,17 @@ import { GrDatabase } from "react-icons/gr";
 
 import '../../styles/member-card.css'
 import { Member } from '@/common/sanityLoader';
+import { useEffect } from 'react';
+import { saveData } from '@/common/localDataManager';
 
-export default async function MemberCard({ 
+export default function MemberCard({ 
     member
 } : {
     member: Member
 }) {
   
+  useEffect(() => { saveData(member) });
+
   const get_landscape = () => {
     switch (member.landscapeId) {
       case 1:

@@ -1,7 +1,9 @@
-export default function Oskar() {
+import MemberPage from "@/components/MemberPage";
+
+export default function Osten() {
     return (
-        <div>
-        <h1>This is the Oskar page</h1>
-        </div>
+        <MemberPage>
+            <h1>This is the Oskar page</h1>
+        </MemberPage>
     );
 }

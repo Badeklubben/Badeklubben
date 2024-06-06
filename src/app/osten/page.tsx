@@ -1,7 +1,9 @@
+import MemberPage from "@/components/MemberPage";
+
 export default function Osten() {
     return (
-        <div>
+        <MemberPage>
         <h1>This is the Osten page</h1>
-        </div>
+        </MemberPage>
     );
 }

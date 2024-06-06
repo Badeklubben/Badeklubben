@@ -1,7 +1,9 @@
+import MemberPage from "@/components/MemberPage";
+
 export default function Gard() {
     return (
-        <div>
+        <MemberPage>
         <h1>This is the Gard page</h1>
-        </div>
+        </MemberPage>
     );
 }
