@@ -6,7 +6,7 @@ import { BsIncognito } from "react-icons/bs";
 import { GrDatabase } from "react-icons/gr";
 
 import '../../styles/member-card.css'
-import { Member } from '@/common/load_members';
+import { Member } from '@/common/sanityLoader';
 
 export default async function MemberCard({ 
     member
