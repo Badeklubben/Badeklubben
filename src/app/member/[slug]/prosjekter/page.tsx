@@ -17,7 +17,7 @@ export default function Prosjekt() {
 
     return (
         <div>
-            {projects.map((prosjekt:string) => <Link href={'/projects/' + id + '/' + prosjekt}>{capitalize(prosjekt)}</Link>)}
+            {projects.map((prosjekt:string) => <Link key={id + prosjekt} href={'/projects/' + id + '/' + prosjekt}>{capitalize(prosjekt)}</Link>)}
         </div>
     );
 }

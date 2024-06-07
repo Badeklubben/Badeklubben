@@ -40,7 +40,7 @@ export default function MemberLayout({
                 <div className='member-page-menu'>
                     {paths.map((subpath:string) => {
                         const local_path = "/member/" + id + "/" + subpath;
-                        return <Link href={local_path} className={path==local_path ? 'member-page-link active': 'member-page-link'}>{capitalize(subpath)}</Link>
+                        return <Link key={id + subpath} href={local_path} className={path==local_path ? 'member-page-link active': 'member-page-link'}>{capitalize(subpath)}</Link>
                     })}
                     <Link href="/" className='member-page-link return'>Tilbake</Link>
                 </div>
