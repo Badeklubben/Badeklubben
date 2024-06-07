@@ -4,7 +4,6 @@ import Image from 'next/image'
 
 import '@/styles/spin-logo.css'
 import { savePaths } from '@/common/localDataManager';
-import getSubRoutes from '@/common/routeManager';
 import { useEffect } from 'react';
 
 export default function SpinLogo({ 
@@ -13,9 +12,16 @@ export default function SpinLogo({
     size : number;
 }) {
 
-    useEffect(() => {
-        getSubRoutes('member/[slug]').then((routes) => savePaths(routes));      
-    },[])
+    useEffect(() => { 
+        async function fetchSubRoutes() {
+            const response = await fetch(`/api?baseRoute=${'member/[slug]'}`);    
+            const data = await response.json();
+            savePaths(data)
+        }
+        fetchSubRoutes();
+      },[]);
+    
+
 
     
     return (

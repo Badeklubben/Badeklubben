@@ -3,8 +3,6 @@
 import fs from "fs";
 import path from "path";
 
-
-
 export default async function getSubRoutes(basePath: string) {
 
     const directoryPath = path.join(process.cwd(), 'src\\app', basePath);
@@ -29,3 +27,4 @@ export default async function getSubRoutes(basePath: string) {
         return [];
     }
 }
+

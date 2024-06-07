@@ -11,7 +11,6 @@ import '@/styles/member-card.css'
 import { Member } from '@/common/sanityLoader';
 import { useEffect } from 'react';
 import { saveMember } from '@/common/localDataManager';
-import getSubRoutes from '@/common/routeManager';
 
 export default function MemberCard({ 
     member
@@ -21,12 +20,14 @@ export default function MemberCard({
   
 
   useEffect(() => { 
-    getSubRoutes('projects/' + member.id).then((routes) => {
-      console.log(routes);
-      
-      member.projects = routes;
-      saveMember(member) 
-    });
+    async function fetchSubRoutes() {
+      const response = await fetch(`/api?baseRoute=${'projects/' + member.id}`);    
+      const data = await response.json();
+      member.projects = data;
+      saveMember(member);
+    }
+
+    fetchSubRoutes();
   },[]);
 
   const get_landscape = () => {
