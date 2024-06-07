@@ -1,5 +1,5 @@
-import SpinLogo from "@/components/SpinLogo";
-import MemberCard from "@/components/MemberCard";
+import SpinLogo from "@/app/commponents/SpinLogo";
+import MemberCard from "@/app/commponents/MemberCard";
 import LoadMembers, { LoadText } from "@/common/sanityLoader";
 
 export default function Home() {

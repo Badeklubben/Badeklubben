@@ -13,8 +13,8 @@ export const schema: { types: SchemaTypeDefinition[] } = {
           type: "string"
         },
         {
-          title: "Path",
-          name: "path",
+          title: "Id",
+          name: "id",
           type: "string"
         },
         {

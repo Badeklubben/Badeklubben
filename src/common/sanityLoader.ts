@@ -10,7 +10,7 @@ export type Member = {
     landscapeId:number;
     about:string;
     imageSrc: string;
-    path: string;
+    id: string;
 };
 
 export default async function LoadMembers() {
@@ -22,7 +22,7 @@ export default async function LoadMembers() {
             landscapeId:member.landscapeid,
             about:member.about,
             imageSrc: member.imageURL && urlForImage(member.imageURL),
-            path: member.path,
+            id: member.id,
         }
     });
 
