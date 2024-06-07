@@ -1,24 +1,37 @@
 "use client"
 
-import { loadMember } from "@/common/localDataManager";
-import getSubRoutes from "@/common/routeManager";
 import { capitalize } from "@/common/tools";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
-export default function Prosjekt() {
+
+export default function Meg() {
+    
     const path = usePathname();
     const id = path.split('/').at(2)!;
-    const [projects,setProjects] = useState<string[]>([]); 
-
-    useEffect(() => {
-        setProjects(loadMember(id)!.projects);
-    },[])
+    function get_paths() {
+        switch (id) {
+            case 'arne':
+                return ['test']
+            case 'lars':
+                return ['grapher']
+            case 'stian':
+                return ['test']
+            case 'oskar':
+                return ['test']
+            case 'gard':
+                return ['test']
+            case 'osten':
+                return ['test']
+            default:
+                return null
+        }
+    }
+    const paths : string[] | null = get_paths();
 
     return (
-        <div>
-            {projects.map((prosjekt:string) => <Link key={id + prosjekt} href={'/projects/' + id + '/' + prosjekt}>{capitalize(prosjekt)}</Link>)}
-        </div>
+        paths ? paths.map(my_path => {
+            return <Link key={id + my_path} href={'/projects/' + id + '/' + my_path}>{capitalize(my_path)}</Link>
+        }) : "Not a valid member"
     );
 }

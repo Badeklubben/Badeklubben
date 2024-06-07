@@ -20,14 +20,7 @@ export default function MemberCard({
   
 
   useEffect(() => { 
-    async function fetchSubRoutes() {
-      const response = await fetch(`/api?baseRoute=${'projects/' + member.id}`);    
-      const data = await response.json();
-      member.projects = data;
-      saveMember(member);
-    }
-
-    fetchSubRoutes();
+    saveMember(member);
   },[]);
 
   const get_landscape = () => {

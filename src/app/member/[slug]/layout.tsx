@@ -1,6 +1,6 @@
 "use client"
 
-import { loadMember, loadPaths } from '@/common/localDataManager';
+import { loadMember } from '@/common/localDataManager';
 import { Member } from '@/common/sanityLoader';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,14 +18,18 @@ export default function MemberLayout({
 }) {
     
     const [member,setMember] = useState<Member|null>(null); 
-    const [paths,setPaths] = useState<string[]|null>([]); 
     const path = usePathname();
     const id = path.split('/').at(2)!;
 
+    const paths = [
+        "meg",
+        "prosjekter",
+        "kontakt"
+    ]
+
     useEffect(() => {
-        const member: Member | null =  loadMember(id);
-        member && setMember(member);
-        setPaths(loadPaths());      
+        const member: Member | null = loadMember(id);
+        member && setMember(member);     
     },[])
 
     return (
@@ -39,9 +43,9 @@ export default function MemberLayout({
             </div>
             <div className='member-page-body'>
                 <div className='member-page-menu'>
-                    {paths && paths.map((subpath:string) => {
-                        const local_path = "/member/" + id + "/" + subpath;
-                        return <Link key={id + subpath} href={local_path} className={path==local_path ? 'member-page-link active': 'member-page-link'}>{capitalize(subpath)}</Link>
+                    {paths.map(path_name => {
+                        const local_path = '/member/' + id + '/' + path_name;
+                        return <Link key={id + path_name} href={local_path} className={path==local_path ? 'member-page-link active': 'member-page-link'}>{capitalize(path_name)}</Link>
                     })}
                     <Link href="/" className='member-page-link return'>Tilbake</Link>
                 </div>
