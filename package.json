@@ -11,6 +11,7 @@
   "dependencies": {
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.45.0",
+    "fs": "^0.0.1-security",
     "next": "^14.2.3",
     "next-sanity": "^9.3.10",
     "path": "^0.12.7",
