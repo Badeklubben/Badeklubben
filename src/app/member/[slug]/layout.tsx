@@ -10,6 +10,8 @@ import '@/styles/member-page.css';
 import getSubRoutes from '@/common/routeManager';
 import { capitalize } from '@/common/tools';
 
+
+export const runtime = 'edge';
 export default function MemberLayout({ 
     children
 } : {
