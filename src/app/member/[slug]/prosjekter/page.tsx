@@ -1,5 +1,6 @@
 "use client"
 
+import { loadMember } from "@/common/localDataManager";
 import getSubRoutes from "@/common/routeManager";
 import { capitalize } from "@/common/tools";
 import Link from "next/link";
@@ -12,7 +13,7 @@ export default function Prosjekt() {
     const [projects,setProjects] = useState<string[]>([]); 
 
     useEffect(() => {
-        getSubRoutes('projects/' + id).then((routes) => setProjects(routes));
+        setProjects(loadMember(id)!.projects);
     },[])
 
     return (

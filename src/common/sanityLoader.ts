@@ -11,6 +11,7 @@ export type Member = {
     about:string;
     imageSrc: string;
     id: string;
+    projects: string[];
 };
 
 export default async function LoadMembers() {
@@ -23,6 +24,7 @@ export default async function LoadMembers() {
             about:member.about,
             imageSrc: member.imageURL && urlForImage(member.imageURL),
             id: member.id,
+            projects: [],
         }
     });
 

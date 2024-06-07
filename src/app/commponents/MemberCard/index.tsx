@@ -10,7 +10,8 @@ import { GrDatabase } from "react-icons/gr";
 import '@/styles/member-card.css'
 import { Member } from '@/common/sanityLoader';
 import { useEffect } from 'react';
-import { saveData } from '@/common/localDataManager';
+import { saveMember } from '@/common/localDataManager';
+import getSubRoutes from '@/common/routeManager';
 
 export default function MemberCard({ 
     member
@@ -18,7 +19,13 @@ export default function MemberCard({
     member: Member
 }) {
   
-  useEffect(() => { saveData(member) });
+
+  useEffect(() => { 
+    getSubRoutes('projects/' + member.id).then((routes) => {
+      member.projects = routes;
+      saveMember(member) 
+    });
+  },[]);
 
   const get_landscape = () => {
     switch (member.landscapeId) {

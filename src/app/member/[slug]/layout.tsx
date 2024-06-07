@@ -1,13 +1,12 @@
 "use client"
 
-import { loadData } from '@/common/localDataManager';
+import { loadMember, loadPaths } from '@/common/localDataManager';
 import { Member } from '@/common/sanityLoader';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname  } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import '@/styles/member-page.css';
-import getSubRoutes from '@/common/routeManager';
 import { capitalize } from '@/common/tools';
 
 
@@ -19,14 +18,14 @@ export default function MemberLayout({
 }) {
     
     const [member,setMember] = useState<Member|null>(null); 
-    const [paths,setPaths] = useState<string[]>([]); 
+    const [paths,setPaths] = useState<string[]|null>([]); 
     const path = usePathname();
     const id = path.split('/').at(2)!;
 
     useEffect(() => {
-        const member: Member | null =  loadData(id);
+        const member: Member | null =  loadMember(id);
         member && setMember(member);
-        getSubRoutes('member/[slug]').then((routes) => setPaths(routes));      
+        setPaths(loadPaths());      
     },[])
 
     return (
@@ -40,7 +39,7 @@ export default function MemberLayout({
             </div>
             <div className='member-page-body'>
                 <div className='member-page-menu'>
-                    {paths.map((subpath:string) => {
+                    {paths && paths.map((subpath:string) => {
                         const local_path = "/member/" + id + "/" + subpath;
                         return <Link key={id + subpath} href={local_path} className={path==local_path ? 'member-page-link active': 'member-page-link'}>{capitalize(subpath)}</Link>
                     })}

@@ -1,6 +1,6 @@
 "use client"
 
-import { loadData } from "@/common/localDataManager";
+import { loadMember } from "@/common/localDataManager";
 import { Member } from "@/common/sanityLoader";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -13,7 +13,7 @@ export default function Meg() {
     const id = path.split('/').at(2)!;
 
     useEffect(() => {
-        const member: Member | null =  loadData(id);
+        const member: Member | null =  loadMember(id);
         member && setMember(member);
     },[])
 

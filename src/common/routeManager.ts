@@ -1,8 +1,12 @@
 "use server"
 
+import fs from "fs";
+import path from "path";
+
+
+
 export default async function getSubRoutes(basePath: string) {
-    const fs = require('fs');
-    const path = require('path');
+
     const directoryPath = path.join(process.cwd(), 'src\\app', basePath);
 
     try {
@@ -17,9 +21,9 @@ export default async function getSubRoutes(basePath: string) {
                 if (fs.existsSync(pageFilePath)) return `${file}`;
             }
             return null
-        }).filter((file:string) => file !== null);
+        }).filter((file:string|null) => file !== null);
 
-        return subRoutes;
+        return subRoutes as string[];
     } catch (error) {
         console.error("Error reading directory:", error);
         return [];
