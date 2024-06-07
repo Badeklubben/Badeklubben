@@ -22,6 +22,8 @@ export default function MemberCard({
 
   useEffect(() => { 
     getSubRoutes('projects/' + member.id).then((routes) => {
+      console.log(routes);
+      
       member.projects = routes;
       saveMember(member) 
     });
