@@ -21,8 +21,8 @@ import {collection, addDoc} from "firebase/firestore";
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {auth} from "../config/firebase_a"
-import {getData} from '../voting/getData';
-import {apartments} from "../voting/apartments";
+import {getData} from './getData';
+import {apartments} from "./apartments";
 
 interface ResultType {
     scores: {

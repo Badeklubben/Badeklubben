@@ -10,7 +10,7 @@ export default function Navbar() {
     const handleLogout = async () => {
         try {
             await logOut();
-            router.push("/stian/brygging");
+            router.push("../stian/brygging");
         } catch (error) {
             console.error(error);
         }
@@ -23,14 +23,14 @@ export default function Navbar() {
                     <button onClick={() => router.back()}>Back</button>
                 </li>
                 <li>
-                    <button onClick={() => router.push("/stian/brygging/home")}>
+                    <button onClick={() => router.push("../stian/brygging/home")}>
                         Home
                     </button>
                 </li>
                 <li>
                     <button
                         onClick={() =>
-                            router.push("/stian/brygging/home/about")
+                            router.push("../stian/brygging/home/about")
                         }
                     >
                         About
@@ -45,7 +45,7 @@ export default function Navbar() {
                 <li>
                     <button
                         onClick={() =>
-                            router.push("/stian/brygging/home/profile")
+                            router.push("../stian/brygging/home/profile")
                         }
                     >
                         Profile

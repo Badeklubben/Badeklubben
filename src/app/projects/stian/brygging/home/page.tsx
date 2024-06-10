@@ -30,7 +30,7 @@ export default function Home() {
             <h1>Welcome to the Brygging app!</h1>
             <button
                 className="new-button"
-                onClick={() => router.push("/stian/brygging/home/new-form")}
+                onClick={() => router.push("../stian/brygging/home/new-form")}
             >
                 Nytt skjema
             </button>
@@ -39,7 +39,7 @@ export default function Home() {
                     <Link
                         key={form.id}
                         className="form-container"
-                        href={`/stian/brygging/home/${form.id}`}
+                        href={`../stian/brygging/home/${form.id}`}
                     >
                         <Form key={form.id} form={form} />
                     </Link>

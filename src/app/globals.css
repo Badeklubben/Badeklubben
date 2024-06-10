@@ -34,7 +34,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-
 .header-tmp{
   position: relative;
   display: flex;

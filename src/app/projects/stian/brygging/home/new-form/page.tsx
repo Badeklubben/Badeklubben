@@ -46,7 +46,7 @@ export default function NewForm() {
                 uid: auth.currentUser?.uid,
             } as unknown as BryggeskjemaDocument;
             await createForm(data);
-            router.push("/stian/brygging/home");
+            router.push("../stian/brygging/home");
         } catch (error) {
             console.error(error);
         }

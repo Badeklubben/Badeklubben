@@ -14,7 +14,7 @@ export default function SignUp() {
     const handleSignup = async () => {
         try {
             await signUp(email, password);
-            router.push("/stian/brygging");
+            router.push("../stian/brygging");
         } catch (error) {
             console.error(error);
         }

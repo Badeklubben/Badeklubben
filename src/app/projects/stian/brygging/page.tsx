@@ -15,7 +15,7 @@ export default function Brygging() {
         e.preventDefault();
         try {
             await logIn(email, password);
-            router.push("/stian/brygging/home");
+            router.push("../stian/brygging/home");
         } catch (error) {
             console.error(error);
         }
@@ -25,7 +25,7 @@ export default function Brygging() {
         e.preventDefault();
         try {
             await googleLogin();
-            router.push("/stian/brygging/home");
+            router.push("../stian/brygging/home");
         } catch (error) {
             console.error(error);
         }
@@ -44,7 +44,7 @@ export default function Brygging() {
                         <button
                             className="new-button"
                             onClick={() =>
-                                router.push("/stian/brygging/sign-up")
+                                router.push("../stian/brygging/sign-up")
                             }
                         >
                             Sign up

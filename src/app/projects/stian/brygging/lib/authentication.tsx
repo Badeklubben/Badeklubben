@@ -43,7 +43,7 @@ export const AuthContextProvider = ({
                     uid: user.uid,
                 });
             } else {
-                router.push("/stian/brygging");
+                router.push("../stian/brygging");
                 setUser({ email: null, uid: null });
             }
         });

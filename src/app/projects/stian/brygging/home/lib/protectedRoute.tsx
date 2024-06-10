@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         if (!user.uid) {
-            router.replace("/stian/brygging");
+            router.replace("../stian/brygging");
         } else {
             setLoading(false);
         }

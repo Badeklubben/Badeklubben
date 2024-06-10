@@ -16,6 +16,16 @@ const nextConfig = {
           destination: '/member/:slug/meg',
           permanent: true,
         },
+        {
+          source: '/projects/:slug',
+          destination: '/member/:slug/meg',
+          permanent: true,
+        },
+        {
+          source: '/projects',
+          destination: '/',
+          permanent: true,
+        },
       ];
     },
   }

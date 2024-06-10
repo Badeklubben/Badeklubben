@@ -9,14 +9,15 @@ export default function Meg() {
     
     const path = usePathname();
     const id = path.split('/').at(2)!;
+
     function get_paths() {
         switch (id) {
             case 'arne':
-                return ['test']
+                return ['city_bike','echo_color','phone_number','voting']
             case 'lars':
                 return ['grapher']
             case 'stian':
-                return ['test']
+                return ['brygging', 'lotteri']
             case 'oskar':
                 return ['test']
             case 'gard':
