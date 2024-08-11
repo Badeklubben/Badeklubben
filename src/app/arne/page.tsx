@@ -29,8 +29,8 @@ export default function Arne() {
                 <DefaultTypography fontWeight={700} colorText={"#000"}>Stem på leilighet</DefaultTypography>
             </Link>
             <br/>
-            <Link href={"/arne/fb_test"}>
-                <DefaultTypography fontWeight={700} colorText={"#000"}>Test firebase!</DefaultTypography>
+            <Link href={"/arne/timer"}>
+                <DefaultTypography fontWeight={700} colorText={"#000"}>Timer - informatikklekene</DefaultTypography>
             </Link>
 
 
