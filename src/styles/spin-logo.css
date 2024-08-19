@@ -1,0 +1,41 @@
+/*LOGO med spin*/
+
+.spin-logo-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.spin-logo-mask {
+    position: absolute;
+    width: 50%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.spin-logo {
+    position: absolute;
+    width: 400%;
+    height: 100%;
+    left: 0;
+    animation: moveRight 5s linear infinite;
+}
+
+.spin-logo-text {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: 15%;
+    margin-bottom: 15%;
+}
+
+@keyframes moveRight {
+    0% {
+        left: 0;
+    }
+    100% {
+        left: -200%;
+    }
+}
