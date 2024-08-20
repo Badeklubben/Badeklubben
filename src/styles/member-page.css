@@ -54,15 +54,3 @@
     padding: 5px;
     cursor: pointer;
 }
-
-.member-page-link:hover{
-    outline: 1px solid var(--bk-color-red);
-}
-
-.member-page-link.active{
-    background-color: var(--bk-color-red);
-}
-
-.member-page-link.return{
-    margin-top: 30px;
-}

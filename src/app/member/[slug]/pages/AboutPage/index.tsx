@@ -1,7 +1,7 @@
 import { Member } from "@/common/sanityLoader";
 import Image from "next/image";
 
-export default async function AboutPage({ 
+export default function AboutPage({ 
     member
 } : {
     member: Member

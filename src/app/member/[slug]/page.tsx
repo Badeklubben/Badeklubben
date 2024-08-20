@@ -1,5 +1,3 @@
-"use server";
-
 import { LoadMember } from "@/common/sanityLoader";
 import { headers } from "next/headers";
 import MemberPage from "./MemberPage";
