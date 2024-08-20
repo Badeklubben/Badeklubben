@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import BackButton from '../../ui/back-button';
+import BackButton from '../ui/back-button';
 
 export default function Lotto() {
 

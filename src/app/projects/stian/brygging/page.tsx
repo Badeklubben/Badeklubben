@@ -1,5 +1,5 @@
 "use client";
-import Backbutton from "../ui/back-button";
+import Backbutton from "../lotteri/ui/back-button";
 import { useState } from "react";
 import { useAuth } from "./lib/authentication";
 import { useRouter } from "next/navigation";

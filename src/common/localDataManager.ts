@@ -1,4 +1,5 @@
-import { Member } from "./sanityLoader";
+import { headers } from "next/headers";
+import { LoadMember, Member } from "./sanityLoader";
 
 export const saveMember = (data: Member) => {
   const jsonData = JSON.stringify(data);

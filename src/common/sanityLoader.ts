@@ -30,6 +30,21 @@ export default async function LoadMembers() {
 
 }
 
+export async function LoadMember(id: string) {
+    const member = (await sanityFetch<SanityDocument[]>({query: `*[_type == "members" && id == "` + id + `"]`})).at(0);
+    return member ? {
+        name: member.name,
+        role:member.role,
+        landscapeId:member.landscapeid,
+        about:member.about,
+        imageSrc: member.imageURL && urlForImage(member.imageURL),
+        id: member.id,
+        projects: [],
+    } : undefined;
+}
+
+
+
 export async function LoadText(id: string) {
     return (await sanityFetch<SanityDocument[]>({query: `*[_id == "` + id + `"]`})).at(0);
 }
