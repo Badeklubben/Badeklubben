@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
+export const runtime = 'edge';
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const directory = "src/app/projects/" + searchParams.get('id') || "";
