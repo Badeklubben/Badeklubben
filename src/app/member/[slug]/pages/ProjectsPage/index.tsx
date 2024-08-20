@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 
 type ApiResponse = {
-    projects: string[];
+    projects: {[key: string]: string[] };
   };
 
 export default function ProjectsPage({ 
@@ -21,11 +21,11 @@ export default function ProjectsPage({
     const [error, setError] = useState<string | null>(null);
   
     useEffect(() => {
-        fetch(`/api/fetch_projects?id=${member.id}`)
-            .then((response) => response.json())
-            .then((data: ApiResponse) => setProjects(data.projects))
-            .catch((error) => setError('Error fetching projects'));
-    }, []);
+        fetch('/projects.json')
+          .then((response) => response.json())
+          .then((data: ApiResponse) => setProjects(data.projects[member.id]))
+          .catch(() => setError('Error fetching subfolders'));
+      }, []);
   
     if (error) {
       return <p>{error}</p>;
