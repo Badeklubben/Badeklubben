@@ -10,18 +10,12 @@ import { GrDatabase } from "react-icons/gr";
 import '@/styles/member-card.css'
 import { Member } from '@/common/sanityLoader';
 import { useEffect } from 'react';
-import { saveMember } from '@/common/localDataManager';
 
 export default function MemberCard({ 
     member
 } : {
     member: Member
 }) {
-  
-
-  useEffect(() => { 
-    saveMember(member);
-  },[]);
 
   const get_landscape = () => {
     switch (member.landscapeId) {
