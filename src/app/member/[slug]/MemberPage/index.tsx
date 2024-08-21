@@ -7,6 +7,7 @@ import ProjectsPage from "../pages/ProjectsPage";
 import SideBar from "@/app/commponents/SideBar";
 import { useState } from "react";
 import ContactPage from "../pages/ContactPage";
+import Link from "next/link";
 
 export default function MemberPage({ 
     member
@@ -21,7 +22,7 @@ export default function MemberPage({
         <div>
         <div className='member-page-header'>
         <div className='member-page-icon'>
-            <Image src={"/logo.svg"} alt='logo' width={100} height={0}></Image>
+            <Link href={'/'}><Image src={"/logo.svg"} alt='logo' width={100} height={0}></Image></Link>
         </div>
         <div className='member-page-title'>{member.name}</div>
         </div>

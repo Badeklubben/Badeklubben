@@ -1,6 +1,7 @@
 "use client"
 
 import '@/styles/sidebar.css'
+import Link from 'next/link';
 import { Dispatch, SetStateAction } from 'react';
 
 export default function SideBar({ 
@@ -17,6 +18,7 @@ export default function SideBar({
     return (
         <div className='sidebar-page-link'>
             {pages.map((page_name:string) => <div className={page_name == activePage ? 'sidebar-link active' : 'sidebar-link'} key={'id_' + page_name} onClick={() => setActivePage(() => page_name)}>{page_name}</div>)}
+            <div className='sidebar-link return'><Link href={'/'}>Return</Link></div>
         </div>
   )
 }
