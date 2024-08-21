@@ -2,7 +2,7 @@ import '@/styles/member-page.css';
 
 
 export const runtime = 'edge';
-export default async function MemberLayout({ 
+export default function MemberLayout({ 
     children
 } : {
     children: React.ReactNode

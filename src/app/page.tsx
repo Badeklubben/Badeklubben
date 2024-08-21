@@ -1,6 +1,6 @@
 import SpinLogo from "@/app/commponents/SpinLogo";
 import MemberCard from "@/app/commponents/MemberCard";
-import LoadMembers, { LoadMember, LoadText } from "@/common/sanityLoader";
+import LoadMembers, { LoadText } from "@/common/sanityLoader";
 
 export default function Home() {
     return (
@@ -15,7 +15,6 @@ export default function Home() {
             </div>
             <div className="members-tmp">
                 {LoadMembers().then((members) => members.map(member => <MemberCard key={member.name + "ID"} member={member}></MemberCard>))}
-                {LoadMember('stian').then((member) => member?.name)}
             </div>
         </div>
     );
