@@ -41,8 +41,8 @@ export default function ProjectsPage({
 
         { loadedProjects.map(my_path => {
 
-            return <div className="project-card" style={{backgroundColor: member.color || 'var(--bk-color-red)'}}>
-                <Link key={member.id + my_path} href={'/projects/' + member.id + '/' + my_path}>
+            return <div key={member.id + my_path} className="project-card" style={{backgroundColor: member.color || 'var(--bk-color-red)'}}>
+                <Link href={'/projects/' + member.id + '/' + my_path}>
                     <div className="project-card-landscape">
                     {(projects && projects[my_path]?.icon) ? <img className="project-card-icon" src={`data:image/svg+xml,${encodeURIComponent(projects[my_path]?.icon)}`}></img> : <RiLockPasswordFill className="project-card-icon"/>}
                     </div>
