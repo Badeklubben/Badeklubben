@@ -38,7 +38,7 @@ export default function ProjectsPage({
         loadedProjects.map(my_path => {
             return <Link key={member.id + my_path} href={'/projects/' + member.id + '/' + my_path}>
                 {capitalize(my_path)}
-                {projects && projects[my_path].description}
+                {projects && projects[my_path]?.description}
                 </Link>
         })
     );

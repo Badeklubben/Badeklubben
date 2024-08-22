@@ -38,13 +38,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
             type: 'simplerColor',
         },
         {
-          title: "LandscapeID",
-          name: "landscapeid",
-          type: "number",
-          initialValue: 1,
-          validation: (rule) => rule.min(1).max(5)
-        },
-        {
           title: "About",
           name: "about",
           type: "text",
