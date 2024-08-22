@@ -1,6 +1,6 @@
 'use client'
 
-import { Member } from "@/common/sanityLoader";
+import { Member, Project } from "@/common/sanityLoader";
 import Image from "next/image";
 import AboutPage from "../pages/AboutPage";
 import ProjectsPage from "../pages/ProjectsPage";
@@ -10,9 +10,11 @@ import ContactPage from "../pages/ContactPage";
 import Link from "next/link";
 
 export default function MemberPage({ 
-    member
+    member,
+    projects
 } : {
-    member: Member
+    member: Member,
+    projects: {[key: string]: Project } | null
 })  {
 
     const [activePage, setActivePage] = useState<string>('about');
@@ -32,7 +34,7 @@ export default function MemberPage({
         </div>
         <div className='member-page-content'>
             {activePage == 'about' && <AboutPage member={member}></AboutPage>}
-            {activePage == 'projects' && <ProjectsPage member={member}></ProjectsPage>}
+            {activePage == 'projects' && <ProjectsPage projects={projects} member={member}></ProjectsPage>}
             {activePage == 'contact' && <ContactPage member={member}></ContactPage>}
         </div>
         </div> 

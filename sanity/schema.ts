@@ -10,17 +10,32 @@ export const schema: { types: SchemaTypeDefinition[] } = {
         {
           title: "Name",
           name: "name",
-          type: "string"
+          type: "string",
+          validation: (rule) => rule.required(),
         },
         {
           title: "Id",
           name: "id",
-          type: "string"
+          type: "string",
+          validation: (rule) => rule.required(),
         },
         {
           title: "Role",
           name: "role",
           type: "string"
+        },
+        {
+            title: "Icon",
+            name: "icon",
+            type: "iconPicker",
+            options: {
+                storeSvg: true
+            }
+        },
+        {
+            name: 'color',
+            title: 'color',
+            type: 'simplerColor',
         },
         {
           title: "LandscapeID",
@@ -42,6 +57,24 @@ export const schema: { types: SchemaTypeDefinition[] } = {
           options: {
             hotspot: true
           },
+        },
+        {
+            title:"Curriculum Vitae",
+            type: "markdown",
+            name: "cv"
+        },
+        {
+            title: 'LinkedIn',
+            name: 'linkedin',
+            type: 'url',
+        },
+        {
+            title: 'Mail',
+            name: 'mail',
+            type: 'url',
+            validation: Rule => Rule.uri({
+              scheme: ['mailto']
+            })
         }
 
       ]
@@ -57,6 +90,52 @@ export const schema: { types: SchemaTypeDefinition[] } = {
           type: "text",
         }
       ]
-    }  
+    },
+    {
+        title: "Projects",
+        name: "projects",
+        type: "document",
+        fields: [    
+            {
+                title: "Name",
+                name: "name",
+                type: "string",
+                validation: (rule) => rule.required(),
+            },
+            {
+                title: "Description",
+                name: "description",
+                type: "text",
+                validation: (rule) => rule.max(216)
+            }, 
+            {
+                title: 'Project ID',
+                description: 'This field must match the folder name of the project!',
+                name: 'id',
+                type: 'string',
+                validation: (rule) => rule.required(),
+            },
+            {
+                title: 'Owner',
+                name: 'owner',
+                type: 'reference',
+                to: [{type: 'members'}],
+                validation: (rule) => rule.required(),
+            },
+            {
+                title: "Icon",
+                name: "icon",
+                type: "iconPicker",
+                options: {
+                    storeSvg: true
+                }
+            },
+            {
+                name: 'color',
+                title: 'color',
+                type: 'simplerColor',
+            },
+        ]
+    }
   ],
 }
