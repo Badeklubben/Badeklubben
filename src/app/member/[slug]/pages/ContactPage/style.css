@@ -1,0 +1,14 @@
+.contact-tmp{
+    display: flex;
+    position: relative;
+    display: flex;
+    padding: 50px;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 100px;
+}
+
+.icon{
+    width: 100px;
+    height: 100px;
+}

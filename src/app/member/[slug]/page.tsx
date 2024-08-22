@@ -11,9 +11,6 @@ export default async function MemberLayoutPage() {
     
     const member = await LoadMember(id || "no member");
     const projects = member ? await LoadProjects(member) : null;
-    
-    console.log(projects);
-    
 
     return (
         <div className="member-page">

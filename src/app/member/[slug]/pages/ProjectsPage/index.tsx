@@ -5,6 +5,8 @@ import { capitalize } from "@/common/tools";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import './style.css';
+import { RiLockPasswordFill } from "react-icons/ri";
 
 
 type ApiResponse = {
@@ -35,11 +37,26 @@ export default function ProjectsPage({
     }
 
     return (
-        loadedProjects.map(my_path => {
-            return <Link key={member.id + my_path} href={'/projects/' + member.id + '/' + my_path}>
-                {capitalize(my_path)}
-                {projects && projects[my_path]?.description}
+        <div className="project-tmp">
+
+        { loadedProjects.map(my_path => {
+
+            return <div className="project-card" style={{backgroundColor: member.color || 'var(--bk-color-red)'}}>
+                <Link key={member.id + my_path} href={'/projects/' + member.id + '/' + my_path}>
+                    <div className="project-card-landscape">
+                    {(projects && projects[my_path]?.icon) ? <img className="project-card-icon" src={`data:image/svg+xml,${encodeURIComponent(projects[my_path]?.icon)}`}></img> : <RiLockPasswordFill className="project-card-icon"/>}
+                    </div>
+                    <div className="project-card-body">
+                    <div className="project-info">
+                        <div className="project-name">{projects && projects[my_path]?.name || capitalize(my_path)}</div>
+                    </div>
+                    <div className="project-card-body-text">{projects ? projects[my_path]?.description : ""}</div>
+                    </div>
                 </Link>
-        })
+            </div>
+
+        })}
+        </div>
+
     );
 }

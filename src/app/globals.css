@@ -32,6 +32,9 @@ h5,
 h6 {
   font-size: larger;
   font-weight:bolder;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: -10px;
 }
 
 body {

@@ -17,8 +17,8 @@ export default function MemberPage({
     projects: {[key: string]: Project } | null
 })  {
 
-    const [activePage, setActivePage] = useState<string>('about');
-    const pages = ['about','projects','contact'];
+    const [activePage, setActivePage] = useState<string>('Om meg');
+    const pages = ['Om meg','Mine prosjekt','Kontakt'];
 
     return (
         <div>
@@ -30,12 +30,12 @@ export default function MemberPage({
         </div>
         <div className='member-page-body'>
         <div className='member-page-menu'>
-        <SideBar activePage={activePage} setActivePage={setActivePage} pages={pages}></SideBar>
+        <SideBar activePage={activePage} color={member.color || 'var(--bk-color-red)'} setActivePage={setActivePage} pages={pages}></SideBar>
         </div>
         <div className='member-page-content'>
-            {activePage == 'about' && <AboutPage member={member}></AboutPage>}
-            {activePage == 'projects' && <ProjectsPage projects={projects} member={member}></ProjectsPage>}
-            {activePage == 'contact' && <ContactPage member={member}></ContactPage>}
+            {activePage == 'Om meg' && <AboutPage member={member}></AboutPage>}
+            {activePage == 'Mine prosjekt' && <ProjectsPage projects={projects} member={member}></ProjectsPage>}
+            {activePage == 'Kontakt' && <ContactPage member={member}></ContactPage>}
         </div>
         </div> 
         </div>
