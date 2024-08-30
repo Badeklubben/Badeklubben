@@ -17,11 +17,11 @@ export default function MemberPage({
     projects: {[key: string]: Project } | null
 })  {
 
-    const [activePage, setActivePage] = useState<string>('Om meg');
-    const pages = ['Om meg','Mine prosjekt','Kontakt'];
+    const [activePage, setActivePage] = useState<string>('Meg');
+    const pages = ['Meg','Prosjekt','Kontakt'];
 
     return (
-        <div>
+        <div className="member-page">
         <div className='member-page-header'>
         <div className='member-page-icon'>
             <Link href={'/'}><Image src={"/logo.svg"} alt='logo' width={100} height={0}></Image></Link>
@@ -33,8 +33,8 @@ export default function MemberPage({
         <SideBar activePage={activePage} color={member.color || 'var(--bk-color-red)'} setActivePage={setActivePage} pages={pages}></SideBar>
         </div>
         <div className='member-page-content'>
-            {activePage == 'Om meg' && <AboutPage member={member}></AboutPage>}
-            {activePage == 'Mine prosjekt' && <ProjectsPage projects={projects} member={member}></ProjectsPage>}
+            {activePage == 'Meg' && <AboutPage member={member}></AboutPage>}
+            {activePage == 'Prosjekt' && <ProjectsPage projects={projects} member={member}></ProjectsPage>}
             {activePage == 'Kontakt' && <ContactPage member={member}></ContactPage>}
         </div>
         </div> 

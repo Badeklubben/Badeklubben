@@ -17,7 +17,7 @@ export default function MemberCard({
       <div className="member-card" style={{backgroundColor: member.color || 'var(--bk-color-red)'}}>
       <Link href={'member/' + member.id}>
         <div className="member-card-landscape">
-            {member.icon ? <Image fill={true} alt='icon' className="member-card-icon" src={`data:image/svg+xml,${encodeURIComponent(member.icon)}`}></Image> : <RiLockPasswordFill className="member-card-icon"/>}
+            {member.icon ? <img alt='icon' className="member-card-icon" src={`data:image/svg+xml,${encodeURIComponent(member.icon)}`}></img> : <RiLockPasswordFill className="member-card-icon"/>}
         </div>
         <div className="member-card-body">
           <div className="member-info">
