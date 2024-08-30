@@ -1,6 +1,6 @@
-import SpinLogo from "@/app/commponents/SpinLogo";
 import MemberCard from "@/app/commponents/MemberCard";
 import LoadMembers, { LoadText } from "@/common/sanityLoader";
+import Image from 'next/image'
 
 export default function Home() {
     return (
@@ -8,7 +8,7 @@ export default function Home() {
             <title>Velkommen til Badeklubben!</title>
 
             <div className="header-tmp">
-                <SpinLogo size={300}/>
+                <Image src="logo_gif.svg" priority width={600} height={0} alt="logo"/>
             </div>
             <div className="info-tmp">
                 {LoadText("19692804-94c1-4f11-aeae-9a0f2536d356").then((text) => text?.text )}
