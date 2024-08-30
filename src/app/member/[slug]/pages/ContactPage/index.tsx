@@ -10,8 +10,8 @@ export default function ContactPage({
 })   {
     return (
         <div className="contact-tmp">
-        {member.linkedin && <Link href={member.linkedin}><FaLinkedin className="icon"/></Link>}
-        {member.mail && <Link href={member.mail}><FaEnvelope className="icon"/></Link>}
+        {member.linkedin && <Link href={member.linkedin}><div className="contact-item"><FaLinkedin className="icon"/>{member.linkedin}</div></Link>}
+        {member.mail && <Link href={member.mail}><div className="contact-item"><FaEnvelope className="icon"/>{member.mail}</div></Link>}
         </div>
     );
 }

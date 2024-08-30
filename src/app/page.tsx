@@ -8,7 +8,7 @@ export default function Home() {
             <title>Velkommen til Badeklubben!</title>
 
             <div className="header-tmp">
-                <Image src="logo_gif.svg" priority width={600} height={0} alt="logo"/>
+                <Image style={{width:'auto', height:'auto'}} src="/logo_gif.svg" priority width={600} height={0} alt="logo"/>
             </div>
             <div className="info-tmp">
                 {LoadText("19692804-94c1-4f11-aeae-9a0f2536d356").then((text) => text?.text )}
