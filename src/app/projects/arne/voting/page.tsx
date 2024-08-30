@@ -16,11 +16,11 @@ import {
     Skeleton
 } from "@mui/material"
 import Button from '@mui/material/Button';
-import {db} from '../config/firebase_a';
+import {db} from './config/firebase_a';
 import {collection, addDoc} from "firebase/firestore";
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
 import {signInWithEmailAndPassword} from "firebase/auth";
-import {auth} from "../config/firebase_a"
+import {auth} from './config/firebase_a';
 import {getData} from './getData';
 import {apartments} from "./apartments";
 

@@ -1,15 +1,18 @@
-.sidebar-page-link{
+.sidebar-link{
     border-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     padding: 5px;
     cursor: pointer;
+    
 }
 
 .sidebar-link:hover{
-    outline: 1px solid var(--bk-color-red);
+    font-weight: bold;
 }
 
 .sidebar-link.active{
-    background-color: var(--bk-color-red);
+    font-weight: bold;
 }
 
 .sidebar-link.return{

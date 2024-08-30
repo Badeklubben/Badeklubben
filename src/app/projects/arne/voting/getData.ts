@@ -1,5 +1,5 @@
 import {collection, getDocs, query} from "firebase/firestore";
-import {db} from "../config/firebase_a";
+import {db} from "./config/firebase_a";
 
 
 

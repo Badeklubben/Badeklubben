@@ -1,0 +1,57 @@
+
+
+  
+.project-tmp{
+    display: flex;
+    position: relative;
+    display: flex;
+    padding: 50px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+
+/*project card*/
+
+
+.project-card{
+    position: relative;
+    flex-direction: column;
+    width: 370px;
+    height: fit-content;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+  }
+    
+  .project-card-landscape{
+    display: flex;
+    height: 50%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .project-card-icon{
+    opacity: 0.4;
+    width: 50%;
+    height: 50%;
+    margin: 10px;
+  }
+  
+  .project-card-body{
+    background-color: white;
+    height: fit-content;
+    padding: 20px;
+  }
+    
+  .project-name{
+    font-weight: bolder;
+  } 
+  .project-card-body-text{
+ 
+    font-weight: light;
+    font-size: small;
+  }
+  
