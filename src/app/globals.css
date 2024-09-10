@@ -4,16 +4,37 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
+
+  --bk-color-red: #E8557A;
+  --bk-color-orange: #F7995C;
+  --bk-color-yellow: #FFD24E;
+  --bk-color-blue: #7AD1DF;
+  --bk-color-green: #5AC7BD;
 }
 
+/*
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
+}
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: larger;
+  font-weight:bolder;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: -10px;
 }
 
 body {
@@ -24,4 +45,36 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+
+
+.header-tmp{
+  position: relative;
+  display: flex;
+  padding-top: 50px;
+  justify-content: center;
+  align-items: center;
+}
+.info-tmp{
+  position: relative;
+  display: flex;
+  padding-top: 50px;
+  padding-left: 25%;
+  padding-right: 25%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+}
+
+.members-tmp{
+  display: flex;
+  position: relative;
+  display: flex;
+  padding: 50px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 50px;
 }

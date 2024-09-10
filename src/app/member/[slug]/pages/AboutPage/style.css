@@ -1,0 +1,24 @@
+
+.about-container{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.about-image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-text{
+    position: relative;
+    max-width: 1000px;
+}
+
+.about-md{
+    text-align: start;
+}

@@ -1,0 +1,120 @@
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f9;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.fileInput {
+    margin-bottom: 20px;
+}
+
+.fileName {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #666;
+}
+
+.inputField,
+.inputFieldWithIcon {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 25px;
+}
+
+.inputWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.inputFieldWithIcon {
+    padding-right: 40px;
+}
+
+.infoIconInside {
+    position: absolute;
+    right: 10px;
+    top: 31%;
+    transform: translateY(-50%);
+    color: #007BFF;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.tooltip {
+    visibility: visible;
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -125px;
+    opacity: 0.9;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+.button {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.extractButton {
+    padding: 12px 20px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.extractButton:hover {
+    background-color: #1976d2;
+}
+
+.extractedPassword {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    margin-top: 20px;
+}
