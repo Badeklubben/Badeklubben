@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {login, logout, useAuth} from '../auth';
 import {Button, Container, Typography, TextField, Box} from '@mui/material';
 import AdminPage from "@/app/arne/certificate/login/AdminPage";
-import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
+import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
     if (currentUser) {
         return (
             <>
-                <DefaultNavbar></DefaultNavbar>
+                <DefaultDrawer></DefaultDrawer>
                 <Container component="main">
                     <Typography component="h1" variant="h4" sx={{mt: 4, mb: 2}}>
                         Admin Panel
@@ -51,7 +51,7 @@ const LoginPage: React.FC = () => {
 
     return (
         <>
-            <DefaultNavbar></DefaultNavbar>
+            <DefaultDrawer></DefaultDrawer>
             <Container component="main">
 
                 <Box

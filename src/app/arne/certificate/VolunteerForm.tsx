@@ -4,7 +4,7 @@ import { db } from "./fb_config";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import Link from "next/link";
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
-import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
+import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 
 
 const VolunteerForm = () => {
