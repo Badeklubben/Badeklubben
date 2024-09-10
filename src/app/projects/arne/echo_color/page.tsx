@@ -17,7 +17,7 @@ export default function Arne() {
     return (
         <div >
             <DefaultDrawer/>
-            <h1>echo sine farger!</h1>
+            <h1 style={{marginLeft:"10px"}} >echo sine farger!</h1>
             <div style={{...boxStyle, backgroundColor:"#fce4b3" }} >#fce4b3</div>
             <div style={{...boxStyle, backgroundColor:"#fcd37b" }} >#fcd37b</div>
             <div style={{...boxStyle, backgroundColor:"#fcc421" }} >#fcc421</div>
