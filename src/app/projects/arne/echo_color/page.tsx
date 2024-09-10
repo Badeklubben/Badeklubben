@@ -1,6 +1,6 @@
 'use client'
 import Button from '@mui/material/Button';
-import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
+import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 const boxStyle = {
     width: '100%', // Take up the full width of the parent container
     maxWidth: '400px', // Set a maximum width to avoid being too wide on larger screens
@@ -15,10 +15,9 @@ const boxStyle = {
 
 export default function Arne() {
     return (
-        <div>
-            <DefaultNavbar/>
+        <div >
+            <DefaultDrawer/>
             <h1>echo sine farger!</h1>
-            <Button variant="contained">Gå tilbake!</Button>
             <div style={{...boxStyle, backgroundColor:"#fce4b3" }} >#fce4b3</div>
             <div style={{...boxStyle, backgroundColor:"#fcd37b" }} >#fcd37b</div>
             <div style={{...boxStyle, backgroundColor:"#fcc421" }} >#fcc421</div>

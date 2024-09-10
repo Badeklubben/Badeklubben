@@ -1,5 +1,5 @@
 'use client'
-import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
+import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 import Link from "next/link";
 import React, {useEffect, useState } from "react";
 import { Button, Box} from "@mui/material"

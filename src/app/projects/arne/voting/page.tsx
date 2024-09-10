@@ -1,5 +1,5 @@
 'use client'
-import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
+import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {
@@ -107,7 +107,7 @@ export default function Arne() {
 
     return (
         <Box>
-            <DefaultNavbar/>
+            <DefaultDrawer/>
             <DefaultTypography colorText={"000"} fontWeight={700}>Vote på din favoritt!</DefaultTypography>
             <Box sx={{display: 'flex'}}>
                 {apartments.map((apartment, index) => (
