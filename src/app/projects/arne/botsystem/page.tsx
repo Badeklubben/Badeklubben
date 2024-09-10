@@ -6,6 +6,8 @@ import { getData } from './getData';
 import updateVoteCount from './updateVote'
 import { doc, getDoc, updateDoc, collection, addDoc, setDoc, deleteDoc} from 'firebase/firestore';
 import { db } from './config/firebase_a'; // Sørg for at du importerer din Firebase-konfigurasjon
+import AddPersonForm from "@/app/projects/arne/botsystem/AddPersonForm";
+import PersonList from "@/app/projects/arne/botsystem/PersonList";
 
 interface Person {
     name: string;
@@ -14,7 +16,6 @@ interface Person {
 
 export default function Botsystem() {
     const [personer, setPersoner] = useState<Person[]>([]);
-    const [newPersonName, setNewPersonName] = useState<string>('');
 
     useEffect(() => {
         const fetchPersoner = async () => {
@@ -36,14 +37,13 @@ export default function Botsystem() {
         }
     };
 
-    const handleAddPerson = async () => {
-        if (newPersonName.trim() !== '') {
+    const handleAddPerson = async (name: string) => {
+        if (name.trim() !== '') {
             try {
-                const newPerson = { name: newPersonName, count: 0 };
-                const personRef = doc(db, `Botsystem/botsystem/personer/${newPersonName}`);
+                const newPerson = { name, count: 0 };
+                const personRef = doc(db, `Botsystem/botsystem/personer/${name}`);
                 await setDoc(personRef, newPerson);
                 setPersoner([...personer, newPerson]);
-                setNewPersonName('');
             } catch (error) {
                 console.error("Error adding new person: ", error);
             }
@@ -67,69 +67,8 @@ export default function Botsystem() {
         <div>
             <DefaultDrawer />
             <h1 style={{ marginLeft: "10px" }}>Botsystem for algoritmer lesesalen</h1>
-            <div style={{ marginLeft: "10px", marginTop: "20px" }}>
-                <h2>Legg til ny person:</h2>
-                <input
-                    type="text"
-                    value={newPersonName}
-                    onChange={(e) => setNewPersonName(e.target.value)}
-                    placeholder="Skriv inn navn"
-                    style={{ marginRight: '10px' }}
-                />
-                <button onClick={handleAddPerson} style={{ cursor: 'pointer' }}>
-                    Legg til
-                </button>
-            </div>
-            <div style={{ marginLeft: "10px", marginTop: "20px" }}>
-                <h2>Antall bøter:</h2>
-                <ul>
-                    {personer.map((person, index) => (
-                        <li key={index} style={{ display: 'flex', alignItems: 'center' }}>
-                            {person.name}: {person.count} bøter
-                            <button
-                                onClick={() => handleUpdate(person.name, 1)}
-                                style={{
-                                    fontSize: '24px',
-                                    marginLeft: '10px',
-                                    marginRight: '5px',
-                                    cursor: 'pointer',
-                                    background: 'none',
-                                    border: 'none',
-                                    color: 'green'
-                                }}
-                            >
-                                +
-                            </button>
-                            <button
-                                onClick={() => handleUpdate(person.name, -1)}
-                                style={{
-                                    fontSize: '24px',
-                                    marginLeft: '5px',
-                                    cursor: 'pointer',
-                                    background: 'none',
-                                    border: 'none',
-                                    color: 'red'
-                                }}
-                            >
-                                -
-                            </button>
-
-                            <button
-                                onClick={() => handleRemovePerson(person.name)}
-                                style={{
-                                    fontSize: '12px',
-                                    marginLeft: '10px',
-                                    cursor: 'pointer',
-                                    background: 'none',
-                                    border: 'none',
-                                    color: 'black'
-                                }}>
-                                🗑️
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <AddPersonForm onAddPerson={handleAddPerson} />
+            <PersonList personer={personer} onUpdate={handleUpdate} onRemove={handleRemovePerson} />
         </div>
     );
 }
