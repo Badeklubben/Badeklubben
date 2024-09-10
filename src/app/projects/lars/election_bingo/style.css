@@ -11,7 +11,7 @@ body, html {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    min-height: 100vh;
+    min-height: 80vh;
     min-width: 100vw;
     background-color: rgb(245, 245, 245);
     position: relative;
