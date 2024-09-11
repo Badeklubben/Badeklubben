@@ -3,15 +3,15 @@ import "./style.css";
 import {useEffect, useState} from "react";
 
 const count = [
-    {name: "Arne", count: 2},
-    {name: "Østen", count: 4},
-    {name: "Stian", count: 4},
-    {name: "Lars", count: 4},
-    {name: "Simon", count: 4},
-    {name: "Kristian", count: 4},
-    {name: "Oskar", count: 4},
-    {name: "Bjørn", count: 4},
-    {name: "Nico", count: 4},
+    {name: "Arne", count: 0},
+    {name: "Østen", count: 0},
+    {name: "Stian", count: 0},
+    {name: "Lars", count: 0},
+    {name: "Simon", count: 1},
+    {name: "Kristian", count: 1},
+    {name: "Oskar", count: 1},
+    {name: "Bjørn", count: 1},
+    {name: "Nico", count: 0},
 ];
 
 const colors = [
@@ -40,7 +40,6 @@ export default function Algoritmer() {
             setTimeLeft({ hours, minutes, seconds });
 
         };
-        console.log("heieieaiafidi");
         const intervalId = setInterval(updateTimer, 1000);
         updateTimer(); // Initial call to set the correct time immediately
 
