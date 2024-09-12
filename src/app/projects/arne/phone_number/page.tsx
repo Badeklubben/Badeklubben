@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
+import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 
 const PhoneNumberForm: React.FC = () => {
     const [phoneValue, setPhoneValue] = useState<number>(12345678);
@@ -42,7 +42,7 @@ const PhoneNumberForm: React.FC = () => {
 
     return (
         <form>
-            <DefaultNavbar/>
+            <DefaultDrawer/>
             <br/>
             <div>Telefonnummer: <span>{phoneNumberToDisplay(phoneValue)}</span></div>
             <input

@@ -1,3 +1,4 @@
+//Original script - converted to BikeInfo.tsx
 const cycleText = document.querySelector("#cycleText");
 const infoSchool = document.querySelector("#infoSchool");
 const httpStatus = new XMLHttpRequest();
