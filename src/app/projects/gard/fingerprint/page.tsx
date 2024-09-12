@@ -22,7 +22,7 @@ const FingerprintPage = () => {
   const handleSubmit = async () => {
     if (name && fingerprint) {
       try {
-        // Hasher macaddr, skal ikkje sende den i plaintext LOL
+        // Hasher fingerprint, skal ikkje sende den i plaintext LOL
         const hashedFingerprint = SHA256(fingerprint).toString();
 
         // Dokumentene i DB heiter navn til brukere
