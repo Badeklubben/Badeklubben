@@ -3,7 +3,7 @@ import { Container, Typography, Button, Box } from '@mui/material';
 import Link from 'next/link';
 
 const Home = () => {
-    const myCurrentPath = "/projects/arne/wiki/"
+    const myCurrentPath = "/projects/arne/wiki"
     return (
         <Container maxWidth="sm">
             <Box sx={{ my: 4 }}>
