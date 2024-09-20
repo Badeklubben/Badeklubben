@@ -3,7 +3,7 @@ import { Container, Typography, Button, Box } from '@mui/material';
 import Link from 'next/link';
 
 const Undergrupper = () => {
-    const myCurrentPath = "/projects/arne/wiki/undergrupper/"
+    const myCurrentPath = "/projects/arne/wiki/undergrupper"
     return (
         <Container maxWidth="sm">
             <Box sx={{ my: 4 }}>
@@ -24,7 +24,7 @@ const Undergrupper = () => {
                             KomWeb
                         </Button>
                     </Link>
-                    <Link href={`${myCurrentPath}/gruppe3`}passHref>
+                    <Link href={`${myCurrentPath}/gruppe3`} passHref>
                         <Button variant="contained" color="success">
                             DotKom
                         </Button>
