@@ -1,6 +1,7 @@
 'use client'
-import React, { useState } from 'react';
-import './style.css';  // Import the global CSS
+import React, {useEffect, useState} from 'react';
+import './style.css';
+import {loadData, saveData} from "@/app/projects/stian/game/saver";  // Import the global CSS
 
 interface PredefinedNumber {
     row: number;
@@ -23,27 +24,44 @@ interface VerticalArrow {
 export default function Game() {
     // Predefined numbers for specific positions in the grid
     const predefinedNumbers: PredefinedNumber[] = [
-        { row: 0, col: 1, value: 4 },
-        { row: 1, col: 0, value: 4 },
-        { row: 1, col: 2, value: 2 },
-        { row: 3, col: 0, value: 2 },
-        { row: 3, col: 1, value: 3 }
+        { row: 0, col: 1, value: 7 },
+        { row: 0, col: 2, value: 6 },
+        { row: 2, col: 0, value: 3 },
+        { row: 2, col: 1, value: 1 },
+        { row: 2, col: 3, value: 4 },
+        { row: 2, col: 6, value: 5 },
+        { row: 3, col: 0, value: 5 },
+        { row: 3, col: 1, value: 3 },
+        { row: 3, col: 5, value: 1 },
+        { row: 4, col: 0, value: 2 },
+        { row: 4, col: 3, value: 7 },
+        { row: 4, col: 4, value: 1 },
+        { row: 5, col: 1, value: 2 },
+        { row: 5, col: 5, value: 4 },
+        { row: 6, col: 4, value: 2 }
     ];
 
     // Separate predefined arrows into horizontal and vertical arrays
     const horizontalArrows: HorizontalArrow[] = [
-        { row: 0, col: 0, direction: '>' },
-        { row: 0, col: 1, direction: '>' },
-        // Cell with both horizontal and vertical arrows
-        { row: 1, col: 0, direction: '>' },
+        { row: 1, col: 1, direction: '>' },
+        { row: 1, col: 5, direction: '<' },
+        { row: 2, col: 1, direction: '<' },
+        { row: 5, col: 4, direction: '>' },
+        { row: 6, col: 0, direction: '>' },
+        { row: 6, col: 3, direction: '>' }
     ];
-
     const verticalArrows: VerticalArrow[] = [
-        { row: 1, col: 2, direction: 'v' },
-        { row: 1, col: 0, direction: 'v' }, // Same cell as horizontal arrow
-        { row: 2, col: 1, direction: '^' },
+        { row: 0, col: 5, direction: 'v' },
+        { row: 0, col: 6, direction: '^' },
+        { row: 1, col: 1, direction: 'v' },
+        { row: 1, col: 2, direction: '^' },
+        { row: 1, col: 3, direction: '^' },
+        { row: 1, col: 6, direction: 'v' },
+        { row: 2, col: 2, direction: 'v' },
+        { row: 3, col: 4, direction: 'v' },
+        { row: 3, col: 5, direction: '^' },
+        { row: 4, col: 2, direction: 'v' }
     ];
-
     const numRows = 7;
     const numCols = 7;
 
@@ -66,9 +84,18 @@ export default function Game() {
         setGridValues((prevGrid) => {
             const newGrid = prevGrid.map((arr) => arr.slice()); // Deep copy the grid
             newGrid[row][col] = value;
+            saveData<string[][]>(newGrid, 'grid');
             return newGrid;
         });
     };
+
+    const [loaded, setLoaded] = useState<boolean>(false);
+    useEffect(() => {
+        if (loaded) return;
+        setLoaded(true);
+        const grid = loadData<string[][]>('grid');
+        if (grid) setGridValues((prev) =>grid )
+    },[])
 
     // Function to generate a single dropdown
     const renderDropdown = (
