@@ -1,3 +1,5 @@
+'use client'
+import React, { useState } from 'react';
 import './style.css';  // Import the global CSS
 
 interface PredefinedNumber {
@@ -21,53 +23,66 @@ interface VerticalArrow {
 export default function Game() {
     // Predefined numbers for specific positions in the grid
     const predefinedNumbers: PredefinedNumber[] = [
-        { row: 0, col: 1, value: 7 },
-        { row: 0, col: 2, value: 6 },
-        { row: 2, col: 0, value: 3 },
-        { row: 2, col: 1, value: 1 },
-        { row: 2, col: 3, value: 4 },
-        { row: 2, col: 6, value: 5 },
-        { row: 3, col: 0, value: 5 },
-        { row: 3, col: 1, value: 3 },
-        { row: 3, col: 5, value: 1 },
-        { row: 4, col: 0, value: 2 },
-        { row: 4, col: 3, value: 7 },
-        { row: 4, col: 4, value: 1 },
-        { row: 5, col: 1, value: 2 },
-        { row: 5, col: 5, value: 4 },
-        { row: 6, col: 4, value: 2 }
+        { row: 0, col: 1, value: 4 },
+        { row: 1, col: 0, value: 4 },
+        { row: 1, col: 2, value: 2 },
+        { row: 3, col: 0, value: 2 },
+        { row: 3, col: 1, value: 3 }
     ];
 
     // Separate predefined arrows into horizontal and vertical arrays
     const horizontalArrows: HorizontalArrow[] = [
-        { row: 1, col: 1, direction: '>' },
-        { row: 1, col: 5, direction: '<' },
-        { row: 2, col: 1, direction: '<' },
-        { row: 5, col: 4, direction: '>' },
-        { row: 6, col: 0, direction: '>' },
-        { row: 6, col: 3, direction: '>' }
+        { row: 0, col: 0, direction: '>' },
+        { row: 0, col: 1, direction: '>' },
+        // Cell with both horizontal and vertical arrows
+        { row: 1, col: 0, direction: '>' },
     ];
 
     const verticalArrows: VerticalArrow[] = [
-        { row: 0, col: 5, direction: 'v' },
-        { row: 0, col: 6, direction: '^' },
-        { row: 1, col: 1, direction: 'v' },
-        { row: 1, col: 2, direction: '^' },
-        { row: 1, col: 3, direction: '^' },
-        { row: 1, col: 6, direction: 'v' },
-        { row: 2, col: 2, direction: 'v' },
-        { row: 3, col: 4, direction: 'v' },
-        { row: 3, col: 5, direction: '^' },
-        { row: 4, col: 2, direction: 'v' }
+        { row: 1, col: 2, direction: 'v' },
+        { row: 1, col: 0, direction: 'v' }, // Same cell as horizontal arrow
+        { row: 2, col: 1, direction: '^' },
     ];
 
+    const numRows = 7;
+    const numCols = 7;
+
+    // Initialize the grid with empty strings, setting predefined values where applicable
+    const [gridValues, setGridValues] = useState(() => {
+        const initialGrid = Array.from({ length: numRows }, () =>
+            Array.from({ length: numCols }, () => '')
+        );
+
+        // Set predefined values in the grid
+        predefinedNumbers.forEach(({ row, col, value }) => {
+            initialGrid[row][col] = value.toString();
+        });
+
+        return initialGrid;
+    });
+
+    // Function to handle dropdown change
+    const handleDropdownChange = (row: number, col: number, value: string) => {
+        setGridValues((prevGrid) => {
+            const newGrid = prevGrid.map((arr) => arr.slice()); // Deep copy the grid
+            newGrid[row][col] = value;
+            return newGrid;
+        });
+    };
+
     // Function to generate a single dropdown
-    const renderDropdown = (value?: number, disabled: boolean = false) => (
+    const renderDropdown = (
+        row: number,
+        col: number,
+        value: string,
+        disabled: boolean = false
+    ) => (
         <select
             className={`number-select ${disabled ? 'disabled-dropdown' : ''}`}
             name="number"
-            value={value !== undefined ? value : ""}
+            value={value}
             disabled={disabled}
+            onChange={(e) => handleDropdownChange(row, col, e.target.value)}
         >
             <option value=""> </option> {/* Blank space for empty dropdown */}
             <option value="1">1</option>
@@ -99,19 +114,19 @@ export default function Game() {
 
     // Function to generate the grid with predefined values and arrows
     const renderGrid = () => {
-        const numRows = 7;
-        const numCols = 7;
         const rows = [];
         for (let i = 0; i < numRows; i++) {
             const rowItems = [];
             for (let j = 0; j < numCols; j++) {
                 // Render number box
                 const predefinedValue = getPredefinedValue(i, j);
+                const cellValue = gridValues[i][j];
+
                 rowItems.push(
                     <div key={`cell-${i}-${j}`} className="cell">
                         {predefinedValue !== null
-                            ? renderDropdown(predefinedValue, true)
-                            : renderDropdown()}
+                            ? renderDropdown(i, j, predefinedValue.toString(), true)
+                            : renderDropdown(i, j, cellValue)}
                     </div>
                 );
 
