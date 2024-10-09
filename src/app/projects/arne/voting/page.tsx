@@ -1,5 +1,5 @@
 'use client'
-import DefaultNavbar from "@/app/shared/components/DefaultNavbar";
+import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {
@@ -16,11 +16,11 @@ import {
     Skeleton
 } from "@mui/material"
 import Button from '@mui/material/Button';
-import {db} from '../config/firebase_a';
+import {db} from './config/firebase_a';
 import {collection, addDoc} from "firebase/firestore";
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
 import {signInWithEmailAndPassword} from "firebase/auth";
-import {auth} from "../config/firebase_a"
+import {auth} from './config/firebase_a';
 import {getData} from './getData';
 import {apartments} from "./apartments";
 
@@ -107,7 +107,7 @@ export default function Arne() {
 
     return (
         <Box>
-            <DefaultNavbar/>
+            <DefaultDrawer/>
             <DefaultTypography colorText={"000"} fontWeight={700}>Vote på din favoritt!</DefaultTypography>
             <Box sx={{display: 'flex'}}>
                 {apartments.map((apartment, index) => (

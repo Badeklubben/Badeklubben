@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../lib/authentication";
 import { useRouter } from "next/navigation";
-import Backbutton from "../../ui/back-button";
+import Backbutton from "../../lotteri/ui/back-button";
 
 export default function SignUp() {
     const [email, setEmail] = useState<string>("");
