@@ -1,3 +1,5 @@
+export const runtime = 'egde';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { generateQRCode, isWithinValidTimeFrame } from '../../projects/gard/qr_fingerprint/utils/qr';
 
@@ -10,7 +12,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Get the host dynamically from the request headers
     const host = req.headers.get('host');
 
     // Determine the protocol (http for development, https for production)
