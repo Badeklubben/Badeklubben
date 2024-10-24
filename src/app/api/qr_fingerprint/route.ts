@@ -1,5 +1,4 @@
-export const runtime = 'edge';
-
+export const runtime = 'nodejs';
 import { NextRequest, NextResponse } from 'next/server';
 import { generateQRCode, isWithinValidTimeFrame } from '../../projects/gard/qr_fingerprint/utils/qr';
 
@@ -25,7 +24,7 @@ export async function GET(req: NextRequest) {
 
     // Generate the QR code with the dynamically built URL
     const qrCode = await generateQRCode(qrCodeUrl);
-
+    console.log("Generated QR code:", qrCode);
     return NextResponse.json({ qrCode });
   } catch (error) {
     console.error("Failed to generate QR code:", error);

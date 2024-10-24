@@ -7,7 +7,7 @@ export const isWithinValidTimeFrame = (): boolean => {
   const end = new Date(now);
 
   start.setHours(10, 0, 0);  // 10:00
-  end.setHours(18, 15, 0);   // 10:15
+  end.setHours(19, 15, 0);   // 10:15
 
   return now >= start && now <= end;
 };
