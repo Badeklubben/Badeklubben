@@ -1,4 +1,4 @@
-export const runtime = 'egde';
+export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { generateQRCode, isWithinValidTimeFrame } from '../../projects/gard/qr_fingerprint/utils/qr';
