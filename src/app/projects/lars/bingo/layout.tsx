@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import BurgerMenu from './common/components/BurgerMenu';
 import './style.css'
+import { Suspense } from 'react';
 
 // Dette kom med default koden, vet ikke helt va dette er - Stian
 
@@ -23,11 +24,13 @@ export default function RootLayout({
       <body className={inter.className}>
         <BurgerMenu/>
         <AppRouterCacheProvider>
-        <div className="bingo-container">
-          <div className="bingo-floater">
-            {children}
-          </div>    
-        </div>
+          <Suspense>
+          <div className="bingo-container">
+            <div className="bingo-floater">
+              {children}
+            </div>    
+          </div>
+          </Suspense>
         </AppRouterCacheProvider>
       </body>
     </html>
