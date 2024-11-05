@@ -75,8 +75,9 @@ export default function MainGame() {
             <div className='bingo-prompt-container noscroll'>
             {gridArray.map((row,y) => 
                 row.map((val,x) => {
-                    if (x === 2 && y === 2) return <div style={{backgroundColor:'rosybrown', fontSize:'200%'}} className='bingo-prompt-box small'>{icons[game.icon]}</div>
+                    if (x === 2 && y === 2) return <div key='ceter-icon' style={{backgroundColor:'rosybrown', fontSize:'200%'}} className='bingo-prompt-box small'>{icons[game.icon]}</div>
                     return <button 
+                        key={(x + (y*5)) + game.values[prompts[x + (y*5)]]}
                         className='bingo-prompt-box small' 
                         style={{backgroundColor:checked[x + (y*5)] ? 'rosybrown' : ''}}
                         onClick={() => check(x + (y*5))}>

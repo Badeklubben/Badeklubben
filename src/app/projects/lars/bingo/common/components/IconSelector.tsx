@@ -5,10 +5,10 @@ import { BiSolidBeer } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
 
 export const icons = [
-    <SiGamebanana />,
-    <FaFlagUsa />,
-    <BiSolidBeer />,
-    <FaHeart />,
+    <SiGamebanana key="banana"/>,
+    <FaFlagUsa key="usa"/>,
+    <BiSolidBeer key="beer"/>,
+    <FaHeart key="heart"/>,
 ]
 
 interface IconInputProps {
