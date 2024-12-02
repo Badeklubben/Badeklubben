@@ -1,12 +1,18 @@
+interface ExtraRole {
+    groupName: string;
+    startDate: string;
+    endDate: string;
+    role: string;
+}
+
 interface Volunteer {
     id: string;
     name: string;
     group: string;
-    start: string;
-    stop: string;
+    startDate: string;
+    endDate: string;
     role: string;
-    other_roles?: string[];
-
+    extra_roles?: ExtraRole[];
 }
 
 export default Volunteer

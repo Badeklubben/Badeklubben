@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Select, MenuItem, } from '@mui/material';
+import { TextField, Button, Typography, Container, Select, MenuItem, Grid } from '@mui/material';
 import { db } from "./fb_config";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import Link from "next/link";
@@ -8,22 +8,38 @@ import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 
 
 const VolunteerForm = () => {
-
+    const [showExtraRoles, setShowExtraRoles] = useState(false);
     const [formData, setFormData] = useState({
+        id: '',
         name: '',
-        birthDate: '',
-        address: '',
         group: '',
-        role: ''
+        startDate: '',
+        endDate: '',
+        role: '',
+        extraRoles: [
+            { groupName: '', startDate: '', endDate: '', role: '' },
+            { groupName: '', startDate: '', endDate: '', role: '' },
+            { groupName: '', startDate: '', endDate: '', role: '' },
+        ],
     });
 
-    const handleChange = (event : any) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>, index?: number) => {
         const { name, value } = event.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        if ((index !== undefined) && (false)) { //ToDo
+            setFormData(prevState => {
+                const updatedRoles = [...prevState.extraRoles];
+                updatedRoles[index] = { ...updatedRoles[index], [name]: value };
+                return { ...prevState, extraRoles: updatedRoles };
+            });
+        } else {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value
+            }));
+        }
     };
+
+
 
     const handleSubmit = async (event : any) => {
         event.preventDefault();
@@ -90,7 +106,7 @@ const VolunteerForm = () => {
                     required
                     fullWidth
                     label="Når sluttet du?"
-                    name="stop"
+                    name="end"
                     type="date"
                     InputLabelProps={{
                         shrink: true,
@@ -104,6 +120,59 @@ const VolunteerForm = () => {
                     name="role"
                     onChange={handleChange}
                 />
+                <Button
+                    type="button"
+                    onClick={() => setShowExtraRoles(prev => !prev)}
+                    style={{ marginTop: '16px' }}
+                >
+                    {showExtraRoles ? 'Skjul ekstra roller' : 'Legg til ekstra roller'}
+                </Button>
+
+
+                {showExtraRoles && formData.extraRoles.map((role, index) => (
+                    <Grid container spacing={2} key={index}>
+                        <Grid item xs={4}>
+                            <TextField
+                                margin="normal"
+                                fullWidth
+                                label="Navn på gruppe"
+                                name="groupName"
+                                onChange={(e) => handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                margin="normal"
+                                fullWidth
+                                label="Startdato"
+                                name="startDate"
+                                type="date"
+                                InputLabelProps={{ shrink: true }}
+                                onChange={(e) => handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                margin="normal"
+                                fullWidth
+                                label="Sluttdato"
+                                name="endDate"
+                                type="date"
+                                InputLabelProps={{ shrink: true }}
+                                onChange={(e) => handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                margin="normal"
+                                fullWidth
+                                label="Rolle"
+                                name="role"
+                                onChange={(e) => handleChange}
+                            />
+                        </Grid>
+                    </Grid>
+                ))}
                 <Button
                     type="submit"
                     fullWidth
