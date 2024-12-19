@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Select, MenuItem, Grid } from '@mui/material';
 import { db } from "./fb_config";
+import { echo_db } from "./echo_fb_config";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import Link from "next/link";
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
 import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const VolunteerForm = () => {
@@ -43,9 +45,11 @@ const VolunteerForm = () => {
 
     const handleSubmit = async (event : any) => {
         event.preventDefault();
+        const uuid = uuidv4();
         try {
             const docRef = await addDoc(collection(db, 'volunteers'), {
                 ...formData,
+                id: uuid,
                 timestamp: new Date() // Lagrer også timestamp når du oppretter dokumentet
             });
             console.log('Data saved with ID:', docRef.id);
@@ -79,7 +83,7 @@ const VolunteerForm = () => {
                     label="Gruppe"
                     name="group"
                     value={formData.group}
-                    onChange={handleChange}
+                    onChange={handleChange} //ToDo
                 >
                     <MenuItem value="Bedkom">Bedkom</MenuItem>
                     <MenuItem value="Gnist">Gnist</MenuItem>

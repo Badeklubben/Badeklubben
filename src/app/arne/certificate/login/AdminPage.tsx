@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {db} from '../fb_config';
-import {collection, getDocs} from 'firebase/firestore';
+import {addDoc, collection, getDocs} from 'firebase/firestore';
 import {Button, Container, Typography, Paper, Grid} from '@mui/material';
 import Volunteer from '../Volunteer'
 import {deleteDoc, doc} from "firebase/firestore";
@@ -8,7 +8,10 @@ import { Template, BLANK_PDF } from '@pdfme/common';
 import { text, image, barcodes } from '@pdfme/schemas';
 import { generate } from '@pdfme/generator';
 import { customTemplate } from './customTemplate';
-
+import {createHash} from "crypto";
+import {Hash} from "node:crypto";
+import { v4 as uuidv4 } from 'uuid';
+import {sha256} from "crypto-hash";
 
 // Definer interfacen for en frivillig
 const generic_echo: string =
@@ -30,8 +33,22 @@ const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 const yyyy = today.getFullYear();
 
 
+
 const AdminPage: React.FC = () => {
     const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
+
+    const submitHash = async (volunteer: Volunteer) => {
+        try {
+            await addDoc(collection(db, "hashcollection"), {
+                id: volunteer.id,
+                hash: await sha256(volunteer.id), //todo, legg til alt jeg vil hashe
+                timestamp: new Date(),
+            })
+        }catch(error : any){
+            alert("error submitting hash")
+            console.log("error!: ", error)
+        }
+    }
 
     useEffect(() => {
         const fetchVolunteers = async () => {
@@ -70,10 +87,7 @@ const AdminPage: React.FC = () => {
             signature_role_2: 'Nestleder echo',
             signature_phone_1: '12345678',
             signature_phone_2: '87654321',
-
-
-
-
+            qr_code: `www.uib.no/`,
 
             // Fyll inn nødvendige felt basert på malen din
         }
@@ -119,6 +133,17 @@ const AdminPage: React.FC = () => {
         }
     };
 
+    async function handleClick(volunteer: Volunteer) {
+        try {
+           // await generatePDF(volunteer)
+            await submitHash(volunteer)
+        } catch (error) {
+            console.log(error)
+            alert('Feil ved generering av PDF')
+        }
+
+    }
+
     return (
         <Container maxWidth="md">
             <Typography variant="h4" gutterBottom>
@@ -134,7 +159,7 @@ const AdminPage: React.FC = () => {
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => generatePDF(volunteer)}
+                                onClick={() => handleClick(volunteer)}
                                 style={{marginTop: '10px'}}
                             >
                                 Generer PDF
