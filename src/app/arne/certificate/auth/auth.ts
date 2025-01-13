@@ -1,11 +1,6 @@
-import {useState, useEffect} from 'react';
-import {auth} from './fb_config';
-import {
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut,
-    User
-} from 'firebase/auth';
+import {useEffect, useState} from 'react';
+import {auth} from '../firebase/fb_config';
+import {onAuthStateChanged, signInWithEmailAndPassword, signOut, User} from 'firebase/auth';
 
 export const login = async (email: string, password: string): Promise<void> => {
     try {
@@ -23,10 +18,9 @@ export const logout = async (): Promise<void> => {
 export const useAuth = (): User | null => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, user => {
+        return onAuthStateChanged(auth, user => {
             setCurrentUser(user);
         });
-        return unsubscribe; // Unsubscribe on unmount
     }, []);
     return currentUser;
 };

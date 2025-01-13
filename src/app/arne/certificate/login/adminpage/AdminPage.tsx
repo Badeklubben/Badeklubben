@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {db} from '../../firebase/fb_config';
+import {db} from '@/app/arne/certificate/firebase/fb_config';
 import {collection, getDocs} from 'firebase/firestore';
 import {Button, Container, Grid, Paper, Typography} from '@mui/material';
-import {Volunteer} from '../../util/Volunteer'
+import {Volunteer} from '@/app/arne/certificate/util/Volunteer'
 import {generatePDF} from "@/app/arne/certificate/login/adminpage/generatePDF"
 import {submitHash} from "@/app/arne/certificate/login/adminpage/submitHash";
 import {deleteVolunteer} from "@/app/arne/certificate/util/deleteVolunteer";
@@ -29,10 +29,9 @@ const AdminPage: React.FC = () => {
     const handleDelete = async (id: string) => {
         await deleteVolunteer(id);
         setVolunteers(volunteers.filter(volunteer => volunteer.id !== id));
-
     }
 
-   const handleClick = async(volunteer: Volunteer) => {
+    const handleClick = async (volunteer: Volunteer) => {
         try {
             await generatePDF(volunteer)
             await submitHash(volunteer)
@@ -40,7 +39,6 @@ const AdminPage: React.FC = () => {
             console.log(error)
             alert('Feil ved generering av PDF')
         }
-
     }
 
     return (

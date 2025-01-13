@@ -43,6 +43,7 @@ const VolunteerForm = () => {
         const {name, value} = event.target;
         setFormData(prevState => {
             const updatedRoles = [...(prevState.extraRole || [])];
+            console.log(updatedRoles,index)
             updatedRoles[index] = {...updatedRoles[index], [name]: value};
             return {...prevState, extraRole: updatedRoles};
         });
@@ -140,17 +141,14 @@ const VolunteerForm = () => {
                 >
                     {showExtraRoles ? 'Skjul ekstra roller' : 'Legg til ekstra roller'}
                 </Button>
-
-                {//Todo fikse at ekstrarollene kommer med
-                }
                 {showExtraRoles && (formData.extraRole || []).map((role, index) => (
                     <Grid container spacing={2} key={index}>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label={"groupName" + index}
-                                name={"groupName" + index}
+                                label={"groupName"}
+                                name={"groupName"}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleIndexChange(e, index)}
                             />
                         </Grid>
@@ -158,8 +156,8 @@ const VolunteerForm = () => {
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label={"startDate" + index}
-                                name={"startDate" + index}
+                                label={"startDate"}
+                                name={"startDate"}
                                 type="date"
                                 defaultValue={"2020-01-01"}
                                 onLoad={handleChange} //todo remove
@@ -171,8 +169,8 @@ const VolunteerForm = () => {
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label={"endDate" + index}
-                                name={"endDate" + index}
+                                label={"endDate"}
+                                name={"endDate"}
                                 type="date"
                                 defaultValue={"2022-01-01"} //todo remove
                                 InputLabelProps={{shrink: true}}
@@ -183,8 +181,8 @@ const VolunteerForm = () => {
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label={"role" + index}
-                                name={"role" + index}
+                                label={"role"}
+                                name={"role"}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleIndexChange(e, index)}
                             />
                         </Grid>

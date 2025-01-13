@@ -1,8 +1,8 @@
 'use client'
 import React, {useState} from 'react';
-import {login, logout, useAuth} from '../auth';
-import {Button, Container, Typography, TextField, Box} from '@mui/material';
-import AdminPage from "@/app/arne/certificate/login/AdminPage";
+import {login, logout, useAuth} from '../auth/auth';
+import {Box, Button, Container, TextField, Typography} from '@mui/material';
+import AdminPage from "@/app/arne/certificate/login/adminpage/AdminPage";
 import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 
 const LoginPage: React.FC = () => {
