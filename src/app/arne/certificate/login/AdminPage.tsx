@@ -8,9 +8,6 @@ import { Template, BLANK_PDF } from '@pdfme/common';
 import { text, image, barcodes } from '@pdfme/schemas';
 import { generate } from '@pdfme/generator';
 import { customTemplate } from './customTemplate';
-import {createHash} from "crypto";
-import {Hash} from "node:crypto";
-import { v4 as uuidv4 } from 'uuid';
 import {sha256} from "crypto-hash";
 
 // Definer interfacen for en frivillig
@@ -39,16 +36,46 @@ const AdminPage: React.FC = () => {
 
     const submitHash = async (volunteer: Volunteer) => {
         try {
+            const toHash = generateUrl(volunteer)
             await addDoc(collection(db, "hashcollection"), {
                 id: volunteer.id,
-                hash: await sha256(volunteer.id), //todo, legg til alt jeg vil hashe
+                hash: await sha256(toHash), //todo, legg til alt jeg vil hashe
                 timestamp: new Date(),
             })
+
         }catch(error : any){
             alert("error submitting hash")
             console.log("error!: ", error)
         }
     }
+    const generateUrl = (formData: {
+        id: string;
+        name: string;
+        group: string;
+        startDate: string;
+        endDate: string;
+        role: string;
+        extraRoles: {
+            groupName0: string;
+            startDate0: string;
+            endDate0: string;
+            role0: string;
+        }[];
+    }): string => {
+        const { name, group, startDate, endDate, role, extraRoles } = formData;
+
+        // Start med de grunnleggende feltene
+        let urlParams = `${name}_${group}_${startDate}_${endDate}_${role}`;
+
+        // Legg til ekstra roller hvis de finnes
+        if (extraRoles && extraRoles.length > 0) {
+            const extraRolesParams = extraRoles.map((role, index) => {
+                return `${role[`groupName${index}`]}_${role[`startDate${index}`]}_${role[`endDate${index}`]}_${role[`role${index}`]}`;
+            }).join('_');
+            urlParams += `_${extraRolesParams}`;
+        }
+        return urlParams;
+    };
 
     useEffect(() => {
         const fetchVolunteers = async () => {
@@ -70,6 +97,9 @@ const AdminPage: React.FC = () => {
 
     const generatePDF = async (volunteer: Volunteer) => {
         const name = volunteer.name;
+        const prefix = "localhost:3000/arne/certificate/verify"
+        const fullURL = `${prefix}?${generateUrl(volunteer)}`;
+        console.log(fullURL)
         const inputs = [{
             signature_date:  dd + '.' + mm + '.' + yyyy,
             student_name_date: `Attest til ${name}`,
@@ -87,13 +117,10 @@ const AdminPage: React.FC = () => {
             signature_role_2: 'Nestleder echo',
             signature_phone_1: '12345678',
             signature_phone_2: '87654321',
-            qr_code: `www.uib.no/`,
-
+            qr_code: `${fullURL}`,
             // Fyll inn nødvendige felt basert på malen din
         }
         ];
-
-
         try {
             const pdf =
                 await generate(
@@ -135,8 +162,10 @@ const AdminPage: React.FC = () => {
 
     async function handleClick(volunteer: Volunteer) {
         try {
-           // await generatePDF(volunteer)
-            await submitHash(volunteer)
+            await generatePDF(volunteer)
+            console.log(volunteer)
+            console.log(generateUrl(volunteer))
+            await submitHash(volunteer,generateUrl(volunteer))
         } catch (error) {
             console.log(error)
             alert('Feil ved generering av PDF')
@@ -167,7 +196,6 @@ const AdminPage: React.FC = () => {
                             <Button
                                 onClick={() => deleteVolunteer(volunteer.id)}
                                 color="primary"
-
                             >
                                 Slett data
                             </Button>
