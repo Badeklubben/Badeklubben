@@ -3,7 +3,7 @@ import {db} from "@/app/arne/certificate/firebase/fb_config";
 
 export const deleteVolunteer = async (id: string) => {
     console.log('Attempting to delete document with ID:', id);
-    try {
+    try { //todo tror ikke delete fungerer
         await deleteDoc(doc(db, 'volunteers', id));
         console.log('Document successfully deleted!');
         alert('Dokumentet ble slettet!');
