@@ -1,111 +1,105 @@
 'use client'
-import React, { useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, {useState} from 'react';
+import {useSearchParams} from 'next/navigation';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Volunteer  from '../Volunteer';
-import { ExtraRole } from '../Volunteer';
-import { Button } from '@mui/material';
-import {sha256} from "crypto-hash";
-import {query, where, collection, getDocs} from 'firebase/firestore';
-import {db} from '../fb_config';
+import {ExtraRole, Volunteer} from '@/app/arne/certificate/util/Volunteer';
+import {Button} from '@mui/material';
+import {collection, getDocs, query, where} from 'firebase/firestore';
+import {db} from '@/app/arne/certificate/firebase/fb_config';
+import {hashFunction} from "@/app/arne/certificate/util/hashFunction";
 
 const Verify: React.FC = () => {
-    const searchParams = useSearchParams();
-    const paramsString = searchParams.toString();
-    const initialParamsArray = paramsString.split('_').map(param => decodeURIComponent(param.replace(/\+/g, ' ')));
-
+    const paramsString = useSearchParams().toString();
+    const initialParamsArray: string[] = paramsString.split('_').map(param => decodeURIComponent(param.replace(/\+/g, ' ')));
     const verifyHash = async () => {
-        const toCheck = initialParamsArray?.join("_")
+        const toCheck = initialParamsArray?.join("_");
         const trimmedCheck = toCheck.substring(0, toCheck.length - 1);
-        console.log(trimmedCheck);
-            try {
-                // Generer hashen for inputValue
-                const generatedHash = await sha256(trimmedCheck);
-
-                // Hent alle dokumentene fra hashcollection
-                const querySnapshot = await getDocs(collection(db, "hashcollection"));
-
-                let isValid = false;
-
+        const idToCheck = initialParamsArray[0]; // Hent ID-en fra initialParamsArray
+        try {
+            const generatedHash = await hashFunction(trimmedCheck);
+            const q = query(collection(db, "hashcollection"), where("id", "==", idToCheck));
+            const querySnapshot = await getDocs(q);
+            if (!querySnapshot.empty) {
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    if (data.hash === generatedHash) {
-                        isValid = true;
+                    if(generatedHash == data.hash) {
+                        console.log("Hash er gyldig!");
+                    } else {
+                        console.log("Ingen gyldig hash funnet, det ble:", generatedHash);
+                        console.log("I DB-en er det:", data.hash)
+
+                        // Håndter ugyldig hash
                     }
                 });
-
-                if (isValid) {
-                    console.log("Hash er gyldig!");
-                    // Gjør noe hvis hashen er gyldig
-                } else {
-                    console.log("Ingen gyldig hash funnet.");
-                    // Håndter ugyldig hash
-                }
-            } catch (error) {
-                console.error("Feil ved verifisering av hash: ", error);
+            } else {
+                console.log("Ingen dokumenter funnet med den spesifikke ID-en.");
+                // Håndter tilfelle der ingen dokumenter finnes
             }
-        };
+        } catch (error) {
+            console.error("Feil ved verifisering av hash: ", error);
+        }
+    };
 
-
-    // Forhåndsdefinert formData med det ønskede formatet
-    const [formData, setFormData] = useState({
-        name: initialParamsArray[0] || '',
-        group: initialParamsArray[1] || '',
-        startDate: initialParamsArray[2] || '',
-        endDate: initialParamsArray[3] || '',
-        role: initialParamsArray[4] || '',
-        extraRoles: [
+    const [formData, setFormData] = useState<Volunteer>({
+        id: initialParamsArray[0] || '',
+        personName: initialParamsArray[1] || '',
+        groupName: initialParamsArray[2] || '',
+        startDate: initialParamsArray[3] || '',
+        endDate: initialParamsArray[4] || '',
+        role: initialParamsArray[5] || '',
+        extraRole: [
             {
-                groupName0: initialParamsArray[5] || '',
-                startDate0: initialParamsArray[6] || '',
-                endDate0: initialParamsArray[7] || '',
-                role0: initialParamsArray[8] || '',
+                groupName: initialParamsArray[6] || '',
+                startDate: initialParamsArray[7] || '',
+                endDate: initialParamsArray[8] || '',
+                role: initialParamsArray[9] || '',
             },
             {
-                groupName1: initialParamsArray[9] || '',
-                startDate1: initialParamsArray[10] || '',
-                endDate1: initialParamsArray[11] || '',
-                role1: initialParamsArray[12] || '',
+                groupName: initialParamsArray[10] || '',
+                startDate: initialParamsArray[11] || '',
+                endDate: initialParamsArray[12] || '',
+                role: initialParamsArray[13] || '',
             },
             {
-                groupName2: initialParamsArray[13] || '',
-                startDate2: initialParamsArray[14] || '',
-                endDate2: initialParamsArray[15] || '',
-                role2: initialParamsArray[16] || '',
+                groupName: initialParamsArray[14] || '',
+                startDate: initialParamsArray[15] || '',
+                endDate: initialParamsArray[16] || '',
+                role: initialParamsArray[17] || '',
             }
-
         ],
     });
 
     // Funksjon for å oppdatere verdien i input-feltet
-    const handleChange = (field: keyof typeof formData, value: string) => {
-        setFormData(prev => ({ ...prev, [field]: value }));
+    const handleChange = (field: keyof Volunteer, value: string) => {
+        setFormData((prev: Volunteer)  => ({ ...prev, [field]: value }));
     };
 
-    // Funksjon for å oppdatere ekstra roller
-    const handleExtraRoleChange = (index: number, field: string, value: string) => {
-        const updatedExtraRoles = [...formData.extraRoles];
+    const handleExtraRoleChange = (index: number, field: keyof ExtraRole, value: string) => {
+        const updatedExtraRoles = [...formData.extraRole!];
         updatedExtraRoles[index] = { ...updatedExtraRoles[index], [field]: value };
-        setFormData(prev => ({ ...prev, extraRoles: updatedExtraRoles }));
+        setFormData((prev: Volunteer) => ({ ...prev, extraRole: updatedExtraRoles }));
     };
-
 
     return (
         <div>
             <h1>Verifikasjon</h1>
+            <Button onClick={verifyHash}>
+                Verifiser
+            </Button>
+
             <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
                 <TextField
                     label="Navn"
                     variant="outlined"
-                    value={formData.name}
-                    onChange={(e) => handleChange('name', e.target.value)}
+                    value={formData.personName}
+                    onChange={(e) => handleChange('personName', e.target.value)}
                 />
                 <TextField
                     label="Gruppe"
                     variant="outlined"
-                    value={formData.group}
-                    onChange={(e) => handleChange('group', e.target.value)}
+                    value={formData.groupName}
+                    onChange={(e) => handleChange('groupName', e.target.value)}
                 />
                 <TextField
                     label="Startdato"
@@ -125,7 +119,7 @@ const Verify: React.FC = () => {
                     value={formData.role}
                     onChange={(e) => handleChange('role', e.target.value)}
                 />
-                {formData.extraRoles.map((extraRole, index) => (
+                {formData.extraRole.map((extraRole, index) => (
                     <Box key={index} sx={{display: 'flex', flexDirection: 'column', gap: 1}}>
                         <TextField
                             label={`Ekstra Rolle Gruppe ${index + 1}`}
@@ -153,9 +147,7 @@ const Verify: React.FC = () => {
                         />
                     </Box>
                 ))}
-                <Button onClick={verifyHash}>
-                  Verifiser
-                </Button>
+
             </Box>
         </div>
     );
