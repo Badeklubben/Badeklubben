@@ -12,7 +12,7 @@ export const submitHash = async (volunteer: Volunteer) => {
             hash: await hashFunction(toHash),
             timestamp: new Date(),
         })
-    }catch(error : any){
+    } catch (error: any) {
         alert("error submitting hash")
         console.log("error!: ", error)
     }
