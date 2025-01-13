@@ -1,53 +1,54 @@
-import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Select, MenuItem, Grid } from '@mui/material';
-import { db } from "./fb_config";
-import { echo_db } from "./echo_fb_config";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import React, {useState} from 'react';
+import {Button, Container, Grid, MenuItem, Select, SelectChangeEvent, TextField, Typography} from '@mui/material';
+import {db} from "../firebase/fb_config";
+import {addDoc, collection} from "firebase/firestore";
 import Link from "next/link";
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
-import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+import {Volunteer} from "@/app/arne/certificate/util/Volunteer";
 
 
 const VolunteerForm = () => {
     const [showExtraRoles, setShowExtraRoles] = useState(false);
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<Volunteer>({
         id: '',
-        name: '',
-        group: '',
+        personName: '',
+        groupName: '',
         startDate: '',
         endDate: '',
         role: '',
-        extraRoles: [
-            { groupName0: '', startDate0: '', endDate0: '', role0: '' },
-            { groupName1: '', startDate1: '', endDate1: '', role1: '' },
-            { groupName2: '', startDate2: '', endDate2: '', role2: '' },
+        extraRole: [
+            {groupName: '', startDate: '', endDate: '', role: ''},
+            {groupName: '', startDate: '', endDate: '', role: ''},
+            {groupName: '', startDate: '', endDate: '', role: ''},
         ],
     });
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
-        console.log(name, value)
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleSelectChange = (event: SelectChangeEvent<string>) => {
+        const {name, value} = event.target;
         setFormData(prevState => ({
             ...prevState,
             [name]: value
         }));
     };
     const handleIndexChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const { name, value } = event.target;
-        console.log(name, value)
+        const {name, value} = event.target;
         setFormData(prevState => {
-            const updatedRoles = [...prevState.extraRoles];
+            const updatedRoles = [...(prevState.extraRole || [])];
             updatedRoles[index] = {...updatedRoles[index], [name]: value};
-            return {...prevState, extraRoles: updatedRoles};
+            return {...prevState, extraRole: updatedRoles};
         });
-
-        //} */
     };
 
-
-
-    const handleSubmit = async (event : any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         const uuid = uuidv4();
         try {
@@ -77,7 +78,7 @@ const VolunteerForm = () => {
                     required
                     fullWidth
                     label="Navn"
-                    name="name"
+                    name="personName"
                     onChange={handleChange}
                 />
 
@@ -85,9 +86,9 @@ const VolunteerForm = () => {
                     required
                     fullWidth
                     label="Gruppe"
-                    name="group"
-                    value={formData.group}
-                    onChange={handleChange} //ToDo
+                    name="groupName"
+                    value={formData.groupName}
+                    onChange={handleSelectChange}
                 >
                     <MenuItem value="Bedkom">Bedkom</MenuItem>
                     <MenuItem value="Gnist">Gnist</MenuItem>
@@ -135,65 +136,65 @@ const VolunteerForm = () => {
                 <Button
                     type="button"
                     onClick={() => setShowExtraRoles(prev => !prev)}
-                    style={{ marginTop: '16px' }}
+                    style={{marginTop: '16px'}}
                 >
                     {showExtraRoles ? 'Skjul ekstra roller' : 'Legg til ekstra roller'}
                 </Button>
 
                 {//Todo fikse at ekstrarollene kommer med
                 }
-                {showExtraRoles && formData.extraRoles.map((role, index) => (
+                {showExtraRoles && (formData.extraRole || []).map((role, index) => (
                     <Grid container spacing={2} key={index}>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label={"groupName"+index}
-                                name={"groupName"+index}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>)   => handleIndexChange(e,index)}
+                                label={"groupName" + index}
+                                name={"groupName" + index}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleIndexChange(e, index)}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label={"startDate"+index}
-                                name={"startDate"+index}
+                                label={"startDate" + index}
+                                name={"startDate" + index}
                                 type="date"
                                 defaultValue={"2020-01-01"}
                                 onLoad={handleChange} //todo remove
-                                InputLabelProps={{ shrink: true }}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>)   => handleIndexChange(e,index)}
+                                InputLabelProps={{shrink: true}}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleIndexChange(e, index)}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label={"endDate"+index}
-                                name={"endDate"+index}
+                                label={"endDate" + index}
+                                name={"endDate" + index}
                                 type="date"
                                 defaultValue={"2022-01-01"} //todo remove
-                                InputLabelProps={{ shrink: true }}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>)   => handleIndexChange(e,index)}
+                                InputLabelProps={{shrink: true}}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleIndexChange(e, index)}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label={"role"+index}
-                                name={"role"+index}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>)   => handleIndexChange(e,index)}
+                                label={"role" + index}
+                                name={"role" + index}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleIndexChange(e, index)}
                             />
                         </Grid>
                     </Grid>
-                    ))}
+                ))}
                 <Button
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{mt: 3, mb: 2}}
                 >
                     Lagre informasjon
                 </Button>

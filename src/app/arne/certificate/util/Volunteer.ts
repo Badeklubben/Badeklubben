@@ -5,14 +5,13 @@ export interface ExtraRole {
     role: string;
 }
 
-interface Volunteer {
+export interface Volunteer {
     id: string;
-    name: string;
-    group: string;
+    personName: string;
+    groupName: string;
     startDate: string;
     endDate: string;
     role: string;
-    extra_roles?: ExtraRole[];
+    extraRole?: ExtraRole[];
 }
 
-export default Volunteer
