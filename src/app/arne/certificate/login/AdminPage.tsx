@@ -86,7 +86,7 @@ const AdminPage: React.FC = () => {
             return '';
         };
 
-        const pdfInput = [{
+        return [{
             signature_date: dd + '.' + mm + '.' + yyyy,
             student_name_date: `Attest til ${name}`,
             student_role: `${name} har vært ${volunteer.role} i ${volunteer.groupName} fra ${volunteer.startDate} til ${volunteer.endDate}`,
@@ -105,8 +105,7 @@ const AdminPage: React.FC = () => {
             signature_phone_2: '87654321',
             qr_code: `${fullURL}`,
         }
-        ];
-        return pdfInput
+        ]
     }
 
     const generatePDF = async (volunteer: Volunteer) => {
