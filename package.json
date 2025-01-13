@@ -19,6 +19,7 @@
     "@pdfme/schemas": "^5.2.3",
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.45.0",
+    "crypto-hash": "^3.1.0",
     "easymde": "^2.18.0",
     "firebase": "^10.7.1",
     "fs": "^0.0.1-security",
@@ -36,11 +37,10 @@
     "sanity-plugin-simpler-color-input": "^2.2.2",
     "stream": "^0.0.2",
     "styled-components": "^6.1.11",
-    "uuid": "^11.0.2",
+    "uuid": "^11.0.3",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
-    "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",

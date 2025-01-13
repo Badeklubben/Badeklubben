@@ -19,26 +19,30 @@ const VolunteerForm = () => {
         endDate: '',
         role: '',
         extraRoles: [
-            { groupName: '', startDate: '', endDate: '', role: '' },
-            { groupName: '', startDate: '', endDate: '', role: '' },
-            { groupName: '', startDate: '', endDate: '', role: '' },
+            { groupName0: '', startDate0: '', endDate0: '', role0: '' },
+            { groupName1: '', startDate1: '', endDate1: '', role1: '' },
+            { groupName2: '', startDate2: '', endDate2: '', role2: '' },
         ],
     });
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>, index?: number) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = event.target;
+        console.log(name, value)
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+    const handleIndexChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const { name, value } = event.target;
-        if ((index !== undefined) && (false)) { //ToDo
-            setFormData(prevState => {
-                const updatedRoles = [...prevState.extraRoles];
-                updatedRoles[index] = { ...updatedRoles[index], [name]: value };
-                return { ...prevState, extraRoles: updatedRoles };
-            });
-        } else {
-            setFormData(prevState => ({
-                ...prevState,
-                [name]: value
-            }));
-        }
+        console.log(name, value)
+        setFormData(prevState => {
+            const updatedRoles = [...prevState.extraRoles];
+            updatedRoles[index] = {...updatedRoles[index], [name]: value};
+            return {...prevState, extraRoles: updatedRoles};
+        });
+
+        //} */
     };
 
 
@@ -97,9 +101,11 @@ const VolunteerForm = () => {
                     margin="normal"
                     required
                     fullWidth
-                    label="Når startet du?"
-                    name="start"
+                    label="startDate"
+                    name="startDate"
                     type="date"
+                    defaultValue={"2024-01-01"}
+                    onLoad={handleChange} //todo remove
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -109,9 +115,11 @@ const VolunteerForm = () => {
                     margin="normal"
                     required
                     fullWidth
-                    label="Når sluttet du?"
-                    name="end"
+                    label="endDate"
+                    name="endDate"
                     type="date"
+                    defaultValue={"2025-01-01"}
+                    onLoad={handleChange} //todo remove
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -132,51 +140,55 @@ const VolunteerForm = () => {
                     {showExtraRoles ? 'Skjul ekstra roller' : 'Legg til ekstra roller'}
                 </Button>
 
-
+                {//Todo fikse at ekstrarollene kommer med
+                }
                 {showExtraRoles && formData.extraRoles.map((role, index) => (
                     <Grid container spacing={2} key={index}>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label="Navn på gruppe"
-                                name="groupName"
-                                onChange={(e) => handleChange}
+                                label={"groupName"+index}
+                                name={"groupName"+index}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>)   => handleIndexChange(e,index)}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label="Startdato"
-                                name="startDate"
+                                label={"startDate"+index}
+                                name={"startDate"+index}
                                 type="date"
+                                defaultValue={"2020-01-01"}
+                                onLoad={handleChange} //todo remove
                                 InputLabelProps={{ shrink: true }}
-                                onChange={(e) => handleChange}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>)   => handleIndexChange(e,index)}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label="Sluttdato"
-                                name="endDate"
+                                label={"endDate"+index}
+                                name={"endDate"+index}
                                 type="date"
+                                defaultValue={"2022-01-01"} //todo remove
                                 InputLabelProps={{ shrink: true }}
-                                onChange={(e) => handleChange}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>)   => handleIndexChange(e,index)}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
                                 margin="normal"
                                 fullWidth
-                                label="Rolle"
-                                name="role"
-                                onChange={(e) => handleChange}
+                                label={"role"+index}
+                                name={"role"+index}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>)   => handleIndexChange(e,index)}
                             />
                         </Grid>
                     </Grid>
-                ))}
+                    ))}
                 <Button
                     type="submit"
                     fullWidth

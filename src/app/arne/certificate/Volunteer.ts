@@ -1,4 +1,4 @@
-interface ExtraRole {
+export interface ExtraRole {
     groupName: string;
     startDate: string;
     endDate: string;
