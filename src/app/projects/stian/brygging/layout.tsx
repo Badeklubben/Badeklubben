@@ -8,5 +8,5 @@ export default function BryggingLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return {children};
+    return <>{children}</>;
 }
