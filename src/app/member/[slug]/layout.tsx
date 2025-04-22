@@ -1,7 +1,5 @@
 import '@/styles/member-page.css';
 
-
-export const runtime = 'edge';
 export default function MemberLayout({ 
     children
 } : {
