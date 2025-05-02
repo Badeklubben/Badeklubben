@@ -5,12 +5,12 @@ export const apiVersion =
 
 // Use Sanity Studio-specific env vars (not NEXT_PUBLIC_*)
 export const dataset = assertValue(
-  process.env.SANITY_STUDIO_SANITY_DATASET,
+  process.env.SANITY_STUDIO_DATASET,
   'Missing environment variable: SANITY_STUDIO_SANITY_DATASET'
 )
 
 export const projectId = assertValue(
-  process.env.SANITY_STUDIO_SANITY_PROJECT_ID,
+  process.env.SANITY_STUDIO_PROJECT_ID,
   'Missing environment variable: SANITY_STUDIO_SANITY_PROJECT_ID'
 )
 

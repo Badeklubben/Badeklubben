@@ -3,7 +3,6 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import clsx from 'clsx' // optional, install with `npm i clsx`
 
 export default function Toolbar({ slug, has_projects }: { slug: string, has_projects: boolean }) {
   const pathname = usePathname()
@@ -25,10 +24,10 @@ export default function Toolbar({ slug, has_projects }: { slug: string, has_proj
             <li key={link.href}>
               <Link href={link.href}>
                 <span
-                  className={clsx(
-                    'text-sm font-medium hover:text-blue-600 transition-colors',
-                    isActive ? 'text-red-600' : 'text-gray-800'
-                  )}
+                  className={
+                    'text-sm font-medium hover:text-blue-600 transition-colors ' +
+                    (isActive ? 'text-red-600' : 'text-gray-800')
+                  }
                 >
                   {link.label}
                 </span>
