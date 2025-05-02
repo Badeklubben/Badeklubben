@@ -3,8 +3,8 @@ export const revalidate = 60;          // 👈 revalidate every 60 s
 import { LoadMember, LoadProjects } from "@/common/sanityLoader";
 import { redirect } from "next/navigation";
 import { MemberProvider } from "@/context/MemberContext";
-import Toolbar from "@/app/commponents/Toolbar";
-import Footer from '../commponents/Footer';
+import Toolbar from "@/app/components/Toolbar";
+import Footer from '../components/Footer';
 
 
 export default async function MemberLayout({ 

@@ -1,6 +1,6 @@
 export const revalidate = 60;          // 👈 revalidate every 60 s
 
-import MemberCard from '@/app/commponents/MemberCard'
+import MemberCard from '@/app/components/MemberCard'
 import LoadMembers, { LoadText } from '@/common/sanityLoader'
 import Image from 'next/image'
 
@@ -24,3 +24,4 @@ export default async function Home() {
     </div>
   )
 }
+
