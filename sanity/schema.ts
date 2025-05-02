@@ -102,11 +102,13 @@ export const schema: { types: SchemaTypeDefinition[] } = {
                 validation: (rule) => rule.max(216)
             }, 
             {
-                title: 'Project ID',
-                description: 'This field must match the folder name of the project!',
-                name: 'id',
-                type: 'string',
-                validation: (rule) => rule.required(),
+                title: 'Project Link',
+                description: 'This must be a valid URL pointing to the project folder or site.',
+                name: 'link',
+                type: 'url',
+                validation: (rule) => rule.required().uri({
+                  scheme: ['http', 'https']
+                }),
             },
             {
                 title: 'Owner',

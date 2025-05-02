@@ -1,21 +1,26 @@
-import MemberCard from "@/app/commponents/MemberCard";
-import LoadMembers, { LoadText } from "@/common/sanityLoader";
+export const revalidate = 60;          // 👈 revalidate every 60 s
+
+import MemberCard from '@/app/commponents/MemberCard'
+import LoadMembers, { LoadText } from '@/common/sanityLoader'
 import Image from 'next/image'
 
-export default function Home() {
-    return (
-        <div>
-            <title>Velkommen til Badeklubben!</title>
+export default async function Home() {
+  const text    = await LoadText('19692804-94c1-4f11-aeae-9a0f2536d356')
+  const members = await LoadMembers()
 
-            <div className="header-tmp">
-                <Image style={{width:'auto', height:'auto'}} src="/logo_gif.svg" priority width={600} height={0} alt="logo"/>
-            </div>
-            <div className="info-tmp">
-                {LoadText("19692804-94c1-4f11-aeae-9a0f2536d356").then((text) => text?.text )}
-            </div>
-            <div className="members-tmp">
-                {LoadMembers().then((members) => members.map(member => <MemberCard key={member.name + "ID"} member={member}></MemberCard>))}
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <header className="header-tmp">
+        <Image src="/logo_gif.svg" alt="logo" width={600} height={150} priority />
+      </header>
+
+      <section className="info-tmp">{text?.text}</section>
+
+      <section className="members-tmp">
+        {members.map(m => (
+          <MemberCard key={m._id} member={m} />
+        ))}
+      </section>
+    </div>
+  )
 }

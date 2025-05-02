@@ -21,9 +21,9 @@ export type Member = {
 export type Project = {
     name:string;
     icon: string;
-    id: string;
     color: string;
     description:string;
+    link:string;
 };
 
 export default async function LoadMembers() {
@@ -68,10 +68,10 @@ export async function LoadProjects(member: Member) {
     const projects = (await sanityFetch<SanityDocument[]>({query: `*[_type == "projects" && owner._ref == "` + member._id + `" ]`}));   
     return Object.fromEntries(projects.map(project => [project.id, {
         name: project.name,
-        id: project.id,
         icon: project.icon?.svg,
         color: project.color?.value,
         description: project.description,
+        link: project.link,
     }]))
 }
 

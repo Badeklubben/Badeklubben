@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node src/generateProjectJson.js && next build",
+    "build": "node && next build",
     "start": "next start",
     "lint": "next lint"
   },
