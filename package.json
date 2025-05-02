@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -23,8 +23,8 @@
     "next": "^14.2.3",
     "next-sanity": "^9.3.10",
     "path": "^0.12.7",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-icons": "^5.2.1",
     "react-markdown": "^9.0.1",
     "sanity": "^3.45.0",
