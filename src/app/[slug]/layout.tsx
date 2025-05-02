@@ -1,34 +1,35 @@
-export const revalidate = 60;          // 👈 revalidate every 60 s
+// app/[slug]/layout.tsx
+export const revalidate = 60;
 
-import { LoadMember, LoadProjects } from "@/common/sanityLoader";
-import { redirect } from "next/navigation";
-import { MemberProvider } from "@/context/MemberContext";
-import Toolbar from "@/app/components/Toolbar";
+import { LoadMember, LoadProjects } from '@/common/sanityLoader';
+import { redirect } from 'next/navigation';
+import { MemberProvider } from '@/context/MemberContext';
+import Toolbar from '@/app/components/Toolbar';
 import Footer from '../components/Footer';
 
+// The promised params type
+type Params = Promise<{ slug: string }>;
 
-export default async function MemberLayout({ 
-    children,
-    params,
-} : {
-    children: React.ReactNode,
-    params: { slug: string }
+export default async function MemberLayout({
+  children,
+  params,            // params is now a *Promise*
+}: {
+  children: React.ReactNode;
+  params: Params;
 }) {
-    var active = "about";
-    const member = await LoadMember(params.slug);
-    if (!member) {
-        redirect("/"); // ⬅️ Go to home page if member not found
-    }
-    
-    const projects = await LoadProjects(member);
+  // Destructure after awaiting
+  const { slug } = await params;
 
-    return (
-        <MemberProvider member={member} projects={projects}>
-            <Toolbar slug={params.slug} has_projects={Object.keys(projects).length !== 0}/>
-            <main className="content">
-            {children}
-            </main>
-            <Footer member={member}/>
-        </MemberProvider>
-    )
+  const member = await LoadMember(slug);
+  if (!member) redirect('/');
+
+  const projects = await LoadProjects(member);
+
+  return (
+    <MemberProvider member={member} projects={projects}>
+      <Toolbar slug={slug} has_projects={Object.keys(projects).length !== 0} />
+      <main className="content">{children}</main>
+      <Footer member={member} />
+    </MemberProvider>
+  );
 }
