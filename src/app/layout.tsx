@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 
 // Dette kom med default koden, vet ikke helt va dette er - Stian
 
@@ -20,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        {children}
       </body>
     </html>
   )
