@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { RiLockPasswordFill } from 'react-icons/ri'
-import { Member } from '@/common/sanityLoader'
+import Image from "next/image";
+import Link from "next/link";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { Member } from "@/common/sanityLoader";
 
 export default function MemberCard({ member }: { member: Member }) {
   return (
     <div
       className="relative flex flex-col w-[370px] h-[460px] rounded-[30px] overflow-hidden shadow-md"
-      style={{ backgroundColor: member.color || 'var(--bk-color-red)' }}
+      style={{ backgroundColor: member.color || "var(--bk-color-red)" }}
     >
       <Link href={`/${member.id}`} className="block w-full h-full">
         {/* Top: Icon area */}
         <div className="flex items-center justify-center w-full h-1/2">
           {member.icon ? (
-            <img
+            <Image
               alt="icon"
               src={`data:image/svg+xml,${encodeURIComponent(member.icon)}`}
               className="opacity-40 w-1/2 h-1/2"
@@ -50,5 +50,5 @@ export default function MemberCard({ member }: { member: Member }) {
         </div>
       </Link>
     </div>
-  )
+  );
 }
