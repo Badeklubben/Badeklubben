@@ -1,6 +1,3 @@
-export const runtime = 'edge';
-export const revalidate = 60;
-
 import { LoadMember, LoadProjects } from '@/common/sanityLoader';
 import { redirect } from 'next/navigation';
 import { MemberProvider } from '@/context/MemberContext';
