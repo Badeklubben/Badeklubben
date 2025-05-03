@@ -16,9 +16,12 @@ export default function MemberCard({ member }: { member: Member }) {
         <div className="flex items-center justify-center w-full h-1/2">
           {member.icon ? (
             <Image
-              alt="icon"
+              alt={`${member.name} icon`}
               src={`data:image/svg+xml,${encodeURIComponent(member.icon)}`}
               className="opacity-40 w-1/2 h-1/2"
+              width={100}
+              height={100}
+              unoptimized={true}
             />
           ) : (
             <RiLockPasswordFill className="opacity-40 w-1/2 h-1/2" />

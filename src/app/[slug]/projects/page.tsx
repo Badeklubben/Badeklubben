@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useMemberProject } from '@/context/MemberContext';
+import Image from "next/image";
 
 export default function ProjectsPage() {
   const { member, projects } = useMemberProject();
@@ -22,11 +23,14 @@ export default function ProjectsPage() {
               <Link href={project.link}>
                 <div className="flex justify-center items-center w-full h-1/2 py-8">
                   {project.icon ? (
-                    <img
-                      className="opacity-40 w-1/2 h-1/2"
-                      src={`data:image/svg+xml,${encodeURIComponent(project.icon)}`}
-                      alt={`${project.name} icon`}
-                    />
+                    <Image
+                    className="opacity-40 w-1/2 h-1/2"
+                    src={`data:image/svg+xml,${encodeURIComponent(project.icon)}`}
+                    alt={`${project.name} icon`}
+                    width={100}
+                    height={100}
+                    unoptimized={true}
+                  />
                   ) : (
                     <RiLockPasswordFill className="opacity-40 w-1/2 h-1/2" />
                   )}
