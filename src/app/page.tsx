@@ -1,4 +1,5 @@
-export const revalidate = 60;          // 👈 revalidate every 60 s
+export const runtie = 'edge';
+export const revalidate = 60;
 
 import MemberCard from '@/app/components/MemberCard'
 import LoadMembers, { LoadText } from '@/common/sanityLoader'

@@ -23,7 +23,9 @@
     "sanity": "^3.87.1",
     "sanity-plugin-icon-picker": "^4.0.0",
     "sanity-plugin-markdown": "^5.1.0",
-    "sanity-plugin-simpler-color-input": "^3.0.1"
+    "sanity-plugin-simpler-color-input": "^3.0.1",
+
+    "@cloudflare/next-on-pages" : "1.13.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -35,6 +37,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@cloudflare/next-on-pages" : "1.13.12"
   }
 }
