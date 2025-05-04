@@ -1,4 +1,4 @@
-export const runtie = 'edge';
+export const runtime = 'edge';
 export const revalidate = 60;
 
 import MemberCard from '@/app/components/MemberCard'
