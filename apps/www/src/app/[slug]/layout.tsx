@@ -1,27 +1,33 @@
 import { LoadMember } from "@/api/sanity/members";
-import { LoadProjects } from "@/api/sanity/projects";
+import { LoadProjectsByMemberId } from "@/api/sanity/projects";
 import { redirect } from "next/navigation";
 import { MemberProvider } from "@/context/MemberContext";
 import Toolbar from "@/components/Toolbar";
 import Footer from "@/components/Footer";
+import { Project } from "@/types/project";
 
-// The promised params type
 type Params = Promise<{ slug: string }>;
 
 export default async function MemberLayout({
   children,
-  params, // params is now a *Promise*
+  params,
 }: {
   children: React.ReactNode;
   params: Params;
 }) {
-  // Destructure after awaiting
   const { slug } = await params;
-
   const member = await LoadMember(slug);
   if (!member) redirect("/");
 
-  const projects = await LoadProjects();
+  const projectsArray = await LoadProjectsByMemberId(member);
+
+  const projects = projectsArray.reduce(
+    (acc, project) => {
+      acc[project.id] = project;
+      return acc;
+    },
+    {} as Record<string, Project>,
+  );
 
   return (
     <MemberProvider member={member} projects={projects}>

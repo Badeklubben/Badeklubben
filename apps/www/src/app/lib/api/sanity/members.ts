@@ -1,8 +1,8 @@
 import { client } from "./client";
-import type { Members } from "../../../../../sanity.types.ts";
+import { Member } from "@/types/member";
 
-export async function LoadMembers(): Promise<Members[]> {
-  return await client.fetch(`
+export async function LoadMembers(): Promise<Member[]> {
+  const members = await client.fetch(`
     *[_type == "members"] {
       _id,
       _type,
@@ -11,20 +11,27 @@ export async function LoadMembers(): Promise<Members[]> {
       _rev,
       name,
       id,
-      icon,
       role,
       about,
       "imageSrc": imageURL.asset->url,
+      "icon": icon.svg,
       cv,
       linkedin,
       mail,
       color
     }
   `);
+
+  // Transform to ensure all required properties exist
+  return members.map((m) => ({
+    ...m,
+    imageSrc: m.imageSrc || m.imageURL?.asset?.url || "",
+    icon: m.icon || null,
+  }));
 }
 
-export async function LoadMember(id: string): Promise<Members | null> {
-  return await client.fetch(
+export async function LoadMember(id: string): Promise<Member | null> {
+  const memberData = await client.fetch(
     `
     *[_type == "members" && id == $id][0] {
       _id,
@@ -34,7 +41,6 @@ export async function LoadMember(id: string): Promise<Members | null> {
       _rev,
       name,
       id,
-      icon,
       role,
       about,
       "imageSrc": imageURL.asset->url,
@@ -46,6 +52,12 @@ export async function LoadMember(id: string): Promise<Members | null> {
   `,
     { id },
   );
-}
 
+  if (!memberData) return null;
+
+  return {
+    ...memberData,
+    imageSrc: memberData.imageSrc || memberData.imageUrl || "",
+  };
+}
 export default LoadMembers;

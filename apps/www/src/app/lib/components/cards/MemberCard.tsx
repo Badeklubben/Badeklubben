@@ -6,8 +6,16 @@ import { Member } from "@/types/member";
 
 export default function MemberCard({ member }: { member: Member }) {
   const bgColor = member.color?.value || "var(--bk-color-blue)";
-  const iconSvg =
-    typeof member.icon === "string" ? member.icon : member.icon?.svg || null;
+  let iconSvg = null;
+  if (typeof member.icon === "string") {
+    iconSvg = member.icon;
+  } else if (
+    member.icon &&
+    typeof member.icon === "object" &&
+    "svg" in member.icon
+  ) {
+    iconSvg = member.icon.svg;
+  }
 
   return (
     <div

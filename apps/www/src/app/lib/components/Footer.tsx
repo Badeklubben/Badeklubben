@@ -1,5 +1,5 @@
 "use client";
-import { Member } from "@/common/sanityLoader";
+import { Member } from "@/types/member";
 import Link from "next/link";
 import { FaLinkedin, FaEnvelope } from "react-icons/fa";
 
