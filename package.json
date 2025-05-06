@@ -4,10 +4,12 @@
   "private": true,
   "packageManager": "pnpm@8.7.0",
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "test": "turbo test"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "check": "turbo run check",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "turbo": "^2.5.2"

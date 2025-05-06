@@ -16,6 +16,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@/app/*": ["./src/app/*"],
+      "@/lib/*": ["./src/app/lib/*"],
+      "@/components/*": ["./src/app/lib/components/*"],
+      "@/api/sanity/*": ["./src/app/lib/api/sanity/*"],
+      "@/types/*": ["./src/app/lib/types/*"],
+      "@/context/*": ["./src/app/lib/context/*"]
+    },
     "plugins": [
       {
         "name": "next"
