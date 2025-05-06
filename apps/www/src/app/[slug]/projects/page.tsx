@@ -4,6 +4,8 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { useMemberProject } from "@/context/MemberContext";
 import Image from "next/image";
 
+export const runtime = "edge";
+
 export default function ProjectsPage() {
   const { member, projects } = useMemberProject();
 

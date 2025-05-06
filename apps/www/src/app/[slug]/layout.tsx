@@ -8,6 +8,8 @@ import { Project } from "@/types/project";
 
 type Params = Promise<{ slug: string }>;
 
+export const runtime = "edge";
+
 export default async function MemberLayout({
   children,
   params,

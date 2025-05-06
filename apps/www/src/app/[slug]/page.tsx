@@ -5,6 +5,8 @@ import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { useMemberProject } from "@/context/MemberContext";
 
+export const runtime = "edge";
+
 export default function AboutPage() {
   const { member } = useMemberProject();
 
