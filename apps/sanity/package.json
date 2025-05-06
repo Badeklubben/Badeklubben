@@ -9,7 +9,11 @@
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "deploy-graphql": "sanity graphql deploy"
+    "lint": "prettier --check '**/*.{ts,tsx}' && eslint src schemaTypes",
+    "format": "prettier --write '**/*.{ts,tsx}'",
+    "deploy-graphql": "sanity graphql deploy",
+    "typegen": "sanity typegen generate",
+    "extract": "sanity schema extract --enforce-required-field"
   },
   "keywords": [
     "sanity"
