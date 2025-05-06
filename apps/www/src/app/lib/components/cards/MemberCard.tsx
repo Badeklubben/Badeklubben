@@ -44,10 +44,7 @@ export default function MemberCard({ member }: { member: Member }) {
       {/* Bottom half */}
       <div className="bg-white h-1/2">
         <div className="flex flex-col ml-[35%] overflow-visible">
-          <Link
-            href={`/${member.id}`}
-            className="block font-bold truncate hover:underline hover:text-purple-700"
-          >
+          <Link href={`/${member.id}`} className="block font-bold">
             {member.name}
           </Link>
           <p className="text-sm text-gray-600 truncate">{member.role}</p>

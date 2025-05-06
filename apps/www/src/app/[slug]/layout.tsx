@@ -21,7 +21,7 @@ export default async function MemberLayout({
   const member = await LoadMember(slug);
   if (!member) redirect("/");
 
-  const projects = await LoadProjects(member);
+  const projects = await LoadProjects();
 
   return (
     <MemberProvider member={member} projects={projects}>
