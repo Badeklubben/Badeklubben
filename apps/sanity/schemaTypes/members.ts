@@ -23,6 +23,14 @@ export default defineType({
       type: 'string',
     },
     {
+      title: 'Icon',
+      name: 'icon',
+      type: 'iconPicker',
+      options: {
+        storeSvg: true,
+      },
+    },
+    {
       name: 'color',
       title: 'color',
       type: 'simplerColor',

@@ -2,6 +2,7 @@ export type Member = {
   _id: string;
   name: string;
   id: string;
+  icon: string;
   role: string;
   color: {
     label: string;

@@ -529,6 +529,14 @@
         },
         "optional": true
       },
+      "icon": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "iconPicker"
+        },
+        "optional": true
+      },
       "color": {
         "type": "objectAttribute",
         "value": {

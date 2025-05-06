@@ -1,4 +1,4 @@
-import MemberCard from "@/components/MemberCard";
+import MemberCard from "@/components/cards/MemberCard";
 import LoadText from "@/api/sanity/information";
 import LoadMembers from "@/api/sanity/members";
 import Image from "next/image";
@@ -25,15 +25,6 @@ export default async function Home() {
         {members.map((m) => (
           <MemberCard key={m._id} member={m} />
         ))}
-      </section>
-      <section
-        className="debug"
-        style={{ margin: "50px", padding: "20px", border: "1px solid #ccc" }}
-      >
-        <h2>Debug Information</h2>
-        <pre style={{ whiteSpace: "pre-wrap" }}>
-          {JSON.stringify(members, null, 2)}
-        </pre>
       </section>
     </div>
   );

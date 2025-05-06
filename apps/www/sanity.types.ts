@@ -105,6 +105,7 @@ export type Members = {
   name?: string;
   id?: string;
   role?: string;
+  icon?: IconPicker;
   color?: SimplerColor;
   about?: string;
   imageURL?: {
