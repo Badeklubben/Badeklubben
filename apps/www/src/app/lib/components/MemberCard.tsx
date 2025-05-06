@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -9,7 +8,7 @@ export default function MemberCard({ member }: { member: Member }) {
   return (
     <div
       className="relative flex flex-col w-[370px] h-[460px] rounded-[30px] overflow-hidden shadow-md"
-      style={{ backgroundColor: member.color || "var(--bk-color-red)" }}
+      style={{ backgroundColor: member.color?.value || "var(--bk-color-red)" }}
     >
       <Link href={`/${member.id}`} className="block w-full h-full">
         {/* Top: Icon area */}
@@ -43,7 +42,7 @@ export default function MemberCard({ member }: { member: Member }) {
         <div className="absolute top-0 left-0 flex items-center h-full pl-[5%]">
           <div className="w-1/4 aspect-square rounded-full overflow-hidden outline outline-[5px] outline-white">
             <Image
-              src={member.imageSrc}
+              src={member.imageUrl}
               alt={member.name}
               width={300}
               height={300}

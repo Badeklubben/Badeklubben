@@ -1,13 +1,15 @@
 export type Member = {
-  name: string;
-  role: string;
-  icon: string;
-  color: string;
-  about: string;
-  cv: string;
-  imageSrc: string;
-  id: string;
   _id: string;
-  mail: string;
-  linkedin: string;
+  name: string;
+  id: string;
+  role: string;
+  color: {
+    label: string;
+    value: string;
+  };
+  about: string;
+  imageSrc: string;
+  cv?: string;
+  linkedin?: string;
+  mail?: string;
 };

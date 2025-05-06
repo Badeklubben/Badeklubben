@@ -1,4 +1,5 @@
-import { LoadMember, LoadProjects } from "@/api/sanity/";
+import { LoadMember } from "@/api/sanity/members";
+import { LoadProjects } from "@/api/sanity/projects";
 import { redirect } from "next/navigation";
 import { MemberProvider } from "@/context/MemberContext";
 import Toolbar from "@/components/Toolbar";

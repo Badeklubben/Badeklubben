@@ -1,8 +1,7 @@
 "use client";
-
 import { Member } from "@/common/sanityLoader";
 import Link from "next/link";
-import { FaLinkedin, FaEnvelop } from "react-icons/fa";
+import { FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 export default function Footer({ member }: { member: Member }) {
   return (
