@@ -1,0 +1,64 @@
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { Member } from "@/types/member";
+
+export default function MemberCard({ member }: { member: Member }) {
+  const iconSvg =
+    typeof member.icon === "string" ? member.icon : member.icon?.svg || null;
+
+  return (
+    <div
+      className="relative flex flex-col w-[370px] h-[460px] rounded-[30px] overflow-hidden shadow-md"
+      style={{ backgroundColor: member.color?.value || "var(--bk-color-red)" }}
+    >
+      {/* Icon area */}
+      <div className="flex items-center justify-center w-full h-1/2">
+        {iconSvg ? (
+          <div
+            className="opacity-40 w-1/2 h-1/2 flex items-center justify-center"
+            dangerouslySetInnerHTML={{
+              __html: iconSvg
+                .replace(/width="[^"]*"/, 'width="100%"')
+                .replace(/height="[^"]*"/, 'height="100%"')
+                .replace(
+                  /style="[^"]*"/,
+                  'style="width: 100%; height: 100%; opacity: 0.4;"',
+                ),
+            }}
+          />
+        ) : (
+          <RiLockPasswordFill className="opacity-40 w-1/2 h-1/2" />
+        )}
+      </div>
+
+      {/* Bottom: Content area */}
+      <div className="bg-white h-1/2">
+        <div className="flex flex-col ml-[35%] overflow-hidden px-4 pt-6">
+          <Link
+            href={`/${member.id}`}
+            className="font-bold text-base text-black hover:text-purple-700 hover:underline"
+          >
+            {member.name}
+          </Link>
+          <div className="text-sm text-gray-600">{member.role}</div>
+        </div>
+        <div className="text-sm font-light text-gray-700 p-5 pt-3">
+          {member.about}
+        </div>
+      </div>
+
+      {/* Floating profile image */}
+      <div className="absolute top-0 left-0 flex items-center h-full pl-[5%]">
+        <div className="w-1/4 aspect-square rounded-full overflow-hidden outline outline-[5px] outline-white">
+          <img
+            src={member.imageSrc}
+            alt={member.name || ""}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

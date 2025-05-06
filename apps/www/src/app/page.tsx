@@ -6,7 +6,7 @@ import Image from "next/image";
 export default async function Home() {
   const text = await LoadText("19692804-94c1-4f11-aeae-9a0f2536d356");
   const members = await LoadMembers();
-  console.log("Members data:", members);
+
   return (
     <div>
       <header className="header-tmp">
