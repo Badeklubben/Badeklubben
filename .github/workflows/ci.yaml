@@ -1,26 +1,26 @@
-name: CI 
+name: CI
 
-on: 
+on:
   pull_request:
-    branches: 
+    branches:
       - main
       - development
-  push: 
-    branches: 
+  push:
+    branches:
       - main
       - development
 
 jobs:
-  ci: 
+  ci:
     name: Run CI
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/action-setup@v4
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: actions/action-setup@v
+        uses: actions/action-setup@v4
 
       - name: Setup node
         uses: actions/action-setup@v4
@@ -31,7 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        
+
       - name: Check
         run: pnpm check
 
@@ -40,5 +40,3 @@ jobs:
 
       - name: Build
         run: pnpm build
-        
-        
