@@ -10,7 +10,7 @@ npm install pnpm
 ```
 
 Then install all dependencies from the root folder (i.e badeklubben)
-(DO NOT USE NPM)
+(_DO NOT USE NPM_)
 
 ```bash
 pnpm i
@@ -22,16 +22,19 @@ Then run the dev from the root folder (no need to go into apps/www||sanity to ru
 pnpm run dev
 ```
 
+_BEFORE PUSHING CODE TO GIT_
 
-*BEFORE PUSHING CODE TO GIT*
+do: `pnpm format`
 
-do: ```pnpm format```
+You can use this to check for type errors in the code:
 
+```bash
+pnpm check
+```
 
 When it works you can also use:
 
 ```bash
-pnpm check
 pnpm lint
 
 ```
