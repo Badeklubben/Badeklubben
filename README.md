@@ -22,10 +22,15 @@ Then run the dev from the root folder (no need to go into apps/www||sanity to ru
 pnpm run dev
 ```
 
+
+*BEFORE PUSHING CODE TO GIT*
+
+do: ```pnpm format```
+
+
 When it works you can also use:
 
 ```bash
-pnpm format
 pnpm check
 pnpm lint
 
