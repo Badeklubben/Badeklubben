@@ -1,44 +1,33 @@
 {
-  "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "noEmit": true,
-    "incremental": true,
-    "module": "esnext",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@/app/*": ["./src/app/*"],
-      "@/lib/*": ["./src/app/lib/*"],
-      "@/components/*": ["./src/app/lib/components/*"],
-      "@/api/sanity/*": ["./src/app/lib/api/sanity/*"],
-      "@/types/*": ["./src/app/lib/types/*"],
-      "@/context/*": ["./src/app/lib/context/*"]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": false,
+		"noEmit": true,
+		"incremental": true,
+		"module": "esnext",
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./*"],
+			"@/app/*": ["./src/app/*"],
+			"@/lib/*": ["./src/app/lib/*"],
+			"@/components/*": ["./src/app/lib/components/*"],
+			"@/api/sanity/*": ["./src/app/lib/api/sanity/*"],
+			"@/types/*": ["./src/app/lib/types/*"],
+			"@/context/*": ["./src/app/lib/context/*"]
+		},
+		"plugins": [
+			{
+				"name": "next"
+			}
+		]
+	},
+	"include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+	"exclude": ["node_modules"]
 }

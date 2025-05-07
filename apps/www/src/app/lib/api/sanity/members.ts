@@ -1,8 +1,8 @@
-import { client } from "./client";
-import { Member } from "@/types/member";
+import { client } from './client';
+import { Member } from '@/types/member';
 
 export async function LoadMembers(): Promise<Member[]> {
-  const members = await client.fetch(`
+	const members = await client.fetch(`
     *[_type == "members"] {
       _id,
       _type,
@@ -22,17 +22,17 @@ export async function LoadMembers(): Promise<Member[]> {
     }
   `);
 
-  // Transform to ensure all required properties exist
-  return members.map((m) => ({
-    ...m,
-    imageSrc: m.imageSrc || m.imageURL?.asset?.url || "",
-    icon: m.icon || null,
-  }));
+	// Transform to ensure all required properties exist
+	return members.map((m) => ({
+		...m,
+		imageSrc: m.imageSrc || m.imageURL?.asset?.url || '',
+		icon: m.icon || null
+	}));
 }
 
 export async function LoadMember(id: string): Promise<Member | null> {
-  const memberData = await client.fetch(
-    `
+	const memberData = await client.fetch(
+		`
     *[_type == "members" && id == $id][0] {
       _id,
       _type,
@@ -50,14 +50,14 @@ export async function LoadMember(id: string): Promise<Member | null> {
       color
     }
   `,
-    { id },
-  );
+		{ id }
+	);
 
-  if (!memberData) return null;
+	if (!memberData) return null;
 
-  return {
-    ...memberData,
-    imageSrc: memberData.imageSrc || memberData.imageUrl || "",
-  };
+	return {
+		...memberData,
+		imageSrc: memberData.imageSrc || memberData.imageUrl || ''
+	};
 }
 export default LoadMembers;

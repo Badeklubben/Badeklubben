@@ -1,14 +1,14 @@
-import type { Member, Members } from "@/types/member";
-import { Project } from "@/types/project";
-import { client } from "./client";
+import type { Member, Members } from '@/types/member';
+import { Project } from '@/types/project';
+import { client } from './client';
 
 export async function LoadProjectsByMemberId(
-  member: Member | Members | string,
+	member: Member | Members | string
 ): Promise<Project[]> {
-  const memberId = typeof member === "string" ? member : member.id;
+	const memberId = typeof member === 'string' ? member : member.id;
 
-  return await client.fetch(
-    `
+	return await client.fetch(
+		`
     *[_type == "projects" && owner._ref in *[_type=="members" && id==$memberId]._id] {
       _id,
       _type,
@@ -27,12 +27,12 @@ export async function LoadProjectsByMemberId(
       color
     }
   `,
-    { memberId },
-  );
+		{ memberId }
+	);
 }
 
 export async function LoadProjects(): Promise<Project[]> {
-  return await client.fetch(`
+	return await client.fetch(`
     *[_type == "projects"] {
       _id,
       _type,
