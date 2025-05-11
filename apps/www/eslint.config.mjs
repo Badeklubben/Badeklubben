@@ -1,5 +1,5 @@
 import eslint from '@eslint/js';
-import globals from 'globals';
+import globals from 'tailwind';
 import tseslint from 'typescript-eslint';
 
 export default [

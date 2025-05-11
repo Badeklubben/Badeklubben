@@ -1,4 +1,3 @@
-// components/MemberCard.tsx
 'use client';
 import Link from 'next/link';
 import { RiLockPasswordFill } from 'react-icons/ri';
@@ -12,7 +11,6 @@ export default function MemberCard({ member }: { member: Member }) {
 	} else if (member.icon && typeof member.icon === 'object' && 'svg' in member.icon) {
 		iconSvg = member.icon.svg;
 	}
-
 	return (
 		<div className="relative flex h-[460px] w-[370px] flex-col overflow-hidden rounded-[30px] shadow-[0_5px_5px_rgba(0,0,0,0.3)]">
 			{/* Top half */}
@@ -34,18 +32,14 @@ export default function MemberCard({ member }: { member: Member }) {
 					<RiLockPasswordFill className="h-1/2 w-1/2 opacity-40" />
 				)}
 			</div>
-
 			{/* Bottom half */}
 			<div className="h-1/2 bg-white">
 				<div className="ml-[35%] flex flex-col overflow-visible">
-					<Link href={`/${member.id}`} className="block font-bold">
-						{member.name}
-					</Link>
-					<p className="truncate text-sm text-gray-600">{member.role}</p>
+					<p className="text-sm font-bold">{member.name}</p>
+					<p className="text-sm font-bold text-gray-600">{member.role}</p>
 				</div>
-				<p className="p-5 text-sm font-light text-gray-700">{member.about}</p>
+				<p className="px-4 text-sm font-light text-gray-700">{member.about}</p>
 			</div>
-
 			{/* Floating avatar */}
 			<div className="absolute left-0 top-0 flex h-full w-full items-center justify-start pl-[5%]">
 				<div className="aspect-square w-[25%] rounded-full ring-4 ring-white">

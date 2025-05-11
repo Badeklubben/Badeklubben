@@ -1,4 +1,4 @@
-import MemberCard from '@/components/cards/MemberCard';
+import MemberCard from '@/components/MemberCard';
 import LoadText from '@/api/sanity/information';
 import LoadMembers from '@/api/sanity/members';
 import Image from 'next/image';
@@ -9,17 +9,17 @@ export default async function Home() {
 
 	return (
 		<div>
-			<header className="header-tmp">
+			<header className="header-section flex flex-wrap justify-center">
 				<Image src="/logo_gif.svg" alt="logo" width={600} height={150} priority />
 			</header>
 
-			<section className="info-tmp">{text}</section>
+			<section className="info-section flex flex-wrap justify-center">{text}</section>
 
-			<section className="members-tmp">
+			<div className="members-section /* 4rem / 64px */ /* 5rem / 80px on ≥768px */ lg:gap-100 /* 6rem / 96px on ≥1024px */ flex flex-wrap justify-center gap-16 px-4 md:gap-20">
 				{members.map((m) => (
 					<MemberCard key={m._id} member={m} />
 				))}
-			</section>
+			</div>
 		</div>
 	);
 }
