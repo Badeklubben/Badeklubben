@@ -10,8 +10,8 @@ export default function ContactPage({
 })   {
     return (
         <div className="contact-tmp">
-        {member.linkedin && <Link href={member.linkedin}><div className="contact-item"><FaLinkedin className="icon"/>{member.linkedin}</div></Link>}
-        {member.mail && <Link href={member.mail}><div className="contact-item"><FaEnvelope className="icon"/>{member.mail}</div></Link>}
+        {member.linkedin && <Link href={member.linkedin} target="_blank" rel="noopener noreferrer"><div className="contact-item"><FaLinkedin className="icon"/>{member.linkedin}</div></Link>}
+        {member.mail && <Link href={`mailto:${member.mail}`}><div className="contact-item"><FaEnvelope className="icon"/>{member.mail}</div></Link>}
         </div>
     );
 }

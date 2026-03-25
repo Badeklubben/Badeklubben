@@ -11,7 +11,7 @@ export default function AboutPage({
 })  {
     return (
         <div className='about-container'>
-            <Image className='about-image' src={member.imageSrc} alt={member.name} width={100} height={0}></Image>
+            <Image className='about-image' src={member.imageSrc} alt={member.name} width={100} height={100} style={{height:'auto'}}></Image>
             <div className='about-text'>{member?.about}</div>
             <ReactMarkdown className='about-md'>{member.cv}</ReactMarkdown>
         </div> 

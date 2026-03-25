@@ -17,7 +17,7 @@ export default function MemberCard({
       <div className="member-card" style={{backgroundColor: member.color || 'var(--bk-color-red)'}}>
       <Link href={'member/' + member.id}>
         <div className="member-card-landscape">
-            {member.icon ? <img alt='icon' className="member-card-icon" src={`data:image/svg+xml,${encodeURIComponent(member.icon)}`}></img> : <RiLockPasswordFill className="member-card-icon"/>}
+            {member.icon ? <img alt={`${member.name} ikon`} className="member-card-icon" src={`data:image/svg+xml,${encodeURIComponent(member.icon)}`}></img> : <RiLockPasswordFill className="member-card-icon"/>}
         </div>
         <div className="member-card-body">
           <div className="member-info">
@@ -28,7 +28,7 @@ export default function MemberCard({
         </div>
         <div className="member-card-img-container">
           <div className="member-card-img">
-            <Image src={member.imageSrc} alt={member.name} width={1000} height={0} ></Image>
+            <Image src={member.imageSrc} alt={member.name} width={1000} height={1000} style={{width:'100%', height:'100%', objectFit:'cover'}}></Image>
           </div>
         </div>
       </Link>
