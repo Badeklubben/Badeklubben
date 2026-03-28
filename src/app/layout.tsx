@@ -1,27 +1,18 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-
-// Dette kom med default koden, vet ikke helt va dette er - Stian
-
-const inter = Inter({ subsets: ['latin'] })
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Velkommen til badeklubben!',
-  description: 'Vi bades',
-}
+  title: {
+    default: 'Badeklubben',
+    template: '%s — Badeklubben',
+  },
+  description: 'Hobby-prosjekter fra Badeklubben — en gjeng som lager ting for moro skyld.',
+};
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
-      </body>
+    <html lang="no">
+      <body>{children}</body>
     </html>
-  )
+  );
 }

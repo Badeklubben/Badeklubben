@@ -37,3 +37,9 @@ next-env.d.ts
 
 # Jetbrains IDE
 .idea/
+
+# Sanity Studio build artifacts
+/dist/
+
+# Duplicate env directory
+/badeklubben/
