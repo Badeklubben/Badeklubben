@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { RiLockPasswordFill } from 'react-icons/ri';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaCode, FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { Project, CATEGORIES } from '@/types';
 import Badge from '@/app/components/Badge';
 
@@ -21,7 +20,7 @@ export default function ProjectCard({
     const icon = project?.icon;
 
     return (
-        <div className="relative flex flex-col w-full rounded-[30px] overflow-hidden shadow-[0px_5px_5px_rgba(0,0,0,0.3)] transition-transform duration-200 hover:scale-[1.02]">
+        <div className="relative flex flex-col w-full rounded-[30px] overflow-hidden shadow-[0px_5px_5px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-[1.02] hover:shadow-lg">
             {/* Icon area — clickable to project */}
             <Link
                 href={href}
@@ -36,7 +35,7 @@ export default function ProjectCard({
                         src={`data:image/svg+xml,${encodeURIComponent(icon)}`}
                     />
                 ) : (
-                    <RiLockPasswordFill className="opacity-40 w-16 h-16 text-white" />
+                    <FaCode className="opacity-40 w-16 h-16 text-white" />
                 )}
             </Link>
 

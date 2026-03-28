@@ -19,7 +19,7 @@ export default function MemberNav({
     const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
-        <header className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
+        <header className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm" style={{ borderTop: `3px solid ${color}` }}>
             <div className="max-w-6xl mx-auto px-4 flex items-center justify-between h-14">
                 {/* Logo + member name */}
                 <div className="flex items-center gap-3">
@@ -27,7 +27,7 @@ export default function MemberNav({
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src="/logo.svg" alt="Badeklubben" className="h-8 w-auto" />
                     </Link>
-                    <span className="font-bold text-lg">{memberName}</span>
+                    <span className="font-bold text-lg" style={{ color }}>{memberName}</span>
                 </div>
 
                 {/* Desktop tabs */}

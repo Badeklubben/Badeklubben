@@ -10,6 +10,10 @@
   --bk-color-green: #5AC7BD;
 }
 
+body {
+  background-color: #FAFAF8;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }

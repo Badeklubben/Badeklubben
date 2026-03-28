@@ -5,15 +5,15 @@ export default function NotFound() {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center gap-6 px-4 text-center">
             <Image src="/logo.svg" alt="Badeklubben" width={80} height={80} />
-            <h1 className="text-2xl font-bold">Siden ble ikke funnet</h1>
+            <h1 className="text-2xl font-bold text-bk-red">Denne siden har dykket under!</h1>
             <p className="text-gray-500 max-w-md">
-                Beklager, vi finner ikke siden du leter etter.
+                Vi finner dessverre ikke siden du leter etter. Den kan ha svømt avgårde.
             </p>
             <Link
                 href="/"
-                className="px-5 py-2 rounded-full text-sm font-medium bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+                className="px-6 py-2.5 rounded-full text-sm font-medium bg-bk-blue text-white hover:bg-bk-green transition-colors"
             >
-                ← Tilbake til forsiden
+                ← Svøm tilbake til forsiden
             </Link>
         </div>
     );

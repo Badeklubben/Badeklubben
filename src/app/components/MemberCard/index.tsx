@@ -9,8 +9,11 @@ export default function MemberCard({ member }: { member: Member }) {
     return (
         <Link href={'member/' + member.id} className="block group">
             <div
-                className="relative flex flex-col w-full rounded-[30px] overflow-hidden shadow-[0px_5px_5px_rgba(0,0,0,0.3)] transition-transform duration-200 group-hover:scale-[1.02]"
-                style={{ backgroundColor: member.color || 'var(--bk-color-red)' }}
+                className="relative flex flex-col w-full rounded-[30px] overflow-hidden shadow-[0px_5px_5px_rgba(0,0,0,0.3)] transition-all duration-200 group-hover:scale-[1.02] group-hover:shadow-lg"
+                style={{
+                    backgroundColor: member.color || 'var(--bk-color-red)',
+                    '--card-color': member.color || 'var(--bk-color-red)',
+                } as React.CSSProperties}
             >
                 {/* Icon area — top half */}
                 <div className="flex h-48 w-full items-center justify-center">
@@ -28,7 +31,7 @@ export default function MemberCard({ member }: { member: Member }) {
 
                 {/* Info area — bottom */}
                 <div className="bg-white pt-8 pb-5 px-5 min-h-[120px]">
-                    <div className="ml-[30%]">
+                    <div className="ml-28">
                         <div className="font-bold text-base">{member.name}</div>
                         <div className="text-sm text-gray-600">{member.role}</div>
                     </div>
@@ -37,7 +40,7 @@ export default function MemberCard({ member }: { member: Member }) {
 
                 {/* Profile photo — absolute circle overlapping icon/info border */}
                 {member.imageSrc && (
-                    <div className="absolute left-4 top-[calc(192px-40px)] w-20 h-20 rounded-full overflow-hidden outline outline-4 outline-white shadow-md">
+                    <div className="absolute left-4 top-[calc(192px-48px)] w-24 h-24 rounded-full overflow-hidden outline outline-4 outline-white shadow-md">
                         <Image src={member.imageSrc} alt={member.name} fill className="object-cover" />
                     </div>
                 )}
