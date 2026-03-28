@@ -128,6 +128,48 @@ export const schema: { types: SchemaTypeDefinition[] } = {
                 title: 'color',
                 type: 'simplerColor',
             },
+            {
+                title: 'Tech Stack',
+                name: 'techStack',
+                type: 'array',
+                of: [{ type: 'string' }],
+                options: { layout: 'tags' },
+            },
+            {
+                title: 'Category',
+                name: 'category',
+                type: 'string',
+                options: {
+                    list: [
+                        { title: 'Web App', value: 'webapp' },
+                        { title: 'Tool', value: 'tool' },
+                        { title: 'Game', value: 'game' },
+                        { title: 'Data', value: 'data' },
+                        { title: 'Other', value: 'other' },
+                    ],
+                },
+            },
+            {
+                title: 'GitHub URL',
+                name: 'githubUrl',
+                type: 'url',
+            },
+            {
+                title: 'Live URL',
+                name: 'liveUrl',
+                type: 'url',
+            },
+            {
+                title: 'Screenshots',
+                name: 'screenshots',
+                type: 'array',
+                of: [{ type: 'image', options: { hotspot: true } }],
+            },
+            {
+                title: 'Long Description',
+                name: 'longDescription',
+                type: 'markdown',
+            },
         ]
     }
   ],
