@@ -1,34 +1,19 @@
-'use client'
-import React from 'react';
-import Typography from '@mui/material/Typography';
+'use client';
 
-interface DefaultTypographyProps {
-    children: React.ReactNode;
-    href?: string;
-    colorText?: string;
+import { ReactNode } from 'react';
+
+export default function DefaultTypography({
+    children,
+    fontWeight = 400,
+    colorText = '#000',
+}: {
+    children: ReactNode;
     fontWeight?: number;
-}
-
-const DefaultTypography: React.FC<DefaultTypographyProps> = (
-    { children, href, colorText = "white", fontWeight = 400  }) => {
+    colorText?: string;
+}) {
     return (
-        <Typography
-            variant= "h5"
-            noWrap
-            component={href ? 'a' : 'span'}
-            href={href}
-            sx={{
-                mr: 2,
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: fontWeight,
-                letterSpacing: '.1rem',
-                color: colorText,
-            }}
-        >
+        <p style={{ fontWeight, color: colorText, fontFamily: 'monospace', letterSpacing: '0.1rem' }}>
             {children}
-        </Typography>
+        </p>
     );
-};
-
-export default DefaultTypography;
+}

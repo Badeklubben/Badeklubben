@@ -1,14 +1,14 @@
-import { Silkscreen, Orbitron, Bungee_Hairline, Monoton, Audiowide } from 'next/font/google';
+// Font stubs using system fonts as fallback.
+// When deployed with network access, replace with next/font/google imports:
+// import { Silkscreen, Orbitron, Bungee_Hairline, Monoton, Audiowide } from 'next/font/google';
 
-//pixel
-export const silkscreen = Silkscreen({ subsets: ['latin'] , weight: ['700','400']});
+const makeFont = (families: string) => ({
+    className: '',
+    style: { fontFamily: families },
+});
 
-//futuristic
-export const orbitron = Orbitron({ subsets: ['latin'] , weight: ['700','400']});
-export const bungee_hairline = Bungee_Hairline({ subsets: ['latin'] , weight: ['400']});
-
-//retro
-export const monoton = Monoton({ subsets: ['latin'] , weight: ['400']});
-
-//synthwave
-export const audiowide = Audiowide({ subsets: ['latin'] , weight: ['400']});
+export const silkscreen = makeFont('"Silkscreen", monospace');
+export const orbitron = makeFont('"Orbitron", monospace');
+export const bungee_hairline = makeFont('"Bungee Hairline", sans-serif');
+export const monoton = makeFont('"Monoton", cursive');
+export const audiowide = makeFont('"Audiowide", monospace');
