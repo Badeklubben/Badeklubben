@@ -32,21 +32,40 @@ export default function AllProjectsClient({ sanityProjects }: { sanityProjects: 
         return map;
     }, [sanityProjects]);
 
-    // Build flat list of all projects from filesystem (source of truth for which pages exist)
+    // Build flat list: filesystem projects (internal) + Sanity-only projects with liveUrl (external)
     const allEntries = useMemo(() => {
         if (!fsProjects) return [];
-        const entries: { memberId: string; projectId: string; project: Project | null }[] = [];
+        const entries: { memberId: string; projectId: string; project: Project | null; isExternal: boolean }[] = [];
+
+        // Internal projects from filesystem
+        const fsKeys = new Set<string>();
         Object.entries(fsProjects.projects).forEach(([memberId, projectIds]) => {
             projectIds.forEach((projectId) => {
+                fsKeys.add(`${memberId}/${projectId}`);
                 entries.push({
                     memberId,
                     projectId,
                     project: sanityLookup[`${memberId}/${projectId}`] ?? null,
+                    isExternal: false,
                 });
             });
         });
+
+        // External projects: in Sanity with liveUrl but no filesystem folder
+        sanityProjects.forEach((p) => {
+            if (!p.ownerId || !p.id || !p.liveUrl) return;
+            if (!fsKeys.has(`${p.ownerId}/${p.id}`)) {
+                entries.push({
+                    memberId: p.ownerId,
+                    projectId: p.id,
+                    project: p,
+                    isExternal: true,
+                });
+            }
+        });
+
         return entries;
-    }, [fsProjects, sanityLookup]);
+    }, [fsProjects, sanityLookup, sanityProjects]);
 
     // Collect unique filters
     const { allTechStack, allCategories, allMembers } = useMemo(() => {
@@ -67,7 +86,7 @@ export default function AllProjectsClient({ sanityProjects }: { sanityProjects: 
 
     // Apply filters
     const filtered = useMemo(() => {
-        return allEntries.filter(({ memberId, project }) => {
+        return allEntries.filter(({ memberId, project, isExternal: _ie }) => {
             if (activeMember && memberId !== activeMember) return false;
             if (activeCategory && project?.category !== activeCategory) return false;
             if (activeTech.size > 0) {
@@ -146,14 +165,15 @@ export default function AllProjectsClient({ sanityProjects }: { sanityProjects: 
                 />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-                    {filtered.map(({ memberId, projectId, project }) => (
+                    {filtered.map(({ memberId, projectId, project, isExternal }) => (
                         <ProjectCard
                             key={`${memberId}/${projectId}`}
                             project={project}
-                            href={`/projects/${memberId}/${projectId}`}
+                            href={isExternal ? (project?.liveUrl ?? '#') : `/projects/${memberId}/${projectId}`}
                             color={project?.color || 'var(--bk-color-red)'}
                             projectId={projectId}
                             showOwner
+                            isExternal={isExternal}
                         />
                     ))}
                 </div>

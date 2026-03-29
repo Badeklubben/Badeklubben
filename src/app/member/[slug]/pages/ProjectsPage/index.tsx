@@ -28,7 +28,15 @@ export default function ProjectsPage({
             .catch(() => setError('Error fetching projects'));
     }, [member.id]);
 
-    // Collect all unique tech stacks and categories from Sanity data
+    // External projects: in Sanity for this member but not in filesystem
+    const externalProjectIds = useMemo(() => {
+        if (!projects) return [];
+        return Object.entries(projects)
+            .filter(([id, p]) => !loadedProjects.includes(id) && p.liveUrl)
+            .map(([id]) => id);
+    }, [projects, loadedProjects]);
+
+    // All project IDs for filter options (internal + external)
     const { allTechStack, allCategories } = useMemo(() => {
         const techSet = new Set<string>();
         const catSet = new Set<string>();
@@ -41,19 +49,20 @@ export default function ProjectsPage({
         return { allTechStack: [...techSet].sort(), allCategories: [...catSet].sort() };
     }, [projects]);
 
-    // Filter projects
-    const filteredProjects = useMemo(() => {
-        return loadedProjects.filter((projectId) => {
-            const p = projects?.[projectId];
-            if (activeCategory && p?.category !== activeCategory) return false;
-            if (activeTech.size > 0 && p?.techStack) {
-                const hasAll = [...activeTech].every((t) => p.techStack!.includes(t));
-                if (!hasAll) return false;
-            }
-            if (activeTech.size > 0 && !p?.techStack) return false;
-            return true;
-        });
-    }, [loadedProjects, projects, activeCategory, activeTech]);
+    const passesFilter = (projectId: string) => {
+        const p = projects?.[projectId];
+        if (activeCategory && p?.category !== activeCategory) return false;
+        if (activeTech.size > 0 && p?.techStack) {
+            const hasAll = [...activeTech].every((t) => p.techStack!.includes(t));
+            if (!hasAll) return false;
+        }
+        if (activeTech.size > 0 && !p?.techStack) return false;
+        return true;
+    };
+
+    const filteredInternal = useMemo(() => loadedProjects.filter(passesFilter), [loadedProjects, activeCategory, activeTech]);
+    const filteredExternal = useMemo(() => externalProjectIds.filter(passesFilter), [externalProjectIds, activeCategory, activeTech]);
+    const total = filteredInternal.length + filteredExternal.length;
 
     const handleTechToggle = (tech: string) => {
         setActiveTech((prev) => {
@@ -65,7 +74,8 @@ export default function ProjectsPage({
     };
 
     if (error) return <p className="text-red-500">{error}</p>;
-    if (loadedProjects.length === 0) return <p className="text-gray-400 text-sm">Ingen prosjekter ennå.</p>;
+    if (loadedProjects.length === 0 && externalProjectIds.length === 0)
+        return <p className="text-gray-400 text-sm">Ingen prosjekter ennå.</p>;
 
     return (
         <div className="py-6">
@@ -78,7 +88,7 @@ export default function ProjectsPage({
                 onCategoryChange={setActiveCategory}
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProjects.map((projectId) => (
+                {filteredInternal.map((projectId) => (
                     <ProjectCard
                         key={projectId}
                         project={projects?.[projectId] ?? null}
@@ -87,8 +97,21 @@ export default function ProjectsPage({
                         projectId={projectId}
                     />
                 ))}
+                {filteredExternal.map((projectId) => {
+                    const p = projects?.[projectId];
+                    return (
+                        <ProjectCard
+                            key={projectId}
+                            project={p ?? null}
+                            href={p?.liveUrl ?? '#'}
+                            color={p?.color || member.color || 'var(--bk-color-red)'}
+                            projectId={projectId}
+                            isExternal
+                        />
+                    );
+                })}
             </div>
-            {filteredProjects.length === 0 && (
+            {total === 0 && (
                 <p className="text-gray-400 text-sm text-center mt-4">Ingen prosjekter matcher filteret.</p>
             )}
         </div>
