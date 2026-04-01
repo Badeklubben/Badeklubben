@@ -1,5 +1,16 @@
+export interface Apartment {
+    id: number;
+    name: string;
+    link: string;
+    price: number;
+    beds: number;
+    img: string;
+}
 
-export const apartments = [
+// Change this string each time you swap to new apartments to start fresh votes
+export const votingRound = "round-2";
+
+export const apartments: Apartment[] = [
     {
         id: 0,
         name: "a",
@@ -34,4 +45,3 @@ export const apartments = [
         img: "/img/ap4"
     }
 ]
-
