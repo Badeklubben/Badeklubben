@@ -15,6 +15,10 @@
     "test": "vitest",
     "test:ci": "vitest run"
   },
+  "overrides": {
+    "react": "^19",
+    "react-dom": "^19"
+  },
   "dependencies": {
     "@sanity/client": "^6.29.1",
     "@sanity/image-url": "^1.0.2",
