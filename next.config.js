@@ -11,14 +11,6 @@ const nextConfig = {
         },
       ],
     },
-    typescript: {
-      // Type checking is handled by CI (tsc --noEmit).
-      ignoreBuildErrors: true,
-    },
-    eslint: {
-      // Linting is handled by CI (npm run lint).
-      ignoreDuringBuilds: true,
-    },
   }
 
 module.exports = nextConfig;
