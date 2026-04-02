@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {Box} from "@mui/material"
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
+
 const BikeInfo: React.FC = () => {
     const [results, setResults] = useState<Array<[number, string]>>([]);
     const [isBike, setIsBike] = useState<boolean>(false);
@@ -57,7 +57,7 @@ const BikeInfo: React.FC = () => {
     }, [results]);
 
     return (
-        <Box>
+        <div>
             {isBike && <p> Det er ledig sykkel utenfor Høytek!</p>}
             <br/>
             <ul>
@@ -65,7 +65,7 @@ const BikeInfo: React.FC = () => {
                     <li key={index}>Det er {result[0]} ledige sykler på {result[1]}</li>
                 ))}
             </ul>
-        </Box>
+        </div>
     );
 };
 

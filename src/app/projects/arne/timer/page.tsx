@@ -1,8 +1,6 @@
 'use client'
 import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
-import Link from "next/link";
 import React, {useEffect, useState } from "react";
-import { Button, Box} from "@mui/material"
 import DefaultTypography from "@/app/shared/components/DefaultTypography";
 
 
@@ -58,17 +56,7 @@ const MyComponent: React.FC = () => {
     }, []);
 
     return (
-        <Box sx={{
-            maxWidth: '80%', // Maks bredde på boksen
-            padding: '16px', // Indre marg
-            border: '3px solid #ccc', // Kantlinje
-            borderRadius: '8px', // Avrundede hjørner
-            wordWrap: 'break-word', // Bryt ord som går utenfor boksen
-            overflowWrap: 'break-word', // Bryt ord som går utenfor boksen
-            whiteSpace: 'pre-line', // Behandle linjeskift i strengen
-
-        }}
-        >
+        <div className="max-w-[80%] p-4 border-[3px] border-gray-300 rounded-lg break-words overflow-wrap-anywhere whitespace-pre-line">
             {timeLeft !== null ? (
                 <h3>
                     Tid igjen til start: {timeLeft.days} dager, {timeLeft.hours} timer, {timeLeft.minutes} minutter
@@ -76,17 +64,16 @@ const MyComponent: React.FC = () => {
             ) : (
                 <h3>{roundsText}</h3>
             )}
-        </Box>
+        </div>
     );
 };
 
 export default function Timer() {
     return (
-        <Box
-        >
+        <div>
             <DefaultTypography fontWeight={700} colorText={"#000"}>Informatikklekene</DefaultTypography>
             <br/>
             <MyComponent></MyComponent>
-        </Box>
+        </div>
     );
 }

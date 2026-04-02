@@ -2,20 +2,6 @@
 import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
-import {
-    Box,
-    MenuItem,
-    FormControl,
-    Select,
-    SelectChangeEvent,
-    Grid,
-    Typography,
-    Input,
-    Card,
-    CardContent,
-    Skeleton
-} from "@mui/material"
-import Button from '@mui/material/Button';
 import {db} from './config/firebase_a';
 import {collection, addDoc} from "firebase/firestore";
 import {signInWithEmailAndPassword} from "firebase/auth";
@@ -106,7 +92,6 @@ export default function Arne() {
             });
             showInfo(`Takk for din stemme, ${username}!`, 'success');
             setHasVoted(true);
-            // Refresh results
             const data = await getData();
             // @ts-ignore
             setResults(data);
@@ -115,124 +100,113 @@ export default function Arne() {
         }
     };
 
-    const handleChange = (event: SelectChangeEvent<number>, index: number) => {
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>, index: number) => {
         const newVotes: number[] = [...votes];
         newVotes[index] = Number(event.target.value);
         setVotes(newVotes);
     };
 
-    const infoColor = infoType === 'success' ? 'green' : infoType === 'error' ? '#d32f2f' : 'inherit';
+    const infoColor = infoType === 'success' ? 'text-green-600' : infoType === 'error' ? 'text-red-600' : 'text-gray-700';
 
     return (
-        <Box>
+        <div>
             <DefaultDrawer/>
-            <Box sx={{maxWidth: 900, mx: 'auto', p: 3}}>
-                <Typography variant="h4" sx={{fontWeight: 700, mb: 3}}>
-                    Vote på din favoritt!
-                </Typography>
+            <div className="max-w-4xl mx-auto p-6">
+                <h1 className="text-3xl font-bold mb-6">Vote på din favoritt!</h1>
 
-                <Grid container spacing={2} sx={{mb: 3, opacity: hasVoted ? 0.5 : 1, pointerEvents: hasVoted ? 'none' : 'auto'}}>
+                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 ${hasVoted ? 'opacity-50 pointer-events-none' : ''}`}>
                     {apartments.map((apartment, index) => (
-                        <Grid item xs={12} sm={6} md={Math.min(Math.floor(12 / apartments.length), 6)} key={index}>
-                            <FormControl fullWidth>
-                                <Typography variant="subtitle1" sx={{mb: 1}}>
-                                    <Link href={apartment.link} target="_blank" rel="noopener noreferrer">
-                                        Leilighet {apartment.name.toUpperCase()}
-                                    </Link>
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary" sx={{mb: 1}}>
-                                    Pris: {apartment.price.toLocaleString('nb-NO')} kr · {apartment.beds} sengeplasser
-                                </Typography>
-                                <Select
-                                    value={votes[index]}
-                                    onChange={(e) => handleChange(e, index)}
-                                    displayEmpty
-                                    size="small"
-                                >
-                                    <MenuItem value={0}>Velg rang...</MenuItem>
-                                    {apartments.map((_, i) => (
-                                        <MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
+                        <div key={index} className="flex flex-col gap-1">
+                            <Link
+                                href={apartment.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium underline"
+                            >
+                                Leilighet {apartment.name.toUpperCase()}
+                            </Link>
+                            <p className="text-sm text-gray-500 mb-1">
+                                Pris: {apartment.price.toLocaleString('nb-NO')} kr · {apartment.beds} sengeplasser
+                            </p>
+                            <select
+                                value={votes[index]}
+                                onChange={(e) => handleChange(e, index)}
+                                className="border border-gray-300 rounded px-2 py-1 text-sm w-full"
+                                disabled={hasVoted}
+                            >
+                                <option value={0}>Velg rang...</option>
+                                {apartments.map((_, i) => (
+                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                ))}
+                            </select>
+                        </div>
                     ))}
-                </Grid>
+                </div>
 
-                <Box sx={{mb: 3}}>
-                    <Input
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                    <input
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Skriv ditt navn her"
                         disabled={hasVoted}
-                        sx={{mr: 2}}
+                        className="border border-gray-300 rounded px-3 py-1.5 text-sm disabled:opacity-50"
                     />
-                    <Button onClick={handleVote} variant="contained" disabled={hasVoted} sx={{mt: 1}}>
+                    <button
+                        onClick={handleVote}
+                        disabled={hasVoted}
+                        className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium px-4 py-1.5 rounded text-sm transition-colors"
+                    >
                         {hasVoted ? 'Stemme sendt!' : 'Send inn stemme'}
-                    </Button>
-                </Box>
+                    </button>
+                </div>
 
                 {infoText && (
-                    <Typography sx={{color: infoColor, mb: 3, fontWeight: 500}}>
+                    <p className={`mb-6 font-medium ${infoColor}`}>
                         {infoText}
-                    </Typography>
+                    </p>
                 )}
 
-                <Typography variant="h5" sx={{fontWeight: 600, mb: 2, mt: 4}}>
-                    Resultater
-                </Typography>
+                <h2 className="text-2xl font-semibold mb-4 mt-8">Resultater</h2>
 
-                <Grid container spacing={2}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {objectNames.map((key) => (
-                        <Grid item xs={12} sm={6} md={Math.min(Math.floor(12 / apartments.length), 6)} key={key}>
-                            <Card>
-                                <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        Leilighet {key.toUpperCase()}
-                                    </Typography>
-                                    <Typography sx={{mb: 1.5}} color="text.secondary">
-                                        Har fått:
-                                    </Typography>
-                                    {loading ? (
-                                        Array.from({length: apartments.length}, (_, i) => (
-                                            <Skeleton key={i} variant="text" width="80%"/>
-                                        ))
-                                    ) : (
-                                        results ? (
-                                            Array.from({length: apartments.length}, (_, i) => i + 1).map(rank => (
-                                                <Typography variant="body2" key={rank}>
-                                                    {results.scores[key]?.[rank] ?? 0} {getOrdinalLabel(rank)}
-                                                </Typography>
-                                            ))
-                                        ) : (
-                                            <Typography variant="body2">
-                                                Ingen data tilgjengelig.
-                                            </Typography>
-                                        )
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </Grid>
+                        <div key={key} className="border border-gray-200 rounded-lg p-4 shadow-sm">
+                            <h3 className="text-xl font-semibold mb-1">Leilighet {key.toUpperCase()}</h3>
+                            <p className="text-sm text-gray-500 mb-2">Har fått:</p>
+                            {loading ? (
+                                <div className="space-y-2">
+                                    {Array.from({length: apartments.length}, (_, i) => (
+                                        <div key={i} className="h-4 bg-gray-200 rounded animate-pulse w-4/5"/>
+                                    ))}
+                                </div>
+                            ) : results ? (
+                                <div className="space-y-1">
+                                    {Array.from({length: apartments.length}, (_, i) => i + 1).map(rank => (
+                                        <p key={rank} className="text-sm">
+                                            {results.scores[key]?.[rank] ?? 0} {getOrdinalLabel(rank)}
+                                        </p>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-sm text-gray-500">Ingen data tilgjengelig.</p>
+                            )}
+                        </div>
                     ))}
-                </Grid>
+                </div>
 
-                <Box sx={{display: 'column', marginTop: "100px"}}>
-                    <Typography>
-                        {dbInfo}
-                    </Typography>
-                </Box>
+                <div className="mt-24">
+                    <p>{dbInfo}</p>
+                </div>
 
-                <Box hidden={true}>
+                <div hidden={true}>
                     <br/><br/>
-                    <Typography>
-                        {logInMessage}
-                    </Typography>
-                    <Input onChange={(e) => setUsr(e.target.value)} placeholder={"Brukernavn"}></Input>
+                    <p>{logInMessage}</p>
+                    <input onChange={(e) => setUsr(e.target.value)} placeholder="Brukernavn" className="border px-2 py-1 rounded mr-2"/>
                     <br/>
-                    <Input onChange={(e) => setPass(e.target.value)} placeholder={"Passord"}/>
+                    <input onChange={(e) => setPass(e.target.value)} placeholder="Passord" className="border px-2 py-1 rounded"/>
                     <br/><br/>
-                    <Button onClick={() => loginUser(usr, pass)} variant={'contained'}>Log in!</Button>
-                </Box>
-            </Box>
-        </Box>
+                    <button onClick={() => loginUser(usr, pass)} className="bg-blue-600 text-white px-4 py-2 rounded">Log in!</button>
+                </div>
+            </div>
+        </div>
     );
 }

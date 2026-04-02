@@ -1,8 +1,9 @@
+import React from "react";
 import { Edge, GraphState, Node } from "../lib/definitions";
 import { COLORS } from "../lib/globals";
 import { getConnectedNode } from "../lib/graphTools";
 
-export type Callback = (value: [string, unknown], index: number) => JSX.Element | "" | false;
+export type Callback = (value: [string, unknown], index: number) => React.JSX.Element | "" | false;
 export type InnerCallback = (object:unknown, graph: GraphState, id:string) => string;
 export type ShowCallback = (object:unknown, graph: GraphState) => boolean;
 
@@ -47,7 +48,7 @@ export const LIST = {
 }
 
 
-function ObjectList(title:string, objects: {[id: string]: unknown}, callback : Callback) : JSX.Element {
+function ObjectList(title:string, objects: {[id: string]: unknown}, callback : Callback) : React.JSX.Element {
     return (
         <div className='list-container'>
             <div style={{fontSize:'large'}} >{title}</div>
