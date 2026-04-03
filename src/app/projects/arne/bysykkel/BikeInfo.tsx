@@ -23,6 +23,29 @@ type CityKey = keyof typeof cities;
 
 const headers = {'Client-Identifier': 'badeklubben-bysykkel'};
 
+const COOKIE_FAVORITES = 'bysykkel_favorites';
+const COOKIE_CITY = 'bysykkel_city';
+
+function getCookie(name: string): string | null {
+    if (typeof document === 'undefined') return null;
+    const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+    return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCookie(name: string, value: string) {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${60 * 60 * 24 * 365}`;
+}
+
+function loadFavorites(): Set<string> {
+    const raw = getCookie(COOKIE_FAVORITES);
+    if (!raw) return new Set();
+    try { return new Set(JSON.parse(raw)); } catch { return new Set(); }
+}
+
+function saveFavorites(favs: Set<string>) {
+    setCookie(COOKIE_FAVORITES, JSON.stringify([...favs]));
+}
+
 function bikesColor(count: number): string {
     if (count === 0) return 'text-gray-400';
     if (count <= 2) return 'text-red-500';
@@ -30,7 +53,8 @@ function bikesColor(count: number): string {
     return 'text-green-600';
 }
 
-function bikesBg(count: number): string {
+function bikesBg(count: number, isFav: boolean): string {
+    if (isFav) return 'bg-blue-50';
     if (count === 0) return 'bg-gray-50';
     if (count <= 2) return 'bg-red-50';
     if (count <= 5) return 'bg-yellow-50';
@@ -42,6 +66,28 @@ export default function BikeInfo() {
     const [stations, setStations] = useState<StationData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [favorites, setFavorites] = useState<Set<string>>(new Set());
+
+    useEffect(() => {
+        setFavorites(loadFavorites());
+        const savedCity = getCookie(COOKIE_CITY) as CityKey | null;
+        if (savedCity && savedCity in cities) setCity(savedCity);
+    }, []);
+
+    const handleCityChange = (key: CityKey) => {
+        setCity(key);
+        setCookie(COOKIE_CITY, key);
+    };
+
+    const toggleFavorite = (name: string) => {
+        setFavorites(prev => {
+            const next = new Set(prev);
+            if (next.has(name)) next.delete(name);
+            else next.add(name);
+            saveFavorites(next);
+            return next;
+        });
+    };
 
     const fetchData = async (cityKey: CityKey) => {
         setLoading(true);
@@ -94,13 +140,16 @@ export default function BikeInfo() {
 
     const totalBikes = stations.reduce((sum, s) => sum + s.bikes, 0);
 
+    const favoriteStations = stations.filter(s => favorites.has(s.name));
+    const otherStations = stations.filter(s => !favorites.has(s.name));
+
     return (
         <div className="space-y-4">
             <div className="flex gap-2">
                 {(Object.keys(cities) as CityKey[]).map((key) => (
                     <button
                         key={key}
-                        onClick={() => setCity(key)}
+                        onClick={() => handleCityChange(key)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                             city === key
                                 ? 'bg-blue-600 text-white'
@@ -144,19 +193,35 @@ export default function BikeInfo() {
 
             {!loading && !error && stations.length > 0 && (
                 <div className="space-y-1">
-                    {stations.map((station) => (
-                        <div
-                            key={station.name}
-                            className={`flex items-center justify-between px-3 py-2 rounded-lg ${bikesBg(station.bikes)}`}
-                        >
-                            <span className="text-sm">{station.name}</span>
-                            <span className={`text-sm font-semibold tabular-nums ${bikesColor(station.bikes)}`}>
-                                {station.bikes} {station.bikes === 1 ? 'sykkel' : 'sykler'}
-                            </span>
-                        </div>
+                    {favoriteStations.map((station) => (
+                        <StationRow key={station.name} station={station} isFav={true} onToggle={toggleFavorite}/>
+                    ))}
+                    {favoriteStations.length > 0 && otherStations.length > 0 && (
+                        <div className="border-t border-gray-200 my-2"/>
+                    )}
+                    {otherStations.map((station) => (
+                        <StationRow key={station.name} station={station} isFav={false} onToggle={toggleFavorite}/>
                     ))}
                 </div>
             )}
+        </div>
+    );
+}
+
+function StationRow({station, isFav, onToggle}: { station: StationData; isFav: boolean; onToggle: (name: string) => void }) {
+    return (
+        <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${bikesBg(station.bikes, isFav)}`}>
+            <button
+                onClick={() => onToggle(station.name)}
+                className="text-base shrink-0"
+                title={isFav ? 'Fjern favoritt' : 'Legg til favoritt'}
+            >
+                {isFav ? '★' : '☆'}
+            </button>
+            <span className="text-sm flex-1">{station.name}</span>
+            <span className={`text-sm font-semibold tabular-nums ${bikesColor(station.bikes)}`}>
+                {station.bikes} {station.bikes === 1 ? 'sykkel' : 'sykler'}
+            </span>
         </div>
     );
 }
