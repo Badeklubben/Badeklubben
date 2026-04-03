@@ -213,7 +213,7 @@ function StationRow({station, isFav, onToggle}: { station: StationData; isFav: b
         <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${bikesBg(station.bikes, isFav)}`}>
             <button
                 onClick={() => onToggle(station.name)}
-                className="text-base shrink-0"
+                className="text-xl shrink-0"
                 title={isFav ? 'Fjern favoritt' : 'Legg til favoritt'}
             >
                 {isFav ? '★' : '☆'}
