@@ -1,3 +1,16 @@
+export interface ApartmentFacts {
+    timeToCenter?: string;
+    timeToAirport?: string;
+    timeToBeach?: string;
+    features?: string[];
+}
+
+export interface ApartmentInfo {
+    pros: string[];
+    cons: string[];
+    facts: ApartmentFacts;
+}
+
 export interface Apartment {
     id: number;
     name: string;
@@ -5,6 +18,7 @@ export interface Apartment {
     price: number;
     beds: number;
     img: string;
+    info?: ApartmentInfo;
 }
 
 // Change this string each time you swap to new apartments to start fresh votes
@@ -17,6 +31,16 @@ export const apartments: Apartment[] = [
         link: "https://www.airbnb.com/rooms/677354773913839318?adults=6&check_in=2026-07-31&check_out=2026-08-07&search_mode=regular_search&amenities%5B%5D=7&source_impression_id=p3_1774997374_P3zZs-2grA4JUaru&previous_page_section_name=1001&federated_search_id=a1e97ae7-2c60-427e-8ef2-5ffa5c087a69&scroll_to_review=1180975693596130319",
         price: 23500,
         beds: 6,
-        img: "/img/ap1"
+        img: "/img/ap1",
+        info: {
+            pros: ["Sentralt i Athen", "Nær metro"],
+            cons: ["Kun 6 sengeplasser"],
+            facts: {
+                timeToCenter: "10 min gange",
+                timeToAirport: "45 min med metro",
+                timeToBeach: "30 min med buss",
+                features: ["WiFi", "Aircondition", "Kjøkken"],
+            },
+        },
     }
 ]
