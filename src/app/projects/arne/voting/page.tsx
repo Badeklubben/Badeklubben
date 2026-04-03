@@ -116,22 +116,56 @@ export default function Arne() {
 
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 ${hasVoted ? 'opacity-50 pointer-events-none' : ''}`}>
                     {apartments.map((apartment, index) => (
-                        <div key={index} className="flex flex-col gap-1">
+                        <div key={index} className="border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col gap-2">
                             <Link
                                 href={apartment.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="font-medium underline"
+                                className="font-semibold text-lg underline"
                             >
                                 Leilighet {apartment.name.toUpperCase()}
                             </Link>
-                            <p className="text-sm text-gray-500 mb-1">
+                            <p className="text-sm text-gray-500">
                                 Pris: {apartment.price.toLocaleString('nb-NO')} kr · {apartment.beds} sengeplasser
                             </p>
+
+                            {apartment.info && (
+                                <div className="text-sm space-y-2 mt-1">
+                                    {apartment.info.facts && (
+                                        <div className="space-y-0.5 text-gray-600">
+                                            {apartment.info.facts.timeToCenter && <p>Sentrum: {apartment.info.facts.timeToCenter}</p>}
+                                            {apartment.info.facts.timeToAirport && <p>Flyplass: {apartment.info.facts.timeToAirport}</p>}
+                                            {apartment.info.facts.timeToBeach && <p>Strand: {apartment.info.facts.timeToBeach}</p>}
+                                            {apartment.info.facts.features && apartment.info.facts.features.length > 0 && (
+                                                <div className="flex flex-wrap gap-1 mt-1">
+                                                    {apartment.info.facts.features.map((f, i) => (
+                                                        <span key={i} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">{f}</span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                    {apartment.info.pros.length > 0 && (
+                                        <ul className="space-y-0.5">
+                                            {apartment.info.pros.map((pro, i) => (
+                                                <li key={i} className="text-green-700">+ {pro}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                    {apartment.info.cons.length > 0 && (
+                                        <ul className="space-y-0.5">
+                                            {apartment.info.cons.map((con, i) => (
+                                                <li key={i} className="text-red-600">- {con}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            )}
+
                             <select
                                 value={votes[index]}
                                 onChange={(e) => handleChange(e, index)}
-                                className="border border-gray-300 rounded px-2 py-1 text-sm w-full"
+                                className="border border-gray-300 rounded px-2 py-1 text-sm w-full mt-auto"
                                 disabled={hasVoted}
                             >
                                 <option value={0}>Velg rang...</option>
