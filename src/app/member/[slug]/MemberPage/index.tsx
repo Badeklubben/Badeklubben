@@ -24,6 +24,7 @@ export default function MemberPage({
                 color={member.color || 'var(--bk-color-red)'}
                 setActivePage={setActivePage}
                 memberName={member.name}
+                hasProjects={!!projects && Object.keys(projects).length > 0}
             />
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
                 {activePage === 'Meg' && <AboutPage member={member} />}
