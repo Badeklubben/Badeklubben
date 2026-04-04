@@ -10,13 +10,16 @@ export default function MemberNav({
     color,
     memberName,
     setActivePage,
+    hasProjects = true,
 }: {
     activePage: string;
     color: string;
     memberName: string;
     setActivePage: Dispatch<SetStateAction<string>>;
+    hasProjects?: boolean;
 }) {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const tabs = hasProjects ? TABS : TABS.filter((t) => t !== 'Prosjekt');
 
     return (
         <header className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
@@ -32,7 +35,7 @@ export default function MemberNav({
 
                 {/* Desktop tabs */}
                 <nav className="hidden sm:flex items-center gap-1">
-                    {TABS.map((tab) => (
+                    {tabs.map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActivePage(tab)}
@@ -69,7 +72,7 @@ export default function MemberNav({
             {/* Mobile dropdown */}
             {mobileOpen && (
                 <div className="sm:hidden border-t border-gray-100 bg-white px-4 pb-3">
-                    {TABS.map((tab) => (
+                    {tabs.map((tab) => (
                         <button
                             key={tab}
                             onClick={() => {
