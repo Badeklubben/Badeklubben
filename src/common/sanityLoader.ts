@@ -82,7 +82,7 @@ export async function LoadProjects(member: Member): Promise<{ [key: string]: Pro
             params: { ownerId: member._id },
         });
         return Object.fromEntries(
-            projects.map((project) => [project.id, mapProject(project)])
+            projects.map((project) => [project.id || project.name, mapProject(project)])
         );
     } catch (e) {
         console.error('Failed to load projects from Sanity:', e);
