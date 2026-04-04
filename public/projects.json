@@ -1,11 +1,10 @@
 {
   "projects": {
     "arne": [
-      "botsystem",
+      "attester",
       "bysykkel",
       "echo_color",
-      "phone_number",
-      "timer",
+      "kommulde",
       "voting"
     ],
     "gard": [
@@ -15,12 +14,8 @@
       "bingo",
       "grapher"
     ],
-    "oskar": [
-      "test"
-    ],
-    "osten": [
-      "test"
-    ],
+    "oskar": [],
+    "osten": [],
     "stian": [
       "brygging",
       "game",
