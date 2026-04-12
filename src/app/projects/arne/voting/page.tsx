@@ -1,6 +1,7 @@
 'use client'
 import DefaultDrawer from "@/app/shared/components/DefaultDrawer";
 import Link from "next/link";
+import Image from "next/image";
 import React, {useEffect, useState} from "react";
 import {db} from './config/firebase_a';
 import {collection, addDoc} from "firebase/firestore";
@@ -116,7 +117,16 @@ export default function Arne() {
 
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 ${hasVoted ? 'opacity-50 pointer-events-none' : ''}`}>
                     {apartments.map((apartment, index) => (
-                        <div key={index} className="border border-gray-200 rounded-lg p-4 shadow-sm flex flex-col gap-2">
+                        <div key={index} className="border border-gray-200 rounded-lg shadow-sm flex flex-col gap-2 overflow-hidden">
+                            <div className="relative w-full h-48">
+                                <Image
+                                    src={apartment.img}
+                                    alt={`Leilighet ${apartment.name.toUpperCase()}`}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <div className="p-4 flex flex-col gap-2">
                             <Link
                                 href={apartment.link}
                                 target="_blank"
@@ -173,6 +183,7 @@ export default function Arne() {
                                     <option key={i + 1} value={i + 1}>{i + 1}</option>
                                 ))}
                             </select>
+                            </div>
                         </div>
                     ))}
                 </div>

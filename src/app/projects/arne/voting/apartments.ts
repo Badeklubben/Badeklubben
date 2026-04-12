@@ -22,25 +22,82 @@ export interface Apartment {
 }
 
 // Change this string each time you swap to new apartments to start fresh votes
-export const votingRound = "round-3";
+export const votingRound = "round-4";
 
 export const apartments: Apartment[] = [
     {
-        id: 0,
+        id: 1,
         name: "a",
-        link: "https://www.airbnb.com/rooms/677354773913839318?adults=6&check_in=2026-07-31&check_out=2026-08-07&search_mode=regular_search&amenities%5B%5D=7&source_impression_id=p3_1774997374_P3zZs-2grA4JUaru&previous_page_section_name=1001&federated_search_id=a1e97ae7-2c60-427e-8ef2-5ffa5c087a69&scroll_to_review=1180975693596130319",
-        price: 23500,
-        beds: 6,
-        img: "/img/ap1",
+        link: "https://www.airbnb.com/rooms/961685669302177270",
+        price: 35200,
+        beds: 4,
+        img: "/img/ap1.jpg",
         info: {
-            pros: ["Sentralt i Athen", "Nær metro"],
-            cons: ["Kun 6 sengeplasser"],
+            pros: [
+                "Stille nabolag, pool-venner sent på kvelden",
+                "Stor villa med mye plass",
+            ],
+            cons: [
+                "Soverom 2 er en sofaseng — ikke ekte seng",
+                "En person sover åpent i stua",
+                "15–20 min kjøring til alt ifølge gjest — trolig i åsen, ikke ved sjøen",
+            ],
             facts: {
-                timeToCenter: "10 min gange",
-                timeToAirport: "45 min med metro",
-                timeToBeach: "30 min med buss",
-                features: ["WiFi", "Aircondition", "Kjøkken"],
+                timeToCenter: "40–50 min med bil",
+                timeToAirport: "45–55 min med bil",
+                timeToBeach: "15–20 min med bil ⚠️",
+                features: ["Havutsikt"],
             },
         },
-    }
+    },
+    {
+        id: 2,
+        name: "b",
+        link: "https://www.airbnb.com/rooms/1036960558401027424",
+        price: 45000,
+        beds: 3,
+        img: "/img/ap2.jpg",
+        info: {
+            pros: [
+                "3 ekte king size-senger — alle i egne rom",
+                "4 min kjøring til nærmeste strand",
+                "40 reviews, 4.7 stjerner",
+                "Havutsikt",
+            ],
+            cons: [
+                "Kun 3 senger for 7 gjester — 4 mangler plass",
+                "Dyreste alternativ",
+            ],
+            facts: {
+                timeToCenter: "57 min med bil",
+                timeToAirport: "26 min med bil",
+                timeToBeach: "4 min med bil (Tsonima)",
+                features: ["BBQ", "Havutsikt", "Hage"],
+            },
+        },
+    },
+    {
+        id: 3,
+        name: "c",
+        link: "https://www.airbnb.com/rooms/50666941",
+        price: 39000,
+        beds: 4,
+        img: "/img/ap3.jpg",
+        info: {
+            pros: [
+                "Beachfront — direkte strandtilgang",
+            ],
+            cons: [
+                "Ligger på Salamina — en øy, krever bilferje",
+                "~60 min til Athen sentrum (bil + ferje)",
+                "Kun 5 anmeldelser — lite track record",
+            ],
+            facts: {
+                timeToCenter: "~60 min (bil + ferje)",
+                timeToAirport: "~75 min (bil + ferje)",
+                timeToBeach: "Direkte — beachfront",
+                features: ["Beachfront", "Peis"],
+            },
+        },
+    },
 ]
