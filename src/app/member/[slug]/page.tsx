@@ -1,15 +1,21 @@
-import { LoadMember, LoadProjects } from '@/common/sanityLoader';
+import LoadMembers, { LoadMember, LoadProjects } from '@/common/sanityLoader';
 import MemberPage from './MemberPage';
 import { Metadata } from 'next';
 import fs from 'fs';
 import path from 'path';
 
 export async function generateStaticParams() {
+    // Fetch members from Sanity (the source of truth)
+    const members = await LoadMembers();
+    if (members.length > 0) {
+        return members.map((member) => ({ slug: member.id }));
+    }
+    // Fallback to filesystem if Sanity is unreachable
     const projectsDir = path.join(process.cwd(), 'src/app/projects');
-    const members = fs.readdirSync(projectsDir).filter((name) =>
+    const dirs = fs.readdirSync(projectsDir).filter((name) =>
         fs.statSync(path.join(projectsDir, name)).isDirectory()
     );
-    return members.map((slug) => ({ slug }));
+    return dirs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

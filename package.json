@@ -16,8 +16,8 @@
     "test:ci": "vitest run"
   },
   "overrides": {
-    "react": "^19",
-    "react-dom": "^19"
+    "react": "19.2.5",
+    "react-dom": "19.2.5"
   },
   "dependencies": {
     "@sanity/client": "^6.29.1",
@@ -26,8 +26,8 @@
     "easymde": "^2.18.0",
     "firebase": "^10.7.1",
     "next": "^15",
-    "react": "^19",
-    "react-dom": "^19",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
     "react-icons": "^5.2.1",
     "react-markdown": "^9.0.1",
     "sanity": "^3.45.0",
