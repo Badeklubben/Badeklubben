@@ -31,7 +31,7 @@ export const apartments: Apartment[] = [
         link: "https://www.airbnb.com/rooms/961685669302177270",
         price: 35200,
         beds: 4,
-        img: "/img/ap1",
+        img: "/img/ap1.jpg",
         info: {
             pros: [
                 "Stille nabolag, pool-venner sent på kvelden",
@@ -56,7 +56,7 @@ export const apartments: Apartment[] = [
         link: "https://www.airbnb.com/rooms/1036960558401027424",
         price: 45000,
         beds: 3,
-        img: "/img/ap2",
+        img: "/img/ap2.jpg",
         info: {
             pros: [
                 "3 ekte king size-senger — alle i egne rom",
@@ -82,7 +82,7 @@ export const apartments: Apartment[] = [
         link: "https://www.airbnb.com/rooms/50666941",
         price: 39000,
         beds: 4,
-        img: "/img/ap3",
+        img: "/img/ap3.jpg",
         info: {
             pros: [
                 "Beachfront — direkte strandtilgang",
