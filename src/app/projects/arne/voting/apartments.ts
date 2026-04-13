@@ -16,6 +16,7 @@ export interface Apartment {
     name: string;
     link: string;
     price: number;
+    bedrooms: number;
     beds: number;
     img: string;
     info?: ApartmentInfo;
@@ -30,6 +31,7 @@ export const apartments: Apartment[] = [
         name: "a",
         link: "https://www.airbnb.com/rooms/961685669302177270",
         price: 35200,
+        bedrooms: 3,
         beds: 4,
         img: "/img/ap1.jpeg",
         info: {
@@ -55,6 +57,7 @@ export const apartments: Apartment[] = [
         name: "b",
         link: "https://www.airbnb.com/rooms/1036960558401027424",
         price: 45000,
+        bedrooms: 3,
         beds: 3,
         img: "/img/ap2.jpeg",
         info: {
@@ -81,7 +84,8 @@ export const apartments: Apartment[] = [
         name: "c",
         link: "https://www.airbnb.com/rooms/50666941",
         price: 39000,
-        beds: 4,
+        bedrooms: 4,
+        beds: 3,
         img: "/img/ap3.jpeg",
         info: {
             pros: [
