@@ -115,7 +115,7 @@ export default function Arne() {
             <div className="max-w-4xl mx-auto p-6">
                 <h1 className="text-3xl font-bold mb-6">Vote på din favoritt!</h1>
 
-                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 ${hasVoted ? 'opacity-50 pointer-events-none' : ''}`}>
+                <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 ${hasVoted ? 'opacity-50 pointer-events-none' : ''}`}>
                     {apartments.map((apartment, index) => (
                         <div key={index} className="border border-gray-200 rounded-lg shadow-sm flex flex-col gap-2 overflow-hidden">
                             <div className="relative w-full h-48">
