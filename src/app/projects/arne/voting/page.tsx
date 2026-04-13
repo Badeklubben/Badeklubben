@@ -136,7 +136,7 @@ export default function Arne() {
                                 Leilighet {apartment.name.toUpperCase()}
                             </Link>
                             <p className="text-sm text-gray-500">
-                                Pris: {apartment.price.toLocaleString('nb-NO')} kr · {apartment.bedrooms} soverom · {apartment.beds} senger
+                                Pris: {apartment.price.toLocaleString('nb-NO')} kr · {apartment.bedrooms} soverom · {apartment.beds} sengeplasser
                             </p>
 
                             {apartment.info && (
