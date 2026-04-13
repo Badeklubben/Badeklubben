@@ -22,12 +22,12 @@ export interface Apartment {
 }
 
 // Change this string each time you swap to new apartments to start fresh votes
-export const votingRound = "round-4";
+export const votingRound = "round-5";
 
 export const apartments: Apartment[] = [
     {
         id: 1,
-        name: "a",
+        name: "Spacious Villa",
         link: "https://www.airbnb.com/rooms/961685669302177270",
         price: 35200,
         guests: 7,
@@ -52,7 +52,7 @@ export const apartments: Apartment[] = [
     },
     {
         id: 2,
-        name: "b",
+        name: "Villa Luna",
         link: "https://www.airbnb.com/rooms/1036960558401027424",
         price: 45000,
         guests: 8,
@@ -78,25 +78,88 @@ export const apartments: Apartment[] = [
     },
     {
         id: 3,
-        name: "c",
-        link: "https://www.airbnb.com/rooms/50666941",
-        price: 39000,
-        guests: 9,
+        name: "Villa Dendron",
+        link: "https://www.booking.com/hotel/gr/villa-dendron.html",
+        price: 28694,
+        guests: 4,
         img: "/img/ap3.jpeg",
         info: {
             pros: [
-                "Beachfront — direkte strandtilgang",
+                "Rett på stranden – beste strandtilgang av alle tre",
+                "Mest privat – ingen eier i nærheten",
             ],
             cons: [
-                "Ligger på Salamina — en øy, krever bilferje",
-                "~60 min til Athen sentrum (bil + ferje)",
-                "Kun 5 anmeldelser — lite track record",
+                "Kun 6 anmeldelser, rating 8.2",
+                "Minst villa (150 kvm) for prisen",
             ],
             facts: {
-                timeToCenter: "~60 min (bil + ferje)",
-                timeToAirport: "~75 min (bil + ferje)",
-                timeToBeach: "Direkte — beachfront",
-                features: ["Beachfront", "Peis"],
+                timeToCenter: "3 km til Agia Marina sentrum / ~15 min kjøring til Athen",
+                timeToAirport: "~15 min kjøring (9.3 miles til ATH)",
+                timeToBeach: "Rett på stranden",
+                features: [
+                    "3 soverom + sofa i stue",
+                    "150 kvm",
+                    "Sjøutsikt",
+                    "Hage med skilpadder",
+                ],
+            },
+        },
+    },
+    {
+        id: 4,
+        name: "Bellevia Stone Pool Villa",
+        link: "https://www.airbnb.com/rooms/1446450441110644160",
+        price: 45095,
+        guests: 7,
+        img: "/img/ap4.jpeg",
+        info: {
+            pros: [
+                "Mest unikt – gammel steinvilla med 5-stjerners interiør",
+                "To separate boliger – naturlig privatliv internt i gruppen",
+            ],
+            cons: [
+                "Ferje obligatorisk (~1,5t reise hver vei)",
+                "Kun 1 anmeldelse",
+            ],
+            facts: {
+                timeToCenter: "~1t kjøring + 30 min ferje til Athen",
+                timeToAirport: "~1t kjøring + 30 min ferje til ATH",
+                timeToBeach: "Under 2 km / ~5 min kjøring",
+                features: [
+                    "3 soverom + sofa i stue",
+                    "135 kvm (to boliger)",
+                    "Panoramautsikt og solnedgang",
+                    "Peis",
+                ],
+            },
+        },
+    },
+    {
+        id: 5,
+        name: "Villa Selene",
+        link: "https://www.airbnb.com/rooms/679607861111645623",
+        price: 45585,
+        guests: 7,
+        img: "/img/ap5.jpeg",
+        info: {
+            pros: [
+                "Beste anmeldelser: 5.0/5 fra 7 gjester, Guest Favourite",
+                "50 kvm basseng + stor hage – beste uteareal",
+            ],
+            cons: [
+                "Eier bor i den andre halvvillaen",
+                "Strand kun med bil (2 min kjøring)",
+            ],
+            facts: {
+                timeToCenter: "~42 km / ~45 min kjøring til Akropolis",
+                timeToAirport: "~30 km / ~25 min kjøring til ATH",
+                timeToBeach: "2 min kjøring",
+                features: [
+                    "5 soverom + sofa i soverom 5",
+                    "350 kvm over 4 etasjer",
+                    "50 kvm basseng",
+                    "Jacuzzi",
+                ],
             },
         },
     },

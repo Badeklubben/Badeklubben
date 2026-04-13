@@ -121,7 +121,7 @@ export default function Arne() {
                             <div className="relative w-full h-48">
                                 <Image
                                     src={apartment.img}
-                                    alt={`Leilighet ${apartment.name.toUpperCase()}`}
+                                    alt={apartment.name}
                                     fill
                                     className="object-cover"
                                 />
@@ -133,7 +133,7 @@ export default function Arne() {
                                 rel="noopener noreferrer"
                                 className="font-semibold text-lg underline"
                             >
-                                Leilighet {apartment.name.toUpperCase()}
+                                {apartment.name}
                             </Link>
                             <p className="text-sm text-gray-500">
                                 Pris: {apartment.price.toLocaleString('nb-NO')} kr · Plass til {apartment.guests} gjester
@@ -215,7 +215,7 @@ export default function Arne() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {objectNames.map((key) => (
                         <div key={key} className="border border-gray-200 rounded-lg p-4 shadow-sm">
-                            <h3 className="text-xl font-semibold mb-1">Leilighet {key.toUpperCase()}</h3>
+                            <h3 className="text-xl font-semibold mb-1">{key}</h3>
                             <p className="text-sm text-gray-500 mb-2">Har fått:</p>
                             {loading ? (
                                 <div className="space-y-2">
