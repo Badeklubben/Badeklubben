@@ -82,7 +82,7 @@ export const apartments: Apartment[] = [
         link: "https://www.booking.com/hotel/gr/villa-dendron.html",
         price: 28694,
         guests: 4,
-        img: "/img/ap3.jpeg",
+        img: "/img/ap3.jpg",
         info: {
             pros: [
                 "Rett på stranden – beste strandtilgang av alle tre",
@@ -140,7 +140,7 @@ export const apartments: Apartment[] = [
         link: "https://www.airbnb.com/rooms/679607861111645623",
         price: 45585,
         guests: 7,
-        img: "/img/ap5.jpeg",
+        img: "/img/ap5.jpg",
         info: {
             pros: [
                 "Beste anmeldelser: 5.0/5 fra 7 gjester, Guest Favourite",
