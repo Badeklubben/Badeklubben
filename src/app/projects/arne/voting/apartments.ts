@@ -78,13 +78,13 @@ export const apartments: Apartment[] = [
         name: "Villa Dendron",
         link: "https://www.booking.com/hotel/gr/villa-dendron.html",
         price: 28694,
-        guests: 8,
+        guests: 7,
         img: "/img/ap3.jpg",
         info: {
             pros: [
-                "Rett på stranden ✅",
+                "~14 min gange til Lombarda Beach",
                 "Mest privat — ingen eier i nærheten",
-                "Billigst + best strandtilgang",
+                "Billigst + nærmest strand av alle",
             ],
             cons: [
                 "Kun 6 anmeldelser (8.2)",
@@ -94,7 +94,7 @@ export const apartments: Apartment[] = [
             facts: {
                 timeToCenter: "~15 min med bil",
                 timeToAirport: "~15 min med bil",
-                timeToBeach: "Rett på stranden ✅",
+                timeToBeach: "~14 min gange (Lombarda Beach)",
                 features: [
                     "3 soverom + sofa i stue",
                     "150 kvm",
