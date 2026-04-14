@@ -78,7 +78,7 @@ export const apartments: Apartment[] = [
         name: "Villa Dendron",
         link: "https://www.booking.com/hotel/gr/villa-dendron.html",
         price: 28694,
-        guests: 8,
+        guests: 7,
         img: "/img/ap3.jpg",
         info: {
             pros: [
