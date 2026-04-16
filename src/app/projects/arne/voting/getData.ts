@@ -29,26 +29,31 @@ export const getData = async (): Promise<{ scores: Placements } | []> => {
 
         const dataList = Array.from(uniqueUsers.values());
 
+        const availableApts = apartments.filter(a => a.available !== false);
+
         const placements: Placements = {};
-        apartments.forEach(apt => {
+        availableApts.forEach(apt => {
             const scores: PlacementScores = {};
-            for (let r = 1; r <= apartments.length; r++) {
+            for (let r = 1; r <= availableApts.length; r++) {
                 scores[r] = 0;
             }
             placements[apt.name] = scores;
         });
 
-        const objectNames = apartments.map(a => a.name);
-
         dataList.forEach(user => {
-            if (user.votes && Array.isArray(user.votes)) {
-                user.votes.forEach((position: number, index: number) => {
-                    const objectName = objectNames[index];
-                    if (objectName && placements[objectName] && position >= 1 && position <= apartments.length) {
-                        placements[objectName][position]++;
-                    }
-                });
-            }
+            if (!user.votes || !Array.isArray(user.votes)) return;
+
+            const validEntries = apartments
+                .map((apt, i) => ({ name: apt.name, rank: user.votes[i], available: apt.available }))
+                .filter(e => e.available !== false && e.rank > 0)
+                .sort((a, b) => a.rank - b.rank);
+
+            validEntries.forEach((entry, i) => {
+                const bumped = i + 1;
+                if (placements[entry.name] && bumped <= availableApts.length) {
+                    placements[entry.name][bumped]++;
+                }
+            });
         });
 
         return {scores: placements};

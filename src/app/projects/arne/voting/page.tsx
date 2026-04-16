@@ -44,7 +44,9 @@ export default function Arne() {
     const [loading, setLoading] = useState(true);
     const [hasVoted, setHasVoted] = useState(false);
 
-    const objectNames = apartments.map(a => a.name);
+    const availableApts = apartments.filter(a => a.available !== false);
+    const unavailableApts = apartments.filter(a => a.available === false);
+    const N = availableApts.length;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,7 +74,8 @@ export default function Arne() {
     };
 
     const handleVote = async () => {
-        if (votes.includes(0)) {
+        const hasUnranked = apartments.some((apt, i) => apt.available !== false && votes[i] === 0);
+        if (hasUnranked) {
             showInfo('Vennligst ranger alle kandidatene.', 'error');
             return;
         }
@@ -80,8 +83,8 @@ export default function Arne() {
             showInfo("Vennligst fyll inn navn", 'error');
             return;
         }
-        const uniqueVotes = new Set(votes);
-        if (uniqueVotes.size !== votes.length) {
+        const availableVotes = votes.filter((_, i) => apartments[i]?.available !== false && votes[i] !== 0);
+        if (new Set(availableVotes).size !== availableVotes.length) {
             showInfo('Duplikate rangeringer er ikke tillatt.', 'error');
             return;
         }
@@ -116,8 +119,10 @@ export default function Arne() {
                 <h1 className="text-3xl font-bold mb-6">Vote på din favoritt!</h1>
 
                 <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 ${hasVoted ? 'opacity-50 pointer-events-none' : ''}`}>
-                    {apartments.map((apartment, index) => (
-                        <div key={index} className="border border-gray-200 rounded-lg shadow-sm flex flex-col gap-2 overflow-hidden">
+                    {apartments.map((apartment, index) => {
+                        const isUnavailable = apartment.available === false;
+                        return (
+                        <div key={index} className={`border border-gray-200 rounded-lg shadow-sm flex flex-col gap-2 overflow-hidden ${isUnavailable ? 'opacity-40 grayscale' : ''}`}>
                             <div className="relative w-full h-48">
                                 <Image
                                     src={apartment.img}
@@ -127,14 +132,21 @@ export default function Arne() {
                                 />
                             </div>
                             <div className="p-4 flex flex-col gap-2">
-                            <Link
-                                href={apartment.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="font-semibold text-lg underline"
-                            >
-                                {apartment.name}
-                            </Link>
+                            <div className="flex flex-wrap items-center gap-2">
+                                <Link
+                                    href={apartment.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="font-semibold text-lg underline"
+                                >
+                                    {apartment.name}
+                                </Link>
+                                {isUnavailable && (
+                                    <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium shrink-0">
+                                        Ikke tilgjengelig
+                                    </span>
+                                )}
+                            </div>
                             <p className="text-sm text-gray-500">
                                 Pris: {apartment.price.toLocaleString('nb-NO')} kr · Plass til {apartment.guests} gjester
                             </p>
@@ -172,20 +184,27 @@ export default function Arne() {
                                 </div>
                             )}
 
-                            <select
-                                value={votes[index]}
-                                onChange={(e) => handleChange(e, index)}
-                                className="border border-gray-300 rounded px-2 py-1 text-sm w-full mt-auto"
-                                disabled={hasVoted}
-                            >
-                                <option value={0}>Velg rang...</option>
-                                {apartments.map((_, i) => (
-                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                ))}
-                            </select>
+                            {isUnavailable ? (
+                                <div className="border border-gray-200 rounded px-2 py-1 text-sm w-full mt-auto text-gray-400 bg-gray-50">
+                                    Ikke tilgjengelig
+                                </div>
+                            ) : (
+                                <select
+                                    value={votes[index]}
+                                    onChange={(e) => handleChange(e, index)}
+                                    className="border border-gray-300 rounded px-2 py-1 text-sm w-full mt-auto"
+                                    disabled={hasVoted}
+                                >
+                                    <option value={0}>Velg rang...</option>
+                                    {Array.from({length: N}, (_, i) => (
+                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                    ))}
+                                </select>
+                            )}
                             </div>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -213,21 +232,21 @@ export default function Arne() {
                 <h2 className="text-2xl font-semibold mb-4 mt-8">Resultater</h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {objectNames.map((key) => (
-                        <div key={key} className="border border-gray-200 rounded-lg p-4 shadow-sm">
-                            <h3 className="text-xl font-semibold mb-1">{key}</h3>
+                    {availableApts.map((apt) => (
+                        <div key={apt.name} className="border border-gray-200 rounded-lg p-4 shadow-sm">
+                            <h3 className="text-xl font-semibold mb-1">{apt.name}</h3>
                             <p className="text-sm text-gray-500 mb-2">Har fått:</p>
                             {loading ? (
                                 <div className="space-y-2">
-                                    {Array.from({length: apartments.length}, (_, i) => (
+                                    {Array.from({length: N}, (_, i) => (
                                         <div key={i} className="h-4 bg-gray-200 rounded animate-pulse w-4/5"/>
                                     ))}
                                 </div>
                             ) : results ? (
                                 <div className="space-y-1">
-                                    {Array.from({length: apartments.length}, (_, i) => i + 1).map(rank => (
+                                    {Array.from({length: N}, (_, i) => i + 1).map(rank => (
                                         <p key={rank} className="text-sm">
-                                            {results.scores[key]?.[rank] ?? 0} {getOrdinalLabel(rank)}
+                                            {results.scores[apt.name]?.[rank] ?? 0} {getOrdinalLabel(rank)}
                                         </p>
                                     ))}
                                 </div>
@@ -237,6 +256,17 @@ export default function Arne() {
                         </div>
                     ))}
                 </div>
+
+                {unavailableApts.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        {unavailableApts.map((apt) => (
+                            <div key={apt.name} className="border border-gray-200 rounded-lg p-4 shadow-sm opacity-40">
+                                <h3 className="text-xl font-semibold mb-1">{apt.name}</h3>
+                                <p className="text-sm text-red-600 font-medium">Ikke tilgjengelig</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
                 <div className="mt-24">
                     <p>{dbInfo}</p>
