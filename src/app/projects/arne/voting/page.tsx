@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, {useEffect, useState} from "react";
 import {db} from './config/firebase_a';
-import {collection, addDoc} from "firebase/firestore";
+import {collection, addDoc, doc, getDoc, setDoc} from "firebase/firestore";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {auth} from './config/firebase_a';
 import {getData} from './getData';
@@ -43,14 +43,18 @@ export default function Arne() {
     const [dbInfo, setdbInfo] = useState("")
     const [loading, setLoading] = useState(true);
     const [hasVoted, setHasVoted] = useState(false);
+    const [unavailableIds, setUnavailableIds] = useState<number[]>([]);
 
-    const availableApts = apartments.filter(a => a.available !== false);
-    const unavailableApts = apartments.filter(a => a.available === false);
+    const availableApts = apartments.filter(a => !unavailableIds.includes(a.id));
+    const unavailableApts = apartments.filter(a => unavailableIds.includes(a.id));
     const N = availableApts.length;
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getData();
+            const settingsDoc = await getDoc(doc(db, 'Badeklubben', 'badeklubben', 'config', 'availability'));
+            const ids: number[] = settingsDoc.exists() ? (settingsDoc.data().unavailableIds ?? []) : [];
+            setUnavailableIds(ids);
+            const data = await getData(ids);
             // @ts-ignore
             setResults(data);
             setLoading(false);
@@ -68,13 +72,24 @@ export default function Arne() {
         }
     };
 
+    const toggleAvailability = async (id: number) => {
+        const newIds = unavailableIds.includes(id)
+            ? unavailableIds.filter(i => i !== id)
+            : [...unavailableIds, id];
+        setUnavailableIds(newIds);
+        await setDoc(doc(db, 'Badeklubben', 'badeklubben', 'config', 'availability'), {unavailableIds: newIds});
+        const data = await getData(newIds);
+        // @ts-ignore
+        setResults(data);
+    };
+
     const showInfo = (text: string, type: 'info' | 'success' | 'error') => {
         setInfoText(text);
         setInfoType(type);
     };
 
     const handleVote = async () => {
-        const hasUnranked = apartments.some((apt, i) => apt.available !== false && votes[i] === 0);
+        const hasUnranked = apartments.some((apt, i) => !unavailableIds.includes(apt.id) && votes[i] === 0);
         if (hasUnranked) {
             showInfo('Vennligst ranger alle kandidatene.', 'error');
             return;
@@ -83,7 +98,7 @@ export default function Arne() {
             showInfo("Vennligst fyll inn navn", 'error');
             return;
         }
-        const availableVotes = votes.filter((_, i) => apartments[i]?.available !== false && votes[i] !== 0);
+        const availableVotes = votes.filter((_, i) => !unavailableIds.includes(apartments[i]?.id) && votes[i] !== 0);
         if (new Set(availableVotes).size !== availableVotes.length) {
             showInfo('Duplikate rangeringer er ikke tillatt.', 'error');
             return;
@@ -96,7 +111,7 @@ export default function Arne() {
             });
             showInfo(`Takk for din stemme, ${username}!`, 'success');
             setHasVoted(true);
-            const data = await getData();
+            const data = await getData(unavailableIds);
             // @ts-ignore
             setResults(data);
         } catch (error) {
@@ -120,7 +135,7 @@ export default function Arne() {
 
                 <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 ${hasVoted ? 'opacity-50 pointer-events-none' : ''}`}>
                     {apartments.map((apartment, index) => {
-                        const isUnavailable = apartment.available === false;
+                        const isUnavailable = unavailableIds.includes(apartment.id);
                         return (
                         <div key={index} className={`border border-gray-200 rounded-lg shadow-sm flex flex-col gap-2 overflow-hidden ${isUnavailable ? 'opacity-40 grayscale' : ''}`}>
                             <div className="relative w-full h-48">
@@ -185,14 +200,14 @@ export default function Arne() {
                             )}
 
                             {isUnavailable ? (
-                                <div className="border border-gray-200 rounded px-2 py-1 text-sm w-full mt-auto text-gray-400 bg-gray-50">
+                                <div className="border border-gray-200 rounded px-2 py-1 text-sm w-full text-gray-400 bg-gray-50">
                                     Ikke tilgjengelig
                                 </div>
                             ) : (
                                 <select
                                     value={votes[index]}
                                     onChange={(e) => handleChange(e, index)}
-                                    className="border border-gray-300 rounded px-2 py-1 text-sm w-full mt-auto"
+                                    className="border border-gray-300 rounded px-2 py-1 text-sm w-full"
                                     disabled={hasVoted}
                                 >
                                     <option value={0}>Velg rang...</option>
@@ -201,6 +216,16 @@ export default function Arne() {
                                     ))}
                                 </select>
                             )}
+                            <button
+                                onClick={() => toggleAvailability(apartment.id)}
+                                className={`pointer-events-auto text-xs px-3 py-1 rounded-full font-medium w-full transition-colors mt-auto ${
+                                    isUnavailable
+                                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                                        : 'bg-red-100 text-red-700 hover:bg-red-200'
+                                }`}
+                            >
+                                {isUnavailable ? 'Marker som tilgjengelig' : 'Marker som utilgjengelig'}
+                            </button>
                             </div>
                         </div>
                         );

@@ -18,7 +18,6 @@ export interface Apartment {
     price: number;
     guests: number;
     img: string;
-    available?: boolean; // set to false to mark as unavailable; omission or true = available
     info?: ApartmentInfo;
 }
 
@@ -29,7 +28,6 @@ export const apartments: Apartment[] = [
     {
         id: 1,
         name: "Spacious Villa",
-        available: true,
         link: "https://www.airbnb.com/rooms/961685669302177270",
         price: 35200,
         guests: 7,
@@ -55,7 +53,6 @@ export const apartments: Apartment[] = [
     {
         id: 2,
         name: "Villa Luna",
-        available: true,
         link: "https://www.airbnb.com/rooms/50666941",
         price: 45000,
         guests: 8,
@@ -79,7 +76,6 @@ export const apartments: Apartment[] = [
     {
         id: 3,
         name: "Villa Dendron",
-        available: true,
         link: "https://www.booking.com/hotel/gr/villa-dendron.html",
         price: 28694,
         guests: 7,
@@ -109,7 +105,6 @@ export const apartments: Apartment[] = [
     {
         id: 4,
         name: "Bellevia Stone Pool Villa",
-        available: true,
         link: "https://www.airbnb.com/rooms/1446450441110644160",
         price: 45095,
         guests: 8,
@@ -139,7 +134,6 @@ export const apartments: Apartment[] = [
     {
         id: 5,
         name: "Villa Selene",
-        available: true,
         link: "https://www.airbnb.com/rooms/679607861111645623",
         price: 45585,
         guests: 10,

@@ -11,7 +11,7 @@ type UserData = {
 type PlacementScores = { [rank: number]: number };
 type Placements = { [name: string]: PlacementScores };
 
-export const getData = async (): Promise<{ scores: Placements } | []> => {
+export const getData = async (unavailableIds: number[] = []): Promise<{ scores: Placements } | []> => {
     try {
         const votingCollection = collection(db, `Badeklubben/badeklubben/votes-${votingRound}`);
         const q = query(votingCollection);
@@ -29,7 +29,7 @@ export const getData = async (): Promise<{ scores: Placements } | []> => {
 
         const dataList = Array.from(uniqueUsers.values());
 
-        const availableApts = apartments.filter(a => a.available !== false);
+        const availableApts = apartments.filter(a => !unavailableIds.includes(a.id));
 
         const placements: Placements = {};
         availableApts.forEach(apt => {
@@ -44,8 +44,8 @@ export const getData = async (): Promise<{ scores: Placements } | []> => {
             if (!user.votes || !Array.isArray(user.votes)) return;
 
             const validEntries = apartments
-                .map((apt, i) => ({ name: apt.name, rank: user.votes[i], available: apt.available }))
-                .filter(e => e.available !== false && e.rank > 0)
+                .map((apt, i) => ({ name: apt.name, rank: user.votes[i], isUnavailable: unavailableIds.includes(apt.id) }))
+                .filter(e => !e.isUnavailable && e.rank > 0)
                 .sort((a, b) => a.rank - b.rank);
 
             validEntries.forEach((entry, i) => {
